@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "skills": {
+    "angular-developer": {
+      "source": "angular/skills",
+      "sourceType": "github",
+      "skillPath": "angular-developer/SKILL.md",
+      "computedHash": "3faf142c1524f6d006621e1485810d15ee975bdfddb6d0f80c2b367b3a596a44"
+    },
+    "angular-new-app": {
+      "source": "angular/skills",
+      "sourceType": "github",
+      "skillPath": "angular-new-app/SKILL.md",
+      "computedHash": "49bd84ab08bd3498c52f476bed48fbb942dc6dbc0925607e84549adbed34bccf"
+    },
+    "capacitor-accessibility": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-accessibility/SKILL.md",
+      "computedHash": "57654b947c4e071fe32509282e315928a7b731e98ca8d71ab41948714d9c96a4"
+    },
+    "capacitor-app-store": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-app-store/SKILL.md",
+      "computedHash": "75eb88c152cf6217baad57650b1dededd37c18088a716c3a5053c18b45381af4"
+    },
+    "capacitor-app-upgrades": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-app-upgrades/SKILL.md",
+      "computedHash": "d86e94f742611100b91f6df86ed89df9c632abe543245257bedf3e8e56ba29f7"
+    },
+    "capacitor-apple-review-preflight": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-apple-review-preflight/SKILL.md",
+      "computedHash": "4dace4bbb8e006a9d3696531b58b65dd5cd434eda02be9f30f2ca403243a35d2"
+    },
+    "capacitor-best-practices": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-best-practices/SKILL.md",
+      "computedHash": "5070b60d829a8bfab87c5a51db0543174d1b9be4a990e305a9b56a06054770a3"
+    },
+    "capacitor-ci-cd": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-ci-cd/SKILL.md",
+      "computedHash": "b36bc6799e566e2eabcdbed3f21332e6e5ab3c9de9bf18236b0f2d42c4952d90"
+    },
+    "capacitor-deep-linking": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-deep-linking/SKILL.md",
+      "computedHash": "c40aa9f60d61d83569702d628ee8fcf4dfc440726d91b78da3275b34e14649ec"
+    },
+    "capacitor-keyboard": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-keyboard/SKILL.md",
+      "computedHash": "28eb3482afa1596f0e96024ad5351c488c61ca50ba134f25a2f65f040992c77c"
+    },
+    "capacitor-mcp": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-mcp/SKILL.md",
+      "computedHash": "b16bbccec75bb83f536e37ee7b9eb856e259b221a17dfc5fa9e6c0cb21a34e5e"
+    },
+    "capacitor-offline-first": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-offline-first/SKILL.md",
+      "computedHash": "22bd29454213855b74ed60ab38a6f591345e45e1eb9bf48725fddbebe23c949c"
+    },
+    "capacitor-performance": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-performance/SKILL.md",
+      "computedHash": "e6815591d7ac5700e8a27f409a59459c9488ca02c9b3e777d2ec31eaac077dbe"
+    },
+    "capacitor-plugin-upgrades": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-plugin-upgrades/SKILL.md",
+      "computedHash": "9beb1cf84421743ad389f7c189f48fe1a3d646114dbadf8e2ec970ed2f3d42b9"
+    },
+    "capacitor-plugins": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-plugins/SKILL.md",
+      "computedHash": "562ff249ba5f53d4aae96373a2bc8ae21984b992062ac127cc809aa6358dc87f"
+    },
+    "capacitor-push-notifications": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-push-notifications/SKILL.md",
+      "computedHash": "91eae9eba9f37e6d62a64aecdcd55c0702af6dbdeaf8947d90bfabb2679d5aee"
+    },
+    "capacitor-splash-screen": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capacitor-splash-screen/SKILL.md",
+      "computedHash": "0e00503e10fc8478342b317099b0141c2c0d928fa52fac957a4d34c1e5453bb3"
+    },
+    "capgo-native-builds": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/capgo-native-builds/SKILL.md",
+      "computedHash": "07535211290c3647a409957a83657774ad1bc7ad454dde247504788754eb57b0"
+    },
+    "cocoapods-to-spm": {
+      "source": "Cap-go/capgo-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cocoapods-to-spm/SKILL.md",
+      "computedHash": "651e5462e3ab9cfe8c5d5dfd36336aebf00776e8844ad1b288a9ef2ec3923553"
+    }
+  }
+}
