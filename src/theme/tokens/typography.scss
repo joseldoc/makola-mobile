@@ -1,0 +1,21 @@
+// Source: @makola Design System (claude.ai/design) — tokens/typography.css
+// Copied verbatim.
+:root{
+  --mk-font:"Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mk-num:tabular-nums; /* toute valeur numérique */
+
+  /* Cinq tailles, relevées sur les écrans livrés */
+  --mk-titre-ecran:400 22px/1.25 var(--mk-font);
+  --mk-sous-titre:400 14px/1.35 var(--mk-font);
+  --mk-corps:400 16px/1.45 var(--mk-font);
+  --mk-ligne-liste:500 16px/1.25 var(--mk-font);
+  --mk-note:600 30px/1 var(--mk-font);
+  --mk-secondaire:400 13px/1.4 var(--mk-font);
+  --mk-bouton-m2:500 14px/1 var(--mk-font);
+  --mk-bouton-action:600 15px/1 var(--mk-font);
+  --mk-indicatif:400 12px/1 var(--mk-font);
+
+  --mk-bouton-m2-suivi:.4px;
+  --mk-note-largeur-min:74px;
+  --mk-taille-plancher:12px; /* jamais du contenu en dessous */
+}

@@ -1,0 +1,34 @@
+// Source: @makola Design System (claude.ai/design) — tokens/dark.css
+// Copied verbatim.
+/* Le sombre est une dérivation : mêmes composants, mêmes mesures, mêmes règles.
+   Aucune couleur claire n'est reprise telle quelle ; chaque teinte porteuse de
+   texte est éclaircie jusqu'à dépasser 7:1 sur le fond.
+   Les trois surfaces de rôle DISPARAISSENT en sombre — remplacées par l'élévation. */
+[data-mk-theme="sombre"]{
+  --mk-surface:#101A2E;          /* l'encre devient la surface. Jamais de noir pur */
+  --mk-surface-haute:#1B2740;    /* barre d'app, fond de pavé */
+  --mk-surface-alterne:#16203A;
+  --mk-touche:#26314B;           /* seule zone plus claire que le fond */
+  --mk-touche-presse:#33405E;
+
+  --mk-contour:#737C90;          /* 4,2:1 sur le fond, 3,1:1 sur la touche */
+  --mk-contour-fort:#8B93A6;
+  --mk-separateur:#26314B;
+
+  --mk-text:#F2F5FA;             /* jamais #FFFFFF pur : à 17:1 il vibre */
+  --mk-text-secondaire:#B4BCCB;
+  --mk-text-tertiaire:#8B93A6;
+  --mk-text-sur-primaire:#101A2E;
+
+  --mk-primaire:#8FB0FF;
+  --mk-succes:#7FD1A2;
+  --mk-attente:#E8B872;
+  --mk-refus:#FF9E8E;            /* désaturé : le rouge saturé brûle dans le noir */
+
+  --mk-role-prof:#1B2740;
+  --mk-role-parent:#1B2740;
+  --mk-role-etab:#1B2740;
+  --mk-role-neutre:#1B2740;
+  --mk-inactif-fond:#26314B;
+  --mk-inactif-text:#8B93A6;
+}
