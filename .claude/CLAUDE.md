@@ -1,58 +1,57 @@
+ # Project guidelines
+ As an Angular architect build angular and ionic 
+## Stack 
+ - Angular
+ - Ionic
+ - Capacitor
+ - Typescript
+ - RxJS
+ - Angular Signals
+ - Signal Store
 
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+## Architecture
+- ionic 9
+- Capacitor 9
+- Angular 22, standalone components only (no NgModules), built on the Angular CLI `application` builder.
+- Use standalone components
+- always us Strategy OnPush
+- use container component and dumb or presentation components.
+### Path aliases
 
-## TypeScript Best Practices
+`tsconfig.json` defines `@core/*` → `src/app/core/*`. (`@shared/*` and `@modules/*` are also declared but point at directories that don't exist — everything currently lives under `@core/shared/*`; 
+don't use those two aliases.) Feature code under `src/app/features/*` is imported by relative path, not by alias.
 
-- Use strict type checking
-- Prefer type inference when the type is obvious
-- Avoid the `any` type; use `unknown` when type is uncertain
+### Feature module structure
 
-## Angular Best Practices
+Each feature under `src/app/features/<name>/` follows the same shape:
 
-- Always use standalone components over NgModules
-- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
-- Do NOT set `changeDetection: ChangeDetectionStrategy.OnPush` explicitly. `OnPush` is the default in Angular v22+.
-- Use signals for state management
-- Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
-- Use `NgOptimizedImage` for all static images.
-  - `NgOptimizedImage` does not work for inline base64 images.
+- `<name>-routes.ts` — exports a `Routes`/`Route[]` constant (e.g. `AUTH_ROUTES`, `USERS_ROUTES`, `LEVEL_VOLTAGES`) using `loadComponent`/`loadChildren` for lazy loading, wired into `app.routes.ts`.
+- `index.ts` barrel files at the feature root and at `pages/` — components are imported via `import('./pages').then(m => m.XComponent)`, not by direct file path.
+- `pages/`, `components/`, `modele/` (interfaces), `enums/` as needed.
 
-## Accessibility Requirements
+`core/shared/components/` follows the same barrel (`index.ts`) convention per component group (`buttons/`, `forms/`, `inputs/`, `modal/`). Prefer re-exporting new shared components through the relevant group's `index.ts`.
 
-- It MUST pass all AXE checks.
-- It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
+### State: NgRx Signals stores
 
-### Components
+Global/cross-cutting state uses `@ngrx/signals` `signalStore`, not services with BehaviorSubjects. Existing stores:
 
-- Keep components small and focused on a single responsibility
-- Use `input()` and `output()` functions instead of decorators
-- Use `computed()` for derived state
-- Prefer inline templates for small components
-- Prefer Signal Forms (`@angular/forms/signals`) for new forms. They are stable in Angular v22+ and provide signal-based state, type-safe field access, and schema-based validation
-- When not using Signal Forms, prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
-- When using external templates/styles, use paths relative to the component TS file.
+- `LoaderStore` (`core/store/loaders/`) — tracks a global loading flag, driven by `withHooks(onInit)` subscribing to `Router` events (`NavigationStart`/`NavigationEnd`) via `rxMethod`. Exposes `isLoadingBarProgress` / `isLoadingButton` as `withComputed` signals for the top progress bar vs. button spinners.
+- `NavigationStore` (`core/layouts/layout/store/`) — tracks which sidebar nav item is active, refreshed via `withHooks(onInit)` off `router.url`.
 
-## State Management
+Both are `{ providedIn: 'root' }`. Follow this `withState` / `withComputed` / `withMethods` / `withHooks` pattern (state → derived signals → mutating methods via `patchState` → router-driven side effects) for new global stores instead of introducing services with manual subjects.
 
-- Use signals for local component state
-- Use `computed()` for derived state
-- Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
-- Use signalStore for no shared state 
+## Manage features
+```
+features/
+├── feature-page.ts           # feature container (all logic and call to store must be here)
+├── /components  # all dumbs components (presentation components, no logic on this components)
+├── feature.route.ts        # App bootstrap
+└── feature.store.ts    # Global styles
+└── model.ts    # all model feature
+```
+## Capacitor
+Capacitor should only be used for native functionality.
+Do not use Capacitor APIs when a standard browser/Web API is sufficient.
 
-## Templates
-
-- Keep templates simple and avoid complex logic
-- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
-- Use the async pipe to handle observables
-- Do not assume globals like (`new Date()`) are available.
-
-## Services
-
-- Design services around a single responsibility
-- Use the `providedIn: 'root'` option for singleton services
-- Prefer the `@Service` decorator over `@Injectable({providedIn: 'root'})` for new singleton services (Angular v22+)
-- Use the `inject()` function instead of constructor injection
+### Forms
+Using signal forms
