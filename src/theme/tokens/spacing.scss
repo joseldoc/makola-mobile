@@ -1,0 +1,25 @@
+// Source: @makola Design System (claude.ai/design) — tokens/spacing.css
+// Copied verbatim.
+:root{
+  --mk-esp-1:4px;
+  --mk-esp-2:8px;
+  --mk-esp-3:12px;
+  --mk-esp-4:16px;  /* marge d'écran standard */
+  --mk-esp-5:20px;
+  --mk-esp-6:24px;
+
+  /* Hauteurs relevées */
+  --mk-h-barre:64px;
+  --mk-h-ligne:56px;      /* minimum d'une ligne de liste */
+  --mk-h-champ:56px;
+  --mk-h-action:48px;
+  --mk-h-touche:52px;
+  --mk-h-onglet:48px;
+  --mk-h-recherche:40px;
+  --mk-h-bouton-m2:36px;
+  --mk-h-mini-fab:32px;
+
+  --mk-cible:44px;        /* cible tactile minimale */
+  --mk-cible-barre:48px;  /* toute action de barre d'app */
+  --mk-retrait-titre:56px;/* texte de barre, depuis le bord */
+}

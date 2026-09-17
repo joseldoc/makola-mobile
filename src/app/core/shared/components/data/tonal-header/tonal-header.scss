@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.tonal-header {
+  position: relative;
+  overflow: hidden;
+  border-bottom-left-radius: var(--mk-rayon-bandeau);
+  border-bottom-right-radius: var(--mk-rayon-bandeau);
+  padding: 18px var(--mk-esp-5) 26px;
+
+  &.compact {
+    padding: 16px var(--mk-esp-5) 20px;
+  }
+}
+
+.shape {
+  position: absolute;
+  border-radius: var(--mk-rayon-rond);
+}
+
+.shape-top {
+  top: -92px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+}
+
+.shape-bottom {
+  bottom: -70px;
+  left: -50px;
+  width: 140px;
+  height: 140px;
+  opacity: 0.6;
+}
+
+.content {
+  position: relative;
+}

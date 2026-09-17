@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+
+// @makola design tokens — imported in the same order as the design system's
+// own styles.css (src/theme/tokens/). See docs/design-system.md for the rules
+// behind these values.
+@use './theme/tokens/fonts';
+@use './theme/tokens/colors';
+@use './theme/tokens/typography';
+@use './theme/tokens/spacing';
+@use './theme/tokens/radius';
+@use './theme/tokens/motion';
+@use './theme/tokens/dark';

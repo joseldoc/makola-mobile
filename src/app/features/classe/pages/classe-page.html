@@ -1,0 +1,70 @@
+<div class="classe-page">
+  <app-bar
+    [title]="store.titre()"
+    [subtitle]="store.sousTitre()"
+    role="prof"
+    [scrolled]="store.scrolled()"
+    [actions]="actionsBarre"
+  />
+
+  @if (store.horsLigne()) {
+    <app-network-banner state="horsligne" [pending]="0" />
+  }
+
+  <app-tabs [items]="vues" [value]="store.vue()" (valueChange)="onVueChange($event)" />
+
+  @if (store.vue() === 1) {
+    <div class="search">
+      <app-search-field
+        [value]="store.recherche()"
+        placeholder="Nom d'élève"
+        (valueChange)="store.setRecherche($event)"
+        (cleared)="store.clearRecherche()"
+      />
+    </div>
+  }
+
+  <div class="list" [class.no-border]="store.vue() === 1" (scroll)="onScroll($event)">
+    @if (store.vue() === 0) {
+      @for (devoir of store.devoirs(); track devoir.nom; let i = $index) {
+        <app-list-row
+          [index]="i"
+          [primary]="devoir.nom"
+          [secondary]="devoir.meta"
+          [value]="devoir.val"
+          tertiary="Moyenne de la classe non calculée — voir RM-11"
+          (rowClick)="saisir()"
+        />
+      }
+    }
+
+    @if (store.vue() === 1) {
+      @if (store.elevesFiltres().length) {
+        @for (eleve of store.elevesFiltres(); track eleve.nom; let i = $index) {
+          <app-list-row
+            [index]="i"
+            [primary]="eleve.nom"
+            secondary="Moyenne du trimestre"
+            [value]="eleve.val"
+            [valueTone]="eleve.bas ? 'refus' : 'neutre'"
+          />
+        }
+      } @else {
+        <p class="empty">
+          Aucun élève ne porte « {{ store.recherche() }} ». Essayez un nom de famille seul, ou effacez la recherche.
+        </p>
+      }
+    }
+
+    @if (store.vue() === 2) {
+      <p class="bulletin">
+        Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Aucun rang ni moyenne de classe n'y
+        figurera.
+      </p>
+    }
+  </div>
+
+  <div class="footer">
+    <app-footer-action label="+ Devoir" (pressed)="nouveauDevoir()" />
+  </div>
+</div>

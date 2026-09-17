@@ -1,0 +1,17 @@
+:host {
+  display: contents;
+}
+
+.bar-target {
+  width: var(--mk-cible-barre);
+  height: var(--mk-cible-barre);
+  flex: none;
+  border: 0;
+  border-radius: var(--mk-rayon-rond);
+  color: var(--mk-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--mk-presse);
+}

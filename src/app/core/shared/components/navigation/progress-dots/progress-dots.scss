@@ -1,0 +1,18 @@
+:host {
+  display: contents;
+}
+
+.progress-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  height: 6px;
+  border-radius: var(--mk-rayon-rond);
+  cursor: pointer;
+  transition:
+    width var(--mk-bascule),
+    background var(--mk-bascule);
+}

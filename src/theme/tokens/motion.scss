@@ -1,0 +1,12 @@
+// Source: @makola Design System (claude.ai/design) — tokens/motion.css
+// Copied verbatim.
+:root{
+  --mk-presse:70ms ease;       /* touche de pavé */
+  --mk-transition:120ms ease;  /* contour, couleur */
+  --mk-bascule:150ms ease;     /* interrupteur, pastille */
+  --mk-flash:420ms;            /* confirmation d'une ligne */
+
+  --mk-echelle-touche:.93;
+  --mk-echelle-action:.98;
+  --mk-echelle-fab:.92;
+}

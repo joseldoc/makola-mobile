@@ -1,0 +1,33 @@
+:host {
+  display: contents;
+}
+
+.switch {
+  width: 52px;
+  height: 32px;
+  flex: none;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: var(--mk-rayon-rond);
+  cursor: pointer;
+  border: 2px solid var(--mk-contour-fort);
+  transition:
+    background var(--mk-bascule),
+    border-color var(--mk-bascule);
+}
+
+.thumb {
+  position: absolute;
+  top: 50%;
+  border-radius: var(--mk-rayon-rond);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 13px/1 var(--mk-font);
+  transition:
+    left var(--mk-bascule),
+    width var(--mk-bascule),
+    height var(--mk-bascule),
+    margin-top var(--mk-bascule),
+    background var(--mk-bascule);
+}

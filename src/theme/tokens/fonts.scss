@@ -1,0 +1,11 @@
+// Source: @makola Design System (claude.ai/design) — tokens/fonts.css
+// Copied verbatim.
+/* Roboto — la seule famille du système, servie par Google Fonts (décision validée).
+   Importez CE fichier, pas un <link> dans chaque page : la déclaration reste
+   au même endroit que les autres tokens.
+   Graisses utilisées : 400 (corps, titres d'écran), 500 (lignes de liste,
+   boutons M2), 600 (notes, actions de pied). Aucune autre. */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap");
+
+/* Ionicons — jeu d'icônes du système, chargé en module ES.
+   Voir src/theme/icons.ts pour l'inventaire des 15 noms. */
