@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 26, 46, 0.42);
+  display: flex;
+  align-items: flex-end;
+}
+
+.sheet {
+  width: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  border-top-left-radius: var(--mk-rayon-touche);
+  border-top-right-radius: var(--mk-rayon-touche);
+  border-top: 1px solid var(--mk-encre);
+}
+
+.handle-row {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 2px;
+}
+
+.handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(16, 26, 46, 0.24);
+  cursor: pointer;
+}
+
+.header {
+  padding: 6px var(--mk-esp-4) 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--mk-esp-2);
+
+  .title {
+    flex: 1;
+    font: var(--mk-titre-ecran);
+  }
+
+  .context {
+    font: var(--mk-sous-titre);
+    color: var(--mk-text-secondaire);
+  }
+}
+
+.field {
+  padding: var(--mk-esp-5) var(--mk-esp-4) 0;
+}
+
+.row {
+  padding: var(--mk-esp-2) var(--mk-esp-4) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-3);
+}
+
+.baremes {
+  display: flex;
+  gap: var(--mk-esp-2);
+  flex: 1;
+}
+
+.chip {
+  flex: 1;
+  height: var(--mk-h-bouton-m2);
+  border-radius: var(--mk-rayon-remplir);
+  border: 1px solid var(--mk-contour-m2);
+  color: var(--mk-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--mk-bouton-m2);
+  letter-spacing: var(--mk-bouton-m2-suivi);
+  cursor: pointer;
+
+  &.active {
+    border-color: var(--mk-primaire);
+    background: var(--mk-actif-fond);
+    color: var(--mk-primaire);
+  }
+}
+
+.coef {
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-2);
+  flex: none;
+}
+
+.coef-value {
+  font: 600 18px/1 var(--mk-font);
+  font-variant-numeric: var(--mk-num);
+  min-width: 38px;
+  text-align: center;
+}
+
+.coef-message {
+  padding: 6px var(--mk-esp-5) 0;
+  font: 400 13px/1.45 var(--mk-font);
+  min-height: 34px;
+  color: var(--mk-text-secondaire);
+
+  &.attente {
+    color: var(--mk-attente);
+  }
+}
+
+.date-row {
+  padding-top: 2px;
+  align-items: flex-start;
+}
+
+.date-field {
+  flex: 1;
+}
+
+.date-action {
+  padding-top: 10px;
+  flex: none;
+}
+
+.footer {
+  padding: var(--mk-esp-1) var(--mk-esp-4) var(--mk-esp-5);
+}

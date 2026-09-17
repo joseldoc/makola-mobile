@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.classe-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+.search {
+  padding: var(--mk-esp-3) var(--mk-esp-4) var(--mk-esp-2);
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid var(--mk-separateur);
+
+  &.no-border {
+    border-top: 0;
+  }
+}
+
+.empty {
+  padding: 24px var(--mk-esp-4);
+  font: 400 15px/1.5 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.bulletin {
+  padding: 20px var(--mk-esp-4);
+  font: 400 15px/1.55 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.footer {
+  border-top: 1px solid var(--mk-separateur);
+  padding: var(--mk-esp-3) var(--mk-esp-4);
+}

@@ -1,0 +1,31 @@
+<div class="saisie-page">
+  <app-bar [title]="store.titre()" [subtitle]="store.sousTitre()" role="prof" [showBack]="true" (back)="retour()" />
+
+  <app-network-banner state="horsligne" [pending]="store.saisies()" />
+
+  <div class="list">
+    @for (nom of store.noms(); track nom; let k = $index) {
+      <app-list-row
+        [index]="k"
+        [primary]="nom"
+        [secondary]="k === store.indexActif() ? 'En cours de saisie' : ''"
+        [value]="store.notes()[k] || '—'"
+        [valueTone]="valueTone(store.notes()[k])"
+        [active]="k === store.indexActif()"
+        [flash]="store.flashIndex() === k"
+        (rowClick)="store.setActif(k)"
+      />
+    }
+  </div>
+
+  <app-keypad
+    [columns]="4"
+    nextLabel="Élève suivant"
+    (digit)="store.saisirChiffre($event)"
+    (comma)="store.saisirVirgule()"
+    (backspace)="store.effacerChiffre()"
+    (absent)="store.marquerAbsent()"
+    (ungraded)="store.marquerNonNote()"
+    (next)="store.suivant()"
+  />
+</div>

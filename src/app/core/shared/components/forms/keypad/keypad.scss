@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.keypad {
+  background: var(--mk-marge);
+  padding: var(--mk-esp-2);
+  display: grid;
+  grid-auto-rows: var(--mk-h-touche);
+  gap: var(--mk-esp-2);
+}

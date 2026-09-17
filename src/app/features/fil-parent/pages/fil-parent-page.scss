@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.fil-parent-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--mk-rayon-rond);
+  background: var(--mk-surface);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 500 14px/1 var(--mk-font);
+  color: var(--mk-text-secondaire);
+}
+
+.cards {
+  display: flex;
+  gap: var(--mk-esp-2);
+  padding: var(--mk-esp-3) var(--mk-esp-4);
+}
+
+.card {
+  flex: 1;
+  border: 1px solid var(--mk-separateur);
+  border-radius: var(--mk-rayon-encadre);
+  padding: 10px 12px;
+
+  &.highlight {
+    border-color: var(--mk-encre);
+  }
+}
+
+.card-label {
+  font: 500 13px/1.2 var(--mk-font);
+  color: var(--mk-text-secondaire);
+}
+
+.card-value {
+  font: var(--mk-note);
+  font-variant-numeric: var(--mk-num);
+  margin-top: 3px;
+}
+
+.card-progress {
+  font: 500 15px/1.35 var(--mk-font);
+  margin-top: 5px;
+  color: var(--mk-succes);
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid var(--mk-separateur);
+}
+
+.resume-row {
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-3);
+  padding: 14px var(--mk-esp-4);
+  border-bottom: 1px solid var(--mk-separateur);
+}
+
+.resume-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-title {
+  font: var(--mk-ligne-liste);
+}
+
+.resume-sub {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+  margin-top: 3px;
+}
+
+.footer {
+  border-top: 1px solid var(--mk-separateur);
+  padding: var(--mk-esp-3) var(--mk-esp-4);
+  display: flex;
+  gap: var(--mk-esp-2);
+}

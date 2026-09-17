@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.tabs {
+  display: grid;
+  border-bottom: 1px solid var(--mk-separateur);
+}
+
+.tab {
+  height: var(--mk-h-onglet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--mk-text);
+  text-align: center;
+  padding: 0 4px;
+  font: 400 14px/1.15 var(--mk-font);
+  border-bottom: 3px solid transparent;
+  transition: border-color var(--mk-presse);
+
+  &.active {
+    font-weight: 600;
+    border-bottom-color: var(--mk-primaire);
+  }
+}

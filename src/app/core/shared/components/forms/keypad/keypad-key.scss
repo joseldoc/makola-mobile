@@ -1,0 +1,42 @@
+:host {
+  display: contents;
+}
+
+.keypad-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: var(--mk-rayon-touche);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform var(--mk-presse),
+    background var(--mk-presse);
+
+  &.chiffre {
+    background: var(--mk-surface);
+    font: 600 22px/1 var(--mk-font);
+    font-variant-numeric: var(--mk-num);
+
+    &.held {
+      background: var(--mk-touche-presse);
+    }
+  }
+
+  &.code {
+    background: var(--mk-surface);
+    border: 1px solid var(--mk-contour);
+    font: 500 13px/1.15 var(--mk-font);
+
+    &.held {
+      background: var(--mk-touche-presse);
+    }
+  }
+
+  &.action {
+    background: var(--mk-primaire);
+    color: var(--mk-text-sur-primaire);
+    font: 600 14px/1.2 var(--mk-font);
+  }
+}

@@ -1,0 +1,51 @@
+<div class="fil-parent-page">
+  <app-bar
+    [title]="store.eleveNom()"
+    [subtitle]="store.classe()"
+    role="parent"
+    [scrolled]="store.scrolled()"
+    [actions]="actionsBarre"
+    [hasLeading]="true"
+    (actionSelected)="changerEnfant()"
+  >
+    <div leading class="avatar">{{ store.eleveInitiales() }}</div>
+  </app-bar>
+
+  <div class="cards">
+    <div class="card highlight">
+      <div class="card-label">Moyenne · Maths</div>
+      <div class="card-value">{{ store.moyenneMatiere() }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Trimestre 2</div>
+      <div class="card-progress">↑ en progression</div>
+    </div>
+  </div>
+
+  <div class="list" (scroll)="onScroll($event)">
+    @for (item of store.fil(); track item.titre; let i = $index) {
+      <app-list-row
+        [index]="i"
+        [primary]="item.titre"
+        [secondary]="item.meta"
+        [tertiary]="item.quand"
+        [value]="item.valeur"
+        [valueTone]="item.titre === 'Note en dessous de 10' ? 'refus' : 'neutre'"
+      />
+    }
+    <div class="resume-row">
+      <div class="resume-text">
+        <div class="resume-title">Résumé hebdomadaire</div>
+        <div class="resume-sub">
+          {{ store.alerteResume() ? 'Un SMS chaque dimanche à 19:00.' : 'Désactivé — le fil reste consultable.' }}
+        </div>
+      </div>
+      <app-switch [checked]="store.alerteResume()" tone="attente" ariaLabel="Résumé hebdomadaire" (checkedChange)="store.toggleAlerte($event)" />
+    </div>
+  </div>
+
+  <div class="footer">
+    <app-outlined-button label="Toutes les notes" tone="parent" [full]="true" />
+    <app-outlined-button label="Bulletins" tone="parent" [full]="true" />
+  </div>
+</div>

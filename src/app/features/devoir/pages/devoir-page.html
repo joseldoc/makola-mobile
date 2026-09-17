@@ -1,0 +1,56 @@
+<div class="overlay">
+  <div class="sheet">
+    <div class="handle-row">
+      <div class="handle" (click)="fermer()"></div>
+    </div>
+
+    <div class="header">
+      <div class="title">Nouveau devoir</div>
+      <div class="context">4ème B · Maths</div>
+    </div>
+
+    <div class="field">
+      <app-text-field
+        label="Intitulé du devoir"
+        [value]="store.titre()"
+        placeholder="Contrôle n°3"
+        [state]="store.titreEtat()"
+        [message]="store.titreMessage()"
+        [counter]="store.titre().length + ' / 60'"
+        (valueChange)="store.setTitre($event)"
+      />
+    </div>
+
+    <div class="row">
+      <div class="baremes">
+        @for (b of baremes; track b) {
+          <div class="chip" [class.active]="store.bareme() === b" (click)="store.setBareme(b)">{{ b }}</div>
+        }
+      </div>
+      <div class="coef">
+        <app-mini-fab icon="remove-outline" [atBound]="store.coef() <= 1" (clicked)="store.decrementerCoef()" />
+        <div class="coef-value">×{{ store.coef() }}</div>
+        <app-mini-fab icon="add-outline" [atBound]="store.coef() >= 9" (clicked)="store.incrementerCoef()" />
+      </div>
+    </div>
+    <div class="coef-message" [class.attente]="store.coef() >= 9">{{ store.messageCoef() }}</div>
+
+    <div class="row date-row">
+      <div class="date-field">
+        <app-text-field label="Date du devoir" [value]="store.dateActuelle().label" [state]="store.dateActuelle().state" [message]="store.dateActuelle().message" />
+      </div>
+      <div class="date-action">
+        <app-outlined-button label="Changer" (clicked)="store.changerDate()" />
+      </div>
+    </div>
+
+    <div class="footer">
+      <app-footer-action
+        label="Créer et saisir les notes"
+        [disabled]="store.bloque()"
+        missingLabel="Corrigez le champ signalé"
+        (pressed)="creer()"
+      />
+    </div>
+  </div>
+</div>

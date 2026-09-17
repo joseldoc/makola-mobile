@@ -8,7 +8,8 @@ Ce document est une copie de référence, tirée du projet
 [claude.ai/design "@makola Design System"](https://claude.ai/design), pour
 guider l'intégration des écrans **Angular / Ionic** dans ce dépôt. Les jetons
 CSS vivent dans `src/theme/tokens/*.scss` (importés depuis `src/styles.scss`)
-et l'inventaire d'icônes dans `src/theme/icons.ts`. Le système sur claude.ai/design
+et l'inventaire d'icônes dans `src/app/core/shared/icons.ts` (alias `@core/shared/icons`).
+Le système sur claude.ai/design
 reste construit en React (composants de démonstration) — **il ne s'implémente
 pas tel quel ici** ; ce dépôt devient la source de vérité au fur et à mesure que
 les écrans Angular/Ionic sont écrits, et ce document devra être confronté aux
@@ -177,20 +178,49 @@ type là où une marque irait ; ne pas dessiner de logo.
 | `src/theme/tokens/motion.scss` | Quatre durées, trois échelles de pression |
 | `src/theme/tokens/dark.scss` | La dérivation sombre (`[data-mk-theme="sombre"]`) |
 | `src/theme/tokens/fonts.scss` | Import Google Fonts (Roboto 400/500/600) |
-| `src/theme/icons.ts` | Inventaire des 15 icônes Ionicons |
+| `src/app/core/shared/icons.ts` | Inventaire des 15 icônes Ionicons + `registerIcons()` |
 
-## Composants du système de référence
+## Composants — React (référence) → Angular (ce dépôt)
 
-Le projet claude.ai/design contient 16 composants React de démonstration
-(`FooterAction`, `OutlinedButton`, `MiniFab`, `TextField`, `SearchField`,
-`Checkbox`, `RadioButton`, `Switch`, `Keypad`, `AppBar`, `Tabs`,
-`ProgressDots`, `ListRow`, `TonalHeader`, `NetworkBanner`, `Icon`) et quatre
-surfaces d'UI kit (classe, saisie, création de devoir, fil parent). Ce sont des
-**recréations fidèles des mesures de la maquette**, pas des extraits d'une
-implémentation — aucun code produit n'existe encore à confronter. Utilisez-les
-comme référence de mesures/comportement en construisant les composants Angular
-standalone de ce dépôt (voir `.claude/CLAUDE.md` pour la structure de
-composants/containers/stores) ; ne les portez pas tels quels (React → Angular).
+Le projet claude.ai/design contient 16 composants React de démonstration et
+quatre surfaces d'UI kit (classe, saisie, création de devoir, fil parent). Ce
+sont des **recréations fidèles des mesures de la maquette**, pas des extraits
+d'une implémentation. Ils ont été portés en composants Angular standalone
+(`ChangeDetectionStrategy.OnPush`, signal `input()`/`output()`) sous
+`src/app/core/shared/components/`, groupés comme dans le système source :
+
+| Groupe | Composants Angular (sélecteur) | Fichier |
+|---|---|---|
+| `foundation/` | `app-icon` | `foundation/icon/icon.ts` |
+| `actions/` | `app-footer-action` · `app-outlined-button` · `app-mini-fab` | `actions/*/*.ts` |
+| `forms/` | `app-text-field` · `app-search-field` · `app-checkbox` · `app-radio-button` · `app-switch` · `app-keypad` (+ `app-keypad-key`) | `forms/*/*.ts` |
+| `navigation/` | `app-bar` (+ `app-bar-target`) · `app-tabs` · `app-progress-dots` | `navigation/*/*.ts` |
+| `data/` | `app-list-row` · `app-tonal-header` · `app-network-banner` | `data/*/*.ts` |
+
+Chaque fichier a un en-tête `Source:` pointant vers le `.jsx` d'origine sur
+claude.ai/design. Import : `import { FooterActionComponent } from
+'@core/shared/components/actions/footer-action/footer-action';` ou, en gros,
+`from '@core/shared/components'` (barrel racine). Écarts délibérés par rapport
+au React, tous documentés en commentaire dans le fichier concerné :
+
+- Les callbacks React (`onClick`, `onChange`, `onSelect`…) deviennent des
+  `output()` Angular (`pressed`, `valueChange`, `checkedChange`, `select`…).
+- Les props booléennes qui déclenchaient un rendu conditionnel côté React
+  selon la présence d'un callback (ex. `AppBar.onBack`) deviennent des inputs
+  booléens explicites (`showBack`) — Angular n'a pas d'équivalent simple à
+  « callback fourni ou non » sans `ContentChild`.
+- `AppBar.leading` (React `children`) devient un slot projeté
+  `<ng-content select="[leading]">`, accompagné d'un input `hasLeading` à
+  positionner manuellement (même raison que ci-dessus).
+- `TextField`/`SearchField` : `value` + `valueChange` (banana-in-a-box)
+  remplacent `value` + `onChange(event)`.
+
+Prochaine étape : construire les quatre écrans (`ClasseScreen`, `DevoirSheet`,
+`FilParentScreen`, `SaisieScreen`) comme features Angular
+(`src/app/features/<nom>/`, container + dumb components + route + store —
+voir `.claude/CLAUDE.md`), en composant ces briques. Les `.jsx` des UI kits
+(`ui_kits/app/*.jsx` sur claude.ai/design) restent la référence de mesures et
+d'enchaînement d'écran, pas du code à copier.
 
 ## Périmètre
 

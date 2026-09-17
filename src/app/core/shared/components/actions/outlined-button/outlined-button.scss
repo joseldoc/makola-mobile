@@ -1,0 +1,25 @@
+:host {
+  display: contents;
+}
+
+.outlined-button {
+  height: var(--mk-h-bouton-m2);
+  padding: 0 var(--mk-esp-4);
+  flex: none;
+  min-width: 0;
+  border-radius: var(--mk-rayon-remplir);
+  border: 1px solid var(--mk-contour-m2);
+  color: var(--mk-text);
+  font: var(--mk-bouton-m2);
+  letter-spacing: var(--mk-bouton-m2-suivi);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background var(--mk-presse);
+
+  &.full {
+    flex: 1;
+  }
+}

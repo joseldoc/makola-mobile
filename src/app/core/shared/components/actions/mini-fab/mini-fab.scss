@@ -1,0 +1,18 @@
+:host {
+  display: contents;
+}
+
+.mini-fab {
+  width: var(--mk-h-mini-fab);
+  height: var(--mk-h-mini-fab);
+  flex: none;
+  border-radius: var(--mk-rayon-rond);
+  border: 1px solid rgba(16, 26, 46, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform var(--mk-presse),
+    background var(--mk-presse);
+}
