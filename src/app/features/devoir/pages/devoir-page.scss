@@ -18,12 +18,31 @@
   border-top-left-radius: var(--mk-rayon-touche);
   border-top-right-radius: var(--mk-rayon-touche);
   border-top: 1px solid var(--mk-encre);
+  // Encoche en paysage : décale tout le contenu de la feuille.
+  padding: 0 var(--mk-zone-droite) 0 var(--mk-zone-gauche);
 }
 
 .handle-row {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
+  width: 100%;
   padding: 8px 0 2px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  // Poignée de 36 × 4 dp, cible de 96 × 44 dp centrée — sans décaler la mise en page.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 96px;
+    height: var(--mk-cible);
+    transform: translateX(-50%);
+  }
 }
 
 .handle {
@@ -31,7 +50,6 @@
   height: 4px;
   border-radius: 4px;
   background: rgba(16, 26, 46, 0.24);
-  cursor: pointer;
 }
 
 .header {
@@ -69,7 +87,10 @@
 }
 
 .chip {
+  position: relative;
   flex: 1;
+  padding: 0;
+  background: transparent;
   height: var(--mk-h-bouton-m2);
   border-radius: var(--mk-rayon-remplir);
   border: 1px solid var(--mk-contour-m2);
@@ -80,6 +101,13 @@
   font: var(--mk-bouton-m2);
   letter-spacing: var(--mk-bouton-m2-suivi);
   cursor: pointer;
+
+  // Visuel de 36 dp, cible de 48 dp.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+  }
 
   &.active {
     border-color: var(--mk-primaire);
@@ -128,5 +156,5 @@
 }
 
 .footer {
-  padding: var(--mk-esp-1) var(--mk-esp-4) var(--mk-esp-5);
+  padding: var(--mk-esp-1) var(--mk-esp-4) calc(var(--mk-esp-5) + var(--mk-zone-bas));
 }

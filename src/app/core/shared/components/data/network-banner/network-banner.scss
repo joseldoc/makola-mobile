@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   gap: var(--mk-esp-2);
-  padding: 10px var(--mk-esp-4);
+  padding: 10px calc(var(--mk-esp-4) + var(--mk-zone-droite)) 10px calc(var(--mk-esp-4) + var(--mk-zone-gauche));
   border-bottom: 1px solid;
 
   span {

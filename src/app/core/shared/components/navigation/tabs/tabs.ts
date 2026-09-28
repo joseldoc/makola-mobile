@@ -13,9 +13,14 @@ export interface TabItem {
 @Component({
   selector: 'app-tabs',
   template: `
-    <div class="tabs" [style.grid-template-columns]="'repeat(' + items().length + ',1fr)'">
+    <div class="tabs" role="tablist" [style.grid-template-columns]="'repeat(' + items().length + ',1fr)'">
       @for (item of items(); track item.id) {
-        <div class="tab" [class.active]="item.id === value()" (click)="valueChange.emit(item.id)">
+        <div
+          class="tab"
+          role="tab"
+          [class.active]="item.id === value()"
+          [attr.aria-selected]="item.id === value()"
+          (click)="valueChange.emit(item.id)">
           {{ item.label }}
         </div>
       }

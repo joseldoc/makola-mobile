@@ -4,6 +4,7 @@
 
 .tabs {
   display: grid;
+  padding: 0 var(--mk-zone-droite) 0 var(--mk-zone-gauche);
   border-bottom: 1px solid var(--mk-separateur);
 }
 

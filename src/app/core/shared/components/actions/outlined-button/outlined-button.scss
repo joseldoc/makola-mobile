@@ -3,6 +3,7 @@
 }
 
 .outlined-button {
+  position: relative;
   height: var(--mk-h-bouton-m2);
   padding: 0 var(--mk-esp-4);
   flex: none;
@@ -14,12 +15,25 @@
   letter-spacing: var(--mk-bouton-m2-suivi);
   text-transform: uppercase;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   cursor: pointer;
   transition: background var(--mk-presse);
 
   &.full {
     flex: 1;
   }
+
+  // Bouton M2 de 36 dp, cible de 48 dp (44 pt iOS / 48 dp Android).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+  }
+}
+
+// L'ellipse vit sur le libellé : sur le bouton, `overflow: hidden` couperait
+// la cible étendue ci-dessus.
+.label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

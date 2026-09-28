@@ -12,12 +12,14 @@
 }
 
 .search {
-  padding: var(--mk-esp-3) var(--mk-esp-4) var(--mk-esp-2);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-zone-droite)) var(--mk-esp-2) calc(var(--mk-esp-4) + var(--mk-zone-gauche));
 }
 
 .list {
   flex: 1;
   overflow-y: auto;
+  // Pas de rebond qui entraîne la page (iOS) ni de lueur en chaîne (Android).
+  overscroll-behavior-y: contain;
   border-top: 1px solid var(--mk-separateur);
 
   &.no-border {
@@ -26,14 +28,14 @@
 }
 
 .empty {
-  padding: 24px var(--mk-esp-4);
+  padding: 24px calc(var(--mk-esp-4) + var(--mk-zone-droite)) 24px calc(var(--mk-esp-4) + var(--mk-zone-gauche));
   font: 400 15px/1.5 var(--mk-font);
   color: var(--mk-text-secondaire);
   margin: 0;
 }
 
 .bulletin {
-  padding: 20px var(--mk-esp-4);
+  padding: 20px calc(var(--mk-esp-4) + var(--mk-zone-droite)) 20px calc(var(--mk-esp-4) + var(--mk-zone-gauche));
   font: 400 15px/1.55 var(--mk-font);
   color: var(--mk-text-secondaire);
   margin: 0;
@@ -41,5 +43,6 @@
 
 .footer {
   border-top: 1px solid var(--mk-separateur);
-  padding: var(--mk-esp-3) var(--mk-esp-4);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-zone-droite)) calc(var(--mk-esp-3) + var(--mk-zone-bas))
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
 }

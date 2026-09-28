@@ -10,3 +10,15 @@
 @use './theme/tokens/radius';
 @use './theme/tokens/motion';
 @use './theme/tokens/dark';
+
+// Zones sûres (encoche, barre de statut, barre de gestes). Sur Android 15+,
+// Capacitor passe en edge-to-edge et injecte `--safe-area-inset-*` sur <html>
+// (valeurs fiables même quand la WebView < 140 renvoie 0 pour `env()`).
+// Sur iOS ces variables n'existent pas : repli sur `env()`, actif grâce à
+// `viewport-fit=cover` dans index.html. Toujours passer par ces tokens.
+:root {
+  --mk-zone-haut: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --mk-zone-droite: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --mk-zone-bas: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --mk-zone-gauche: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+}

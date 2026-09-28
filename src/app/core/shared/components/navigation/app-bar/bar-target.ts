@@ -18,6 +18,7 @@ import { IconComponent } from '../../foundation/icon/icon';
       (pointerdown)="held.set(true)"
       (pointerup)="held.set(false)"
       (pointerleave)="held.set(false)"
+      (pointercancel)="held.set(false)"
       [style.background]="held() ? tone() : 'transparent'"
     >
       <app-icon [name]="icon()" [size]="22" />
