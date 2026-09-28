@@ -3,6 +3,7 @@
 }
 
 .mini-fab {
+  position: relative;
   width: var(--mk-h-mini-fab);
   height: var(--mk-h-mini-fab);
   flex: none;
@@ -15,4 +16,12 @@
   transition:
     transform var(--mk-presse),
     background var(--mk-presse);
+
+  // Visuel de 32 dp, cible de 48 dp (44 pt iOS / 48 dp Android).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: var(--mk-rayon-rond);
+  }
 }

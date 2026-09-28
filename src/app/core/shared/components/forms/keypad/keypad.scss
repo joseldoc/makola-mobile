@@ -4,7 +4,8 @@
 
 .keypad {
   background: var(--mk-marge);
-  padding: var(--mk-esp-2);
+  padding: var(--mk-esp-2) calc(var(--mk-esp-2) + var(--mk-zone-droite)) calc(var(--mk-esp-2) + var(--mk-zone-bas))
+    calc(var(--mk-esp-2) + var(--mk-zone-gauche));
   display: grid;
   grid-auto-rows: var(--mk-h-touche);
   gap: var(--mk-esp-2);

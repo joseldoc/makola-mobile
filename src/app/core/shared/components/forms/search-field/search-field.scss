@@ -26,7 +26,8 @@
     border: 0;
     outline: 0;
     background: transparent;
-    font: 400 15px/1.3 var(--mk-font);
+    // 16 px minimum : en dessous, iOS zoome la page au focus du champ.
+    font: 400 16px/1.3 var(--mk-font);
     color: var(--mk-text);
   }
 }
@@ -42,6 +43,7 @@
 }
 
 .clear {
+  position: relative;
   width: 24px;
   height: 24px;
   flex: none;
@@ -53,6 +55,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  // Glyphe de 24 dp, cible de 48 dp.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+  }
 }
 
 @keyframes mk-spin {

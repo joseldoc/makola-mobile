@@ -18,6 +18,7 @@ export type FooterActionTone = 'primaire' | 'attente' | 'refus';
       (pointerdown)="held.set(true)"
       (pointerup)="held.set(false)"
       (pointerleave)="held.set(false)"
+      (pointercancel)="held.set(false)"
       [style.background]="background()"
       [style.color]="disabled() ? 'var(--mk-inactif-text)' : 'var(--mk-text-sur-primaire)'"
       [style.box-shadow]="disabled() ? 'none' : '0 0 0 3px var(--mk-primaire-halo)'"

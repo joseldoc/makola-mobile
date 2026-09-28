@@ -11,12 +11,14 @@ export type KeypadKeyVariant = 'chiffre' | 'code' | 'action';
   selector: 'app-keypad-key',
   template: `
     <div
+      role="button"
       [class]="'keypad-key ' + variant() + (held() ? ' held' : '')"
       [style.grid-row]="span() ? 'span ' + span() : null"
       [style.transform]="held() ? 'scale(var(--mk-echelle-touche))' : 'none'"
       (pointerdown)="held.set(true)"
       (pointerup)="held.set(false)"
       (pointerleave)="held.set(false)"
+      (pointercancel)="held.set(false)"
       (click)="pressed.emit()"
     >
       <ng-content />

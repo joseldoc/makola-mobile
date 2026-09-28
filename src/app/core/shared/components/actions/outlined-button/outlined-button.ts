@@ -25,8 +25,9 @@ const TONE_BACKGROUND: Record<OutlinedButtonTone, string> = {
       (pointerdown)="held.set(true)"
       (pointerup)="held.set(false)"
       (pointerleave)="held.set(false)"
+      (pointercancel)="held.set(false)"
       [style.background]="held() ? toneBackground() : 'transparent'"
-    >{{ label() }}</button>
+    ><span class="label">{{ label() }}</span></button>
   `,
   styleUrl: './outlined-button.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

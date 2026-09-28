@@ -7,7 +7,8 @@
   align-items: center;
   gap: var(--mk-esp-3);
   min-height: var(--mk-h-ligne);
-  padding: 12px var(--mk-esp-4) 12px 13px;
+  // Encoche en paysage : le fond reste plein cadre, seul le contenu est décalé.
+  padding: 12px calc(var(--mk-esp-4) + var(--mk-zone-droite)) 12px calc(13px + var(--mk-zone-gauche));
   border-left: 3px solid transparent;
   border-bottom: 1px solid var(--mk-separateur);
   background: var(--mk-surface);

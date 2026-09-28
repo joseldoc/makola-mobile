@@ -21,6 +21,7 @@ export type MiniFabIcon = 'remove-outline' | 'add-outline';
       (pointerdown)="held.set(true)"
       (pointerup)="held.set(false)"
       (pointerleave)="held.set(false)"
+      (pointercancel)="held.set(false)"
       [style.background]="held() ? 'var(--mk-touche-presse)' : 'var(--mk-marge)'"
       [style.color]="atBound() ? 'rgba(16,26,46,.32)' : 'var(--mk-primaire)'"
       [style.transform]="held() ? 'scale(var(--mk-echelle-fab))' : 'none'"

@@ -39,7 +39,7 @@ import { KeypadKeyComponent } from './keypad-key';
       }
       <app-keypad-key (pressed)="digit.emit('0')">0</app-keypad-key>
       <app-keypad-key variant="code" (pressed)="backspace.emit()">
-        <app-icon name="backspace-outline" [size]="22" />
+        <app-icon name="backspace-outline" [size]="22" label="Effacer" />
       </app-keypad-key>
     </div>
   `,

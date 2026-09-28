@@ -16,6 +16,9 @@ import { IconComponent } from '../../foundation/icon/icon';
       <input
         [value]="value()"
         [placeholder]="placeholder()"
+        [attr.aria-label]="placeholder()"
+        enterkeyhint="search"
+        autocomplete="off"
         (input)="valueChange.emit($any($event.target).value)"
         (focus)="focused.set(true)"
         (blur)="focused.set(false)"
