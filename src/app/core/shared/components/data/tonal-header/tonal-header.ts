@@ -17,7 +17,7 @@ const ROLE: Record<TonalHeaderRole, [fond: string, forme: string]> = {
 @Component({
   selector: 'app-tonal-header',
   template: `
-    <div class="tonal-header" [class.compact]="compact()" [style.background]="fond()">
+    <div class="tonal-header" [class.compact]="compact()" [class.plein-cadre]="pleinCadre()" [style.background]="fond()">
       <div class="shape shape-top" [style.background]="forme()"></div>
       <div class="shape shape-bottom" [style.background]="forme()"></div>
       <div class="content">
@@ -32,6 +32,8 @@ export class TonalHeaderComponent {
   readonly role = input<TonalHeaderRole>('prof');
   /** Padding réduit — pour un bandeau sous une barre d'app. */
   readonly compact = input(false);
+  /** Bandeau en haut d'écran, sans barre d'app : la teinte passe sous la barre de statut. */
+  readonly pleinCadre = input(false);
 
   protected readonly fond = computed(() => ROLE[this.role()][0]);
   protected readonly forme = computed(() => ROLE[this.role()][1]);

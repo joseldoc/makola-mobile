@@ -6,7 +6,7 @@
     [scrolled]="store.scrolled()"
     [actions]="actionsBarre"
     [hasLeading]="true"
-    (actionSelected)="changerEnfant()"
+    (actionSelected)="onAction($event)"
   >
     <div leading class="avatar">{{ store.eleveInitiales() }}</div>
   </app-bar>

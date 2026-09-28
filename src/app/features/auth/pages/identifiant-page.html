@@ -1,0 +1,44 @@
+<div class="page">
+  <app-bar [title]="textes().titre" [subtitle]="textes().sousTitre" [role]="role()" [showBack]="true" (back)="retour()" />
+  <app-tabs [items]="canaux" [value]="canal()" (valueChange)="changerCanal($event)" />
+
+  <form class="contenu" novalidate (submit)="envoyer($event)">
+    <p class="intro">{{ textes().intro }}</p>
+
+    @if (canal() === 'telephone') {
+      <app-text-field
+        [formField]="formulaire.valeur"
+        label="Numéro de téléphone"
+        type="tel"
+        inputmode="tel"
+        autocomplete="tel-national"
+        enterkeyhint="send"
+        placeholder="06 612 34 56"
+        [state]="store.erreur() ? 'erreur' : 'repos'"
+        [message]="store.erreur() || 'Le code partira par SMS.'"
+      />
+    } @else {
+      <app-text-field
+        [formField]="formulaire.valeur"
+        label="Adresse email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        enterkeyhint="send"
+        placeholder="prenom.nom@exemple.cg"
+        [state]="store.erreur() ? 'erreur' : 'repos'"
+        [message]="store.erreur() || 'Le code partira par email.'"
+      />
+    }
+  </form>
+
+  <div class="pied">
+    <app-footer-action
+      label="Recevoir le code"
+      [tone]="role() === 'parent' ? 'attente' : 'primaire'"
+      [disabled]="!!manque()"
+      [missingLabel]="manque()"
+      (pressed)="envoyer()"
+    />
+  </div>
+</div>

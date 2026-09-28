@@ -1,0 +1,26 @@
+<div class="page">
+  <div class="contenu accueil">
+    <div class="marque">
+      <app-logo [size]="40" />
+    </div>
+
+    <div class="promesse">
+      <h1 class="titre">Le carnet de notes du professeur</h1>
+      <p class="intro">
+        Saisissez vos notes en fin de cours, même sans réseau. Les parents suivent leur enfant ; vos bulletins partent
+        quand vous le décidez.
+      </p>
+    </div>
+
+    <section class="parent" aria-labelledby="parent-titre">
+      <p class="parent-titre" id="parent-titre">Vous êtes parent d'élève ?</p>
+      <p class="parent-texte">Le professeur vous a envoyé un code à 6 chiffres par SMS. Il suffit pour suivre votre enfant.</p>
+      <app-outlined-button label="Saisir le code reçu" tone="parent" (clicked)="ouvrir('invitation')" />
+    </section>
+  </div>
+
+  <div class="pied">
+    <app-footer-action label="Créer un compte enseignant" (pressed)="ouvrir('inscription')" />
+    <app-outlined-button label="J'ai déjà un compte" tone="prof" [full]="true" (clicked)="ouvrir('connexion')" />
+  </div>
+</div>

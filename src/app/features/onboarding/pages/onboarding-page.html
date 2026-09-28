@@ -1,0 +1,30 @@
+<div class="onboarding">
+  <div class="track" #track (scroll)="onScroll()">
+    @for (slide of store.slides(); track $index) {
+      <app-onboarding-slide
+        class="page"
+        [slide]="slide"
+        [position]="$index + 1 + ' sur ' + store.slides().length"
+        [attr.aria-hidden]="$index !== store.index()"
+      />
+    }
+  </div>
+
+  @if (!store.dernier()) {
+    <div class="passer">
+      <app-outlined-button label="Passer" [tone]="store.slides()[store.index()].role" (clicked)="terminer()" />
+    </div>
+  }
+
+  <div class="controls">
+    <div class="dots">
+      <app-progress-dots
+        [count]="store.slides().length"
+        [index]="store.index()"
+        label="Écrans de présentation"
+        (indexChange)="aller($event)"
+      />
+    </div>
+    <app-footer-action [label]="store.dernier() ? 'Commencer' : 'Suivant'" (pressed)="suivant()" />
+  </div>
+</div>

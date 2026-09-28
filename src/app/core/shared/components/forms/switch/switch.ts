@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
+import { FormCheckboxControl } from '@angular/forms/signals';
 
 import { IconComponent } from '../../foundation/icon/icon';
 
@@ -14,6 +15,9 @@ const TONE_COLOR: Record<SwitchTone, string> = {
  * Interrupteur M3, 52 × 32 dp. La poignée passe de 16 à 24 dp avec une coche :
  * c'est la transition qui porte le changement, pas un libellé « ON ».
  * Source: @makola Design System, components/forms/Switch.jsx.
+ *
+ * Contrôle de formulaire signal (`FormCheckboxControl`) : se lie par `[formField]`,
+ * ou à la main par `[checked]` / `(checkedChange)`.
  */
 @Component({
   selector: 'app-switch',
@@ -27,7 +31,7 @@ const TONE_COLOR: Record<SwitchTone, string> = {
       [class.checked]="checked()"
       [style.background]="checked() ? color() : 'var(--mk-marge)'"
       [style.border-color]="checked() ? color() : 'var(--mk-contour-fort)'"
-      (click)="checkedChange.emit(!checked())"
+      (click)="checked.set(!checked())"
     >
       <div
         class="thumb"
@@ -47,9 +51,8 @@ const TONE_COLOR: Record<SwitchTone, string> = {
   styleUrl: './switch.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SwitchComponent {
-  readonly checked = input.required<boolean>();
-  readonly checkedChange = output<boolean>();
+export class SwitchComponent implements FormCheckboxControl {
+  readonly checked = model.required<boolean>();
   /** `attente` (ambre) sur les écrans parent, `primaire` ailleurs. */
   readonly tone = input<SwitchTone>('primaire');
   readonly ariaLabel = input<string>();

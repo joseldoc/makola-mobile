@@ -18,8 +18,11 @@
   cursor: pointer;
   transition: background var(--mk-presse);
 
+  // Pleine largeur dans une colonne, parts égales entre frères dans une ligne.
+  // (`flex: 1` seul écraserait la hauteur dans un conteneur en colonne.)
   &.full {
-    flex: 1;
+    flex: 1 1 auto;
+    width: 100%;
   }
 
   // Bouton M2 de 36 dp, cible de 48 dp (44 pt iOS / 48 dp Android).

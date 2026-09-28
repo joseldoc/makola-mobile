@@ -1,0 +1,62 @@
+.liste {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.alertes-intro {
+  padding: var(--mk-esp-5) calc(var(--mk-esp-4) + var(--mk-zone-droite)) var(--mk-esp-3)
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+}
+
+// Ligne de réglage : la ligne entière est tapable (contrat d'interface §7.6).
+.ligne {
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-3);
+  min-height: var(--mk-h-ligne);
+  padding: 14px calc(var(--mk-esp-4) + var(--mk-zone-droite)) 14px calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+  border-bottom: 1px solid var(--mk-separateur);
+  background: var(--mk-surface);
+  cursor: pointer;
+
+  &.alt {
+    background: var(--mk-surface-alterne);
+  }
+}
+
+.ligne-textes {
+  flex: 1;
+  min-width: 0;
+}
+
+.ligne-titre {
+  font: var(--mk-ligne-liste);
+}
+
+.ligne-detail {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+  margin-top: 3px;
+}
+
+.resume {
+  padding: var(--mk-esp-4) calc(var(--mk-esp-4) + var(--mk-zone-droite)) var(--mk-esp-6)
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+}
+
+.estimation {
+  margin: 0;
+  font: var(--mk-ligne-liste);
+  font-variant-numeric: var(--mk-num);
+}
+
+.garantie {
+  margin: 0;
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+}

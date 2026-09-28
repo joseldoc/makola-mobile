@@ -1,0 +1,90 @@
+// Mise en page commune aux écrans d'entrée : barre d'app, contenu qui défile,
+// action de pied fixe (une seule par écran). Importée par chaque page de /auth.
+:host {
+  display: block;
+  height: 100%;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+.contenu {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: var(--mk-esp-5) calc(var(--mk-esp-4) + var(--mk-zone-droite)) var(--mk-esp-6)
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-5);
+}
+
+.intro {
+  margin: 0;
+  font: var(--mk-corps);
+  color: var(--mk-text-secondaire);
+  max-width: 560px;
+}
+
+.refus {
+  margin: 0;
+  font: 400 13px/1.45 var(--mk-font);
+  color: var(--mk-refus);
+}
+
+.pied {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-3);
+  border-top: 1px solid var(--mk-separateur);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-zone-droite)) calc(var(--mk-esp-3) + var(--mk-zone-bas))
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+}
+
+// Écrans de code : consigne et cases au-dessus du pavé, qui porte déjà la zone basse.
+.code {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--mk-esp-6) calc(var(--mk-esp-4) + var(--mk-zone-droite)) var(--mk-esp-4)
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mk-esp-4);
+  text-align: center;
+}
+
+.code-message {
+  margin: 0;
+  min-height: 38px;
+  font: 400 13px/1.45 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  max-width: 420px;
+
+  &.refus {
+    color: var(--mk-refus);
+  }
+}
+
+.code-actions {
+  display: flex;
+  gap: var(--mk-esp-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.attente {
+  font: var(--mk-sous-titre);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text-secondaire);
+  min-height: var(--mk-h-bouton-m2);
+  display: flex;
+  align-items: center;
+}

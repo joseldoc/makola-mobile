@@ -5,6 +5,7 @@
     role="prof"
     [scrolled]="store.scrolled()"
     [actions]="actionsBarre"
+    (actionSelected)="onAction($event)"
   />
 
   @if (store.horsLigne()) {
