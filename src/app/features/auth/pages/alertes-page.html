@@ -1,0 +1,40 @@
+<div class="page">
+  <app-bar title="Vos alertes" subtitle="Modifiables à tout moment" role="parent" [scrolled]="scrolled()" />
+
+  <div class="liste" (scroll)="onScroll($event)">
+    <p class="intro alertes-intro">Choisissez ce que vous recevez par SMS au sujet de {{ prenom() }}.</p>
+
+    @for (option of options; track option.cle; let i = $index) {
+      <div class="ligne" [class.alt]="i % 2 === 1" (click)="basculer(option)">
+        <div class="ligne-textes">
+          <div class="ligne-titre">{{ option.libelle }}</div>
+          <div class="ligne-detail">{{ option.detail }}</div>
+        </div>
+        <app-switch
+          [formField]="formulaire[option.cle]"
+          tone="attente"
+          [ariaLabel]="option.libelle"
+          (click)="$event.stopPropagation()"
+        />
+      </div>
+    }
+
+    <div class="resume">
+      <p class="estimation" aria-live="polite">{{ estimation() }}</p>
+      <p class="garantie">Désactiver une alerte n'ôte jamais l'accès : le fil reste consultable.</p>
+      @if (store.erreur()) {
+        <p class="refus" role="alert">{{ store.erreur() }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="pied">
+    <app-footer-action
+      [label]="'Ouvrir le fil de ' + prenom()"
+      tone="attente"
+      [disabled]="store.enCours()"
+      missingLabel="Enregistrement des alertes…"
+      (pressed)="valider()"
+    />
+  </div>
+</div>

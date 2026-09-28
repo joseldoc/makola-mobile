@@ -1,0 +1,34 @@
+<div class="page">
+  <app-bar title="Code reçu" [subtitle]="sousTitre()" [role]="role()" [showBack]="true" (back)="modifier()" />
+
+  <div class="code">
+    <p class="intro">Saisissez les 6 chiffres envoyés {{ destination() }}.</p>
+
+    <app-code-slots [valeur]="code()" [etat]="etat()" />
+
+    <p class="code-message" [class.refus]="!!store.erreur()" [attr.role]="store.erreur() ? 'alert' : null">
+      @if (store.erreur()) {
+        {{ store.erreur() }}
+      } @else if (store.enCours()) {
+        Vérification du code…
+      } @else {
+        Le code est valable 10 minutes.
+      }
+    </p>
+
+    <div class="code-actions">
+      @if (attente() > 0) {
+        <span class="attente">Nouveau code possible dans {{ attenteLibelle() }}</span>
+      } @else {
+        <app-outlined-button label="Renvoyer le code" [tone]="role()" (clicked)="renvoyer()" />
+      }
+      <app-outlined-button
+        [label]="store.identifiant()?.canal === 'email' ? 'Modifier l\'adresse' : 'Modifier le numéro'"
+        [tone]="role()"
+        (clicked)="modifier()"
+      />
+    </div>
+  </div>
+
+  <app-keypad [columns]="3" (digit)="chiffre($event)" (backspace)="effacer()" />
+</div>

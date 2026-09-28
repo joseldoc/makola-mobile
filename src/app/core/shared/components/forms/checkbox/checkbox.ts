@@ -10,7 +10,15 @@ import { IconComponent } from '@core/shared/components';
   selector: 'app-checkbox',
   imports: [IconComponent],
   template: `
-    <div class="checkbox" role="checkbox" [attr.aria-checked]="checked()" (click)="checkedChange.emit(!checked())">
+    <div
+      class="checkbox"
+      role="checkbox"
+      tabindex="0"
+      [attr.aria-checked]="checked()"
+      (click)="checkedChange.emit(!checked())"
+      (keydown.space)="$event.preventDefault(); checkedChange.emit(!checked())"
+      (keydown.enter)="$event.preventDefault(); checkedChange.emit(!checked())"
+    >
       <div class="box" [class.checked]="checked()">
         @if (checked()) {
           <app-icon name="checkmark-outline" [size]="12" color="var(--mk-text-sur-primaire)" />

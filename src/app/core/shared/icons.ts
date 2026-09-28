@@ -2,6 +2,8 @@
 // Ionicons, style outline exclusivement. Aucune variante pleine, aucune `-sharp`.
 // Quinze noms, et c'est tout : une icône absente d'ici est une décision à prendre,
 // pas un détail d'implémentation.
+// Seizième, ajoutée avec l'entrée par compte : `deconnexion` — à reporter dans
+// le Design System (components/foundation/Icon.jsx).
 import { addIcons } from 'ionicons';
 import {
   chevronBackOutline,
@@ -18,7 +20,8 @@ import {
   cloudOfflineOutline,
   cloudDoneOutline,
   personOutline,
-  peopleOutline
+  peopleOutline,
+  logOutOutline
 } from 'ionicons/icons';
 
 export const ICONS = {
@@ -36,14 +39,15 @@ export const ICONS = {
   horsLigne: 'cloud-offline-outline',
   synchronise: 'cloud-done-outline',
   eleve: 'person-outline',
-  classe: 'people-outline'
+  classe: 'people-outline',
+  deconnexion: 'log-out-outline'
 } as const;
 
 export type IconName = (typeof ICONS)[keyof typeof ICONS];
 
 let registered = false;
 
-/** Enregistre les 15 icônes une fois par app. Appelé automatiquement par IconComponent. */
+/** Enregistre les 16 icônes une fois par app. Appelé automatiquement par IconComponent. */
 export function registerIcons(): void {
   if (registered) return;
   registered = true;
@@ -62,6 +66,7 @@ export function registerIcons(): void {
     [ICONS.horsLigne]: cloudOfflineOutline,
     [ICONS.synchronise]: cloudDoneOutline,
     [ICONS.eleve]: personOutline,
-    [ICONS.classe]: peopleOutline
+    [ICONS.classe]: peopleOutline,
+    [ICONS.deconnexion]: logOutOutline
   });
 }

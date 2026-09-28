@@ -1,0 +1,21 @@
+<div class="page">
+  <app-bar title="Code d'invitation" subtitle="Étape 1 sur 3 · Compte parent" role="parent" [showBack]="true" (back)="retour()" />
+
+  <div class="code">
+    <p class="intro">Saisissez les 6 chiffres reçus par SMS du professeur de votre enfant.</p>
+
+    <app-code-slots [valeur]="code()" [etat]="etat()" />
+
+    <p class="code-message" [class.refus]="!!store.erreur()" [attr.role]="store.erreur() ? 'alert' : null">
+      @if (store.erreur()) {
+        {{ store.erreur() }}
+      } @else if (store.enCours()) {
+        Recherche de l'invitation…
+      } @else {
+        Le code est valable 7 jours et ne sert qu'une fois.
+      }
+    </p>
+  </div>
+
+  <app-keypad [columns]="3" (digit)="chiffre($event)" (backspace)="effacer()" />
+</div>

@@ -1,0 +1,56 @@
+:host {
+  display: block;
+}
+
+.slide {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.visuel {
+  // Assez haut pour laisser la place à « Passer » au-dessus du disque.
+  min-height: clamp(168px, 34vh, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disque {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--mk-rayon-rond);
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.corps {
+  padding: var(--mk-esp-6) calc(var(--mk-esp-5) + var(--mk-zone-droite)) var(--mk-esp-4)
+    calc(var(--mk-esp-5) + var(--mk-zone-gauche));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+  // Mesure lisible sur tablette : pas de paragraphe d'un bord à l'autre.
+  max-width: 560px;
+}
+
+.rubrique {
+  margin: 0;
+  font: var(--mk-sous-titre);
+  color: var(--mk-text-secondaire);
+}
+
+.titre {
+  margin: 0;
+  font: var(--mk-titre-ecran);
+  color: var(--mk-text);
+}
+
+.texte {
+  margin: var(--mk-esp-1) 0 0;
+  font: var(--mk-corps);
+  color: var(--mk-text-secondaire);
+}

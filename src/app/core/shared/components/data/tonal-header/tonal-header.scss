@@ -12,6 +12,12 @@
   &.compact {
     padding: 16px var(--mk-esp-5) 20px;
   }
+
+  &.plein-cadre {
+    padding-top: calc(18px + var(--mk-zone-haut));
+    padding-left: calc(var(--mk-esp-5) + var(--mk-zone-gauche));
+    padding-right: calc(var(--mk-esp-5) + var(--mk-zone-droite));
+  }
 }
 
 .shape {

@@ -16,14 +16,18 @@ const TONE_COLOR: Record<ProgressDotsTone, string> = {
 @Component({
   selector: 'app-progress-dots',
   template: `
-    <div class="progress-dots">
+    <div class="progress-dots" role="tablist" [attr.aria-label]="label()">
       @for (i of indices(); track i) {
-        <div
+        <button
+          type="button"
           class="dot"
+          role="tab"
+          [attr.aria-selected]="i === index()"
+          [attr.aria-label]="'Écran ' + (i + 1) + ' sur ' + count()"
           [style.width.px]="i === index() ? 26 : 6"
           [style.background]="dotColor(i)"
           (click)="indexChange.emit(i)"
-        ></div>
+        ></button>
       }
     </div>
   `,
@@ -36,6 +40,8 @@ export class ProgressDotsComponent {
   /** Tapable dans les deux sens : l'utilisateur peut revenir en arrière. */
   readonly indexChange = output<number>();
   readonly tone = input<ProgressDotsTone>('primaire');
+  /** Nom du groupe pour les lecteurs d'écran. */
+  readonly label = input('Progression');
 
   protected readonly indices = computed(() => Array.from({ length: this.count() }, (_, i) => i));
   protected readonly color = computed(() => TONE_COLOR[this.tone()]);

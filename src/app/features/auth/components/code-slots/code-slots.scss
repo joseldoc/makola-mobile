@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.slots {
+  display: flex;
+  justify-content: center;
+  gap: var(--mk-esp-2);
+}
+
+.slot {
+  width: 44px;
+  height: var(--mk-h-champ);
+  box-sizing: border-box;
+  border-radius: var(--mk-rayon-remplir);
+  border: 1px solid var(--mk-contour);
+  background: var(--mk-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--mk-note);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text);
+  transition: border-color var(--mk-transition);
+
+  &.suivante {
+    border: 2px solid var(--mk-primaire);
+  }
+}
+
+.verification .slot {
+  color: var(--mk-text-secondaire);
+}
+
+.erreur .slot {
+  border-color: var(--mk-refus);
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

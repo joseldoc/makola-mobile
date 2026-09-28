@@ -8,6 +8,8 @@ import { NetworkBannerComponent } from '@core/shared/components/data/network-ban
 import { SearchFieldComponent } from '@core/shared/components/forms/search-field/search-field';
 import { FooterActionComponent } from '@core/shared/components/actions/footer-action/footer-action';
 
+import { SessionStore } from '@core/store/session/session.store';
+
 import { ClasseStore } from '../classe.store';
 
 const VUES: TabItem[] = [
@@ -16,7 +18,11 @@ const VUES: TabItem[] = [
   { id: 2, label: 'Bulletin' }
 ];
 
-const ACTIONS_BARRE: AppBarAction[] = [{ icon: 'search-outline', label: 'Rechercher' }];
+const ACTIONS_BARRE: AppBarAction[] = [
+  { icon: 'search-outline', label: 'Rechercher' },
+  { icon: 'log-out-outline', label: 'Se déconnecter' }
+];
+const ACTION_DECONNEXION = 1;
 
 /**
  * Container de l'écran classe (liste des devoirs / élèves / bulletin).
@@ -34,6 +40,7 @@ const ACTIONS_BARRE: AppBarAction[] = [{ icon: 'search-outline', label: 'Recherc
 export class ClassePageComponent {
   protected readonly store = inject(ClasseStore);
   private readonly router = inject(Router);
+  private readonly session = inject(SessionStore);
 
   protected readonly vues = VUES;
   protected readonly actionsBarre = ACTIONS_BARRE;
@@ -51,7 +58,17 @@ export class ClassePageComponent {
     void this.router.navigate(['/saisie']);
   }
 
+  protected onAction(index: number): void {
+    if (index === ACTION_DECONNEXION) this.deconnecter();
+  }
+
   protected nouveauDevoir(): void {
     void this.router.navigate(['/devoir/nouveau']);
+  }
+
+  /** Ferme la session et revient à l'accueil ; la présentation ne se rejoue pas. */
+  private deconnecter(): void {
+    this.session.fermer();
+    void this.router.navigateByUrl('/auth', { replaceUrl: true });
   }
 }

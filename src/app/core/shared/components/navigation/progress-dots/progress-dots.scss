@@ -9,10 +9,21 @@
 }
 
 .dot {
+  position: relative;
+  padding: 0;
+  border: 0;
   height: 6px;
   border-radius: var(--mk-rayon-rond);
   cursor: pointer;
   transition:
     width var(--mk-bascule),
     background var(--mk-bascule);
+
+  // Pastille de 6 dp, cible de 44 dp de haut ; en largeur, la cible
+  // s'étend jusqu'au milieu de l'espacement pour ne pas chevaucher sa voisine.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -19px -3px;
+  }
 }

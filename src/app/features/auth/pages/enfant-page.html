@@ -1,0 +1,28 @@
+<div class="page">
+  <app-bar title="Votre enfant" subtitle="Étape 1 sur 3 · Vérification" role="parent" [showBack]="true" (back)="retour()" />
+
+  @if (store.invitation(); as invitation) {
+    <div class="contenu">
+      <p class="intro">Vérifiez avant de continuer : ce code rattache votre compte à un seul élève.</p>
+
+      <section class="eleve" aria-label="Élève rattaché">
+        <app-icon name="person-outline" [size]="22" />
+        <div class="eleve-textes">
+          <p class="eleve-nom">{{ invitation.eleve }}</p>
+          <p class="eleve-meta">{{ invitation.classe }} · {{ invitation.etablissement }}</p>
+          <p class="eleve-meta">Invitation de {{ invitation.professeur }} · {{ invitation.matiere }}</p>
+        </div>
+      </section>
+
+      <p class="intro">
+        Vous verrez les notes de {{ prenom() }}, ses contrôles annoncés et ses bulletins.
+        <strong>Jamais les notes des autres élèves.</strong>
+      </p>
+    </div>
+  }
+
+  <div class="pied">
+    <app-footer-action [label]="'Oui, c\'est ' + prenom()" tone="attente" (pressed)="confirmer()" />
+    <app-outlined-button label="Ce n'est pas mon enfant" tone="parent" [full]="true" (clicked)="refuser()" />
+  </div>
+</div>

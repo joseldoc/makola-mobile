@@ -1,0 +1,57 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.onboarding {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+.track {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.page {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow-y: auto;
+}
+
+.passer {
+  position: absolute;
+  top: calc(var(--mk-esp-2) + var(--mk-zone-haut));
+  right: calc(var(--mk-esp-4) + var(--mk-zone-droite));
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-5);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-zone-droite)) calc(var(--mk-esp-5) + var(--mk-zone-bas))
+    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  // Cible de 44 dp portée par les pastilles elles-mêmes.
+  min-height: var(--mk-cible);
+  align-items: center;
+}

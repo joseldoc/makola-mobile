@@ -1,0 +1,55 @@
+<div class="page">
+  <app-bar title="Votre enseignement" subtitle="Étape 3 sur 3 · Profil" role="prof" [scrolled]="scrolled()" />
+
+  <form class="contenu" novalidate (submit)="activer($event)" (scroll)="onScroll($event)">
+    <p class="intro">
+      Ces informations rattachent vos classes aux bons établissements. Votre compte s'active une fois cette étape
+      terminée.
+    </p>
+
+    <app-text-field
+      [formField]="formulaire.nom"
+      label="Nom et prénom"
+      autocomplete="name"
+      enterkeyhint="next"
+      placeholder="NKOUKA Joseph"
+      message="Le nom de famille d'abord, comme sur les listes de classe."
+    />
+
+    <fieldset class="groupe">
+      <legend class="groupe-titre">Matières enseignées</legend>
+      @for (m of matieres; track m.valeur) {
+        <app-checkbox [label]="m.libelle" [checked]="estMatiere(m.valeur)" (checkedChange)="basculerMatiere(m.valeur)" />
+      }
+    </fieldset>
+
+    <fieldset class="groupe">
+      <legend class="groupe-titre">Niveaux enseignés</legend>
+      @for (n of niveaux; track n.valeur) {
+        <app-checkbox
+          [label]="n.libelle"
+          [sublabel]="n.detail ?? ''"
+          [checked]="estNiveau(n.valeur)"
+          (checkedChange)="basculerNiveau(n.valeur)"
+        />
+      }
+    </fieldset>
+
+    <app-text-field
+      [formField]="formulaire.zone"
+      label="Quartier et ville"
+      autocomplete="address-level2"
+      enterkeyhint="done"
+      placeholder="Bacongo, Brazzaville"
+      message="Votre zone seulement : votre adresse exacte n'est jamais demandée."
+    />
+
+    @if (store.erreur()) {
+      <p class="refus" role="alert">{{ store.erreur() }}</p>
+    }
+  </form>
+
+  <div class="pied">
+    <app-footer-action label="Activer mon compte" [disabled]="!!manque()" [missingLabel]="manque()" (pressed)="activer()" />
+  </div>
+</div>
