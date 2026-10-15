@@ -4,38 +4,38 @@ import { CanActivateFn, RedirectFunction, Router } from '@angular/router';
 import { SessionStore } from '@core/store/session/session.store';
 import { Role } from './auth.model';
 
-/** Route vide : chacun arrive là où son compte en est (présentation, connexion, profil, écran d'accueil). */
-export const redirectionInitiale: RedirectFunction = () => {
+/** Empty route: everyone lands where their account stands (onboarding, sign-in, profile, home). */
+export const initialRedirect: RedirectFunction = () => {
   const session = inject(SessionStore);
-  return inject(Router).parseUrl(session.routeInitiale());
+  return inject(Router).parseUrl(session.initialRoute());
 };
 
-/** Écrans de l'application : compte actif et bon rôle, sinon retour au point d'entrée. */
-export function compteActif(role: Role): CanActivateFn {
+/** App screens: active account with the right role, otherwise back to the entry point. */
+export function activeAccount(role: Role): CanActivateFn {
   return () => {
     const session = inject(SessionStore);
-    if (session.actif() && session.role() === role) return true;
-    return inject(Router).parseUrl(session.routeInitiale());
+    if (session.active() && session.role() === role) return true;
+    return inject(Router).parseUrl(session.initialRoute());
   };
 }
 
-/** Présentation et connexion : réservées à qui n'a pas encore de compte actif. */
-export const visiteur: CanActivateFn = () => {
+/** Onboarding and sign-in: only for someone without an active account. */
+export const guestOnly: CanActivateFn = () => {
   const session = inject(SessionStore);
-  return session.actif() ? inject(Router).parseUrl(session.routeInitiale()) : true;
+  return session.active() ? inject(Router).parseUrl(session.initialRoute()) : true;
 };
 
-/** La présentation ne se rejoue pas une fois vue. */
-export const onboardingAVoir: CanActivateFn = () => {
+/** Onboarding is not replayed once seen. */
+export const onboardingNotSeen: CanActivateFn = () => {
   const session = inject(SessionStore);
-  return session.onboardingVu() ? inject(Router).parseUrl(session.routeInitiale()) : true;
+  return session.onboardingSeen() ? inject(Router).parseUrl(session.initialRoute()) : true;
 };
 
-/** Étape 2 (profil enseignant, alertes parent) : session ouverte mais compte pas encore actif. */
-export function etapeProfil(role: Role): CanActivateFn {
+/** Step 2 (teacher profile, parent alerts): session open but account not active yet. */
+export function profileStep(role: Role): CanActivateFn {
   return () => {
     const session = inject(SessionStore);
-    if (session.connecte() && !session.actif() && session.role() === role) return true;
-    return inject(Router).parseUrl(session.routeInitiale());
+    if (session.signedIn() && !session.active() && session.role() === role) return true;
+    return inject(Router).parseUrl(session.initialRoute());
   };
 }

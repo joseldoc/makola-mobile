@@ -15,7 +15,7 @@
     background var(--mk-bascule),
     border-color var(--mk-bascule);
 
-  // Visuel de 32 dp de haut, cible de 48 dp.
+  // 32 dp tall visual, 48 dp target.
   &::after {
     content: '';
     position: absolute;

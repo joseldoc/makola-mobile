@@ -1,21 +1,36 @@
-<div class="page">
-  <app-bar title="Code d'invitation" subtitle="Étape 1 sur 3 · Compte parent" role="parent" [showBack]="true" (back)="retour()" />
+<div class="page entry">
+  <app-auth-banner
+    [step]="'auth.invitation.step' | transloco"
+    [title]="'auth.invitation.title' | transloco"
+    [text]="'auth.invitation.text' | transloco"
+    role="parent"
+    (back)="goBack()"
+  />
 
-  <div class="code">
-    <p class="intro">Saisissez les 6 chiffres reçus par SMS du professeur de votre enfant.</p>
+  <div class="input-area">
+    <app-code-slots [value]="code()" [state]="state()" />
 
-    <app-code-slots [valeur]="code()" [etat]="etat()" />
-
-    <p class="code-message" [class.refus]="!!store.erreur()" [attr.role]="store.erreur() ? 'alert' : null">
-      @if (store.erreur()) {
-        {{ store.erreur() }}
-      } @else if (store.enCours()) {
-        Recherche de l'invitation…
+    @let error = store.errorMessage();
+    <p class="hint" [class.is-error]="!!error" [attr.role]="error ? 'alert' : null">
+      @if (error) {
+        {{ error.key | transloco: error.params }}
+      } @else if (store.busy()) {
+        {{ 'auth.invitation.searching' | transloco }}
       } @else {
-        Le code est valable 7 jours et ne sert qu'une fois.
+        {{ 'auth.invitation.validity' | transloco }}
       }
     </p>
   </div>
 
-  <app-keypad [columns]="3" (digit)="chiffre($event)" (backspace)="effacer()" />
+  <div class="actions">
+    <app-footer-action
+      [label]="'auth.invitation.seeStudent' | transloco"
+      tone="pending"
+      [disabled]="!!missing()"
+      [missingLabel]="missing()"
+      (pressed)="confirm()"
+    />
+  </div>
+
+  <app-keypad [columns]="3" (digit)="digit($event)" (backspace)="erase()" />
 </div>

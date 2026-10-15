@@ -3,6 +3,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideIonicAngular } from '@ionic/angular/provide';
 
 import { AuthApi, MockAuthApi } from '@core/auth';
+import { provideI18n } from '@core/i18n';
 
 import { routes } from './app.routes';
 
@@ -10,10 +11,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
-    // Serveur d'authentification simulé tant que le backend n'existe pas —
-    // remplacer par l'implémentation HTTP, aucun écran ne change.
+    provideI18n(),
+    // Mock authentication server until the backend exists —
+    // swap for the HTTP implementation, no screen changes.
     { provide: AuthApi, useClass: MockAuthApi },
-    // mode 'md' : le système @makola suit Material (M2/M3), pas l'iOS style d'Ionic
+    // 'md' mode: the @makola system follows Material (M2/M3), not Ionic's iOS style.
     provideIonicAngular({ mode: 'md' })
   ]
 };

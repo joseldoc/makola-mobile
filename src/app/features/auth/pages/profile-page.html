@@ -1,0 +1,113 @@
+<div class="page">
+  <app-bar
+    [title]="stepKey() + '.title' | transloco"
+    [subtitle]="stepKey() + '.subtitle' | transloco"
+    role="teacher"
+    [showBack]="step() > 0"
+    [scrolled]="scrolled()"
+    (back)="previous()"
+  />
+
+  <form class="content" #content novalidate (submit)="next($event)" (scroll)="onScroll($event)">
+    <p class="intro">{{ stepKey() + '.intro' | transloco }}</p>
+
+    @switch (step()) {
+      @case (0) {
+        <app-text-field
+          [formField]="form.lastName"
+          [label]="'auth.profile.lastName' | transloco"
+          autocomplete="family-name"
+          enterkeyhint="next"
+          placeholder="NKOUKA"
+        />
+        <app-text-field
+          [formField]="form.firstName"
+          [label]="'auth.profile.firstName' | transloco"
+          autocomplete="given-name"
+          enterkeyhint="done"
+          placeholder="Joseph"
+        />
+        @if (preview()) {
+          <div class="preview" aria-live="polite">
+            <span class="preview-label">{{ 'auth.profile.previewLabel' | transloco }}</span>
+            <span class="preview-name">{{ preview() }}</span>
+          </div>
+        }
+      }
+
+      @case (1) {
+        <fieldset class="group">
+          <legend class="group-title">{{ 'auth.profile.subjectsTitle' | transloco }}</legend>
+          @for (s of subjects; track s.value) {
+            <app-checkbox [label]="s.labelKey | transloco" [checked]="hasSubject(s.value)" (checkedChange)="toggleSubject(s.value)" />
+          }
+        </fieldset>
+
+        <fieldset class="group">
+          <legend class="group-title">{{ 'auth.profile.levelsTitle' | transloco }}</legend>
+          @for (l of levels; track l.value) {
+            <app-checkbox
+              [label]="l.labelKey | transloco"
+              [sublabel]="l.detailKey ? (l.detailKey | transloco) : ''"
+              [checked]="hasLevel(l.value)"
+              (checkedChange)="toggleLevel(l.value)"
+            />
+          }
+        </fieldset>
+      }
+
+      @case (2) {
+        @if (deducedCountry(); as deduced) {
+          <section class="country" [attr.aria-label]="'auth.profile.country' | transloco">
+            <span class="preview-label">{{ 'auth.profile.country' | transloco }}</span>
+            <span class="country-name">{{ 'countries.' + deduced.code | transloco }}</span>
+            <span class="country-source">{{ 'auth.profile.countryFromNumber' | transloco: { number: phoneNumber() } }}</span>
+          </section>
+        } @else {
+          <fieldset class="group">
+            <legend class="group-title">{{ 'auth.profile.country' | transloco }}</legend>
+            @for (c of countries; track c.code) {
+              <app-radio-button [label]="'countries.' + c.code | transloco" [selected]="c.code === country().code" (select)="chooseCountry(c.code)" />
+            }
+          </fieldset>
+        }
+
+        <app-text-field
+          [formField]="form.city"
+          [label]="'auth.profile.city' | transloco"
+          autocomplete="address-level2"
+          enterkeyhint="done"
+          [placeholder]="country().cities[0]"
+          [message]="'auth.profile.cityHint' | transloco"
+        />
+
+        <div class="cities" role="group" [attr.aria-label]="'auth.profile.frequentCities' | transloco">
+          @for (c of country().cities; track c) {
+            <button
+              type="button"
+              class="city"
+              [class.active]="selectedCity() === c"
+              [attr.aria-pressed]="selectedCity() === c"
+              (click)="chooseCity(c)"
+            >
+              {{ c }}
+            </button>
+          }
+        </div>
+      }
+    }
+
+    @if (store.errorMessage(); as error) {
+      <p class="error-text" role="alert">{{ error.key | transloco: error.params }}</p>
+    }
+  </form>
+
+  <div class="footer">
+    <app-footer-action
+      [label]="(last() ? 'auth.profile.activate' : 'common.continue') | transloco"
+      [disabled]="!!missing()"
+      [missingLabel]="missing()"
+      (pressed)="next()"
+    />
+  </div>
+</div>

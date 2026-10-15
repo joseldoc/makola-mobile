@@ -1,41 +1,38 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 import { IconComponent } from '../../foundation/icon/icon';
 
-export type NetworkBannerState = 'horsligne' | 'synchronise';
+export type NetworkBannerState = 'offline' | 'synced';
 
 /**
- * Bandeau réseau — informe toujours, ne bloque jamais, ne se ferme pas.
- * Ambre hors-ligne, vert après synchronisation. Obligatoire sur tout écran de saisie.
+ * Network banner — always informs, never blocks, never closes.
+ * Amber offline, green after sync. Mandatory on every entry screen.
  * Source: @makola Design System, components/data/NetworkBanner.jsx.
  */
 @Component({
   selector: 'app-network-banner',
-  imports: [IconComponent],
+  imports: [IconComponent, TranslocoPipe],
   template: `
-    <div class="network-banner" role="status" [style.background]="bg()" [style.border-bottom-color]="borderColor()">
-      <app-icon [name]="state() === 'synchronise' ? 'cloud-done-outline' : 'cloud-offline-outline'" [size]="16" [color]="color()" />
-      <span [style.color]="color()">{{ texte() }}</span>
+    <div class="network-banner" role="status" [style.background]="background()" [style.border-bottom-color]="borderColor()">
+      <app-icon [name]="state() === 'synced' ? 'cloud-done-outline' : 'cloud-offline-outline'" [size]="16" [color]="color()" />
+      <span [style.color]="color()">{{ messageKey() | transloco: { count: pending() } }}</span>
     </div>
   `,
   styleUrl: './network-banner.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NetworkBannerComponent {
-  /** `horsligne` (ambre) ou `synchronise` (vert). */
-  readonly state = input<NetworkBannerState>('horsligne');
-  /** Nombre de saisies en attente — annoncez-le, il rassure. */
+  /** `offline` (amber) or `synced` (green). */
+  readonly state = input<NetworkBannerState>('offline');
+  /** Entries waiting to be sent — say it, it reassures. */
   readonly pending = input(0);
-  readonly syncedLabel = input('');
 
-  protected readonly color = computed(() => (this.state() === 'synchronise' ? 'var(--mk-succes)' : 'var(--mk-attente)'));
-  protected readonly bg = computed(() => `color-mix(in srgb, ${this.color()} 12%, var(--mk-surface))`);
+  protected readonly color = computed(() => (this.state() === 'synced' ? 'var(--mk-succes)' : 'var(--mk-attente)'));
+  protected readonly background = computed(() => `color-mix(in srgb, ${this.color()} 12%, var(--mk-surface))`);
   protected readonly borderColor = computed(() => `color-mix(in srgb, ${this.color()} 34%, transparent)`);
-  protected readonly texte = computed(() => {
-    if (this.state() === 'synchronise') return this.syncedLabel() || 'Tout est synchronisé.';
-    if (this.pending() > 0) {
-      return `Hors ligne · ${this.pending()} saisie(s) en attente d'envoi. Vous pouvez continuer.`;
-    }
-    return "Hors ligne · la saisie fonctionne, l'envoi partira au retour du réseau.";
+  protected readonly messageKey = computed(() => {
+    if (this.state() === 'synced') return 'network.synced';
+    return this.pending() > 0 ? 'network.offlinePending' : 'network.offline';
   });
 }

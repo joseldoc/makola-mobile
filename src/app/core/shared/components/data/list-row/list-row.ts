@@ -1,18 +1,17 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
-export type ListRowValueTone = 'neutre' | 'refus' | 'succes' | 'attente';
+export type ListRowValueTone = 'neutral' | 'danger' | 'success' | 'pending';
 
 const VALUE_COLOR: Record<ListRowValueTone, string> = {
-  neutre: 'var(--mk-text)',
-  refus: 'var(--mk-refus)',
-  succes: 'var(--mk-succes)',
-  attente: 'var(--mk-attente)'
+  neutral: 'var(--mk-text)',
+  danger: 'var(--mk-refus)',
+  success: 'var(--mk-succes)',
+  pending: 'var(--mk-attente)'
 };
 
 /**
- * La ligne de liste — l'unité de contenu du produit. 56 dp minimum,
- * alternance blanc / blanc cassé, bord gauche bleu si active, flash vert de
- * 420 ms à la confirmation.
+ * The list row — the product's content unit. 56 dp minimum, white / off-white
+ * alternation, blue left border when active, 420 ms green flash on confirmation.
  * Source: @makola Design System, components/data/ListRow.jsx.
  */
 @Component({
@@ -36,7 +35,7 @@ const VALUE_COLOR: Record<ListRowValueTone, string> = {
         }
       </div>
       @if (hasValue()) {
-        <div class="value" [class.grand]="isGrand()" [style.color]="valueColor()">{{ value() }}</div>
+        <div class="value" [class.large]="isLarge()" [style.color]="valueColor()">{{ value() }}</div>
       }
       <ng-content select="[trailing]" />
     </div>
@@ -45,24 +44,24 @@ const VALUE_COLOR: Record<ListRowValueTone, string> = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListRowComponent {
-  /** Nom d'élève, intitulé de devoir — graisse 500. */
+  /** Student name, assignment title — weight 500. */
   readonly primary = input.required<string>();
   readonly secondary = input('');
   readonly tertiary = input('');
-  /** Note, moyenne, date. Court (≤ 5 car.) : rendu en 30 sp tabulaire. */
+  /** Grade, average, date — already formatted. Short (≤ 5 chars): shown in tabular 30 sp. */
   readonly value = input<string | number>();
-  /** `refus` sous la moyenne, `succes` confirmé, `attente` en cours. */
-  readonly valueTone = input<ListRowValueTone>('neutre');
-  /** Position dans la liste — pilote l'alternance de fond. Passez-la toujours. */
+  /** `danger` below the pass mark, `success` confirmed, `pending` in progress. */
+  readonly valueTone = input<ListRowValueTone>('neutral');
+  /** Position in the list — drives the background alternation. Always pass it. */
   readonly index = input(0);
-  /** Élève courant de la saisie : bord gauche bleu + fond #F5F8FF. */
+  /** Current student in grade entry: blue left border + #F5F8FF background. */
   readonly active = input(false);
-  /** Confirmation : fond vert pâle pendant 420 ms. */
+  /** Confirmation: pale green background for 420 ms. */
   readonly flash = input(false);
   readonly rowClick = output<void>();
 
   protected readonly hasValue = computed(() => this.value() !== undefined && this.value() !== null && this.value() !== '');
-  protected readonly isGrand = computed(() => {
+  protected readonly isLarge = computed(() => {
     const v = this.value();
     return v === undefined || v === null || String(v).length <= 5;
   });

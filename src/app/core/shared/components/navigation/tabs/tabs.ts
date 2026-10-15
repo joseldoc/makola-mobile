@@ -6,8 +6,8 @@ export interface TabItem {
 }
 
 /**
- * Onglets — colonnes égales, jamais de gouttière : les libellés se touchent.
- * Aucun état pressé : le changement de contenu suffit.
+ * Tabs — equal columns, never a gutter: labels touch each other.
+ * No pressed state: the content change is enough.
  * Source: @makola Design System, components/navigation/Tabs.jsx.
  */
 @Component({
@@ -30,7 +30,7 @@ export interface TabItem {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabsComponent {
-  /** Libellés courts : les colonnes sont égales et ne débordent pas. */
+  /** Short labels, already translated: columns are equal and never overflow. */
   readonly items = input.required<TabItem[]>();
   readonly value = input.required<string | number>();
   readonly valueChange = output<string | number>();

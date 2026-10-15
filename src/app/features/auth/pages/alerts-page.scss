@@ -1,0 +1,62 @@
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.alerts-intro {
+  padding: var(--mk-esp-5) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-3)
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+}
+
+// Setting row: the whole row is tappable (interface contract §7.6).
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-3);
+  min-height: var(--mk-h-ligne);
+  padding: 14px calc(var(--mk-esp-4) + var(--mk-safe-right)) 14px calc(var(--mk-esp-4) + var(--mk-safe-left));
+  border-bottom: 1px solid var(--mk-separateur);
+  background: var(--mk-surface);
+  cursor: pointer;
+
+  &.alt {
+    background: var(--mk-surface-alterne);
+  }
+}
+
+.row-texts {
+  flex: 1;
+  min-width: 0;
+}
+
+.row-title {
+  font: var(--mk-ligne-liste);
+}
+
+.row-detail {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+  margin-top: 3px;
+}
+
+.summary {
+  padding: var(--mk-esp-4) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-6)
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+}
+
+.estimate {
+  margin: 0;
+  font: var(--mk-ligne-liste);
+  font-variant-numeric: var(--mk-num);
+}
+
+.guarantee {
+  margin: 0;
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+}

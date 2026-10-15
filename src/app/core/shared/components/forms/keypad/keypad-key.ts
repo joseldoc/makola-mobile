@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 
-export type KeypadKeyVariant = 'chiffre' | 'code' | 'action';
+export type KeypadKeyVariant = 'digit' | 'code' | 'action';
 
 /**
- * Touche générique du pavé numérique. L'enfoncement (0,93 + fond
- * `--mk-touche-presse`) est le seul retour tactile de la saisie.
+ * Generic keypad key. The press (0.93 scale + `--mk-touche-presse` background)
+ * is the only tactile feedback of grade entry — it must never be removed.
  * Source: @makola Design System, components/forms/Keypad.jsx (`KeypadKey`).
  */
 @Component({
@@ -28,7 +28,7 @@ export type KeypadKeyVariant = 'chiffre' | 'code' | 'action';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KeypadKeyComponent {
-  readonly variant = input<KeypadKeyVariant>('chiffre');
+  readonly variant = input<KeypadKeyVariant>('digit');
   readonly span = input<number>();
   readonly pressed = output<void>();
 

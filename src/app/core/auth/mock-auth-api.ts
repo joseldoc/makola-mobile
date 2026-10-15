@@ -1,127 +1,110 @@
 import { Injectable } from '@angular/core';
 
-import { AuthApi, AuthErreur } from './auth-api';
-import { AlertesParent, DemandeCode, Identifiant, Intention, Invitation, ProfilProfesseur, Session } from './auth.model';
-import { libelleIdentifiant } from './identifiant';
+import { AuthApi, AuthError } from './auth-api';
+import { CodeRequest, Identifier, Intent, Invitation, ParentAlerts, Session, TeacherProfile } from './auth.model';
 
-/** Code accepté par le serveur simulé — toute autre saisie est refusée. */
-export const CODE_DEMO = '123456';
+/** Code accepted by the mock server — any other entry is refused. */
+export const DEMO_CODE = '123456';
 
-/** Invitation reconnue par le serveur simulé (données du UI kit @makola). */
+/** Invitation known by the mock server (data from the @makola UI kit). */
 const INVITATIONS: Record<string, Omit<Invitation, 'code'>> = {
   '482913': {
-    eleve: 'ILUNGA Marie',
-    classe: '4ème B',
-    etablissement: 'Lycée Chaminade',
-    professeur: 'M. NKOUKA',
-    matiere: 'Mathématiques'
+    student: 'ILUNGA Marie',
+    classroom: '4ème B',
+    school: 'Lycée Chaminade',
+    teacher: 'M. NKOUKA',
+    subject: 'Mathématiques'
   }
 };
 
-const LATENCE_MS = 700;
-const RENVOI_S = 45;
-const CLE_COMPTES = 'mk.mock.comptes';
+const LATENCY_MS = 700;
+const RESEND_S = 45;
+const ACCOUNTS_KEY = 'mk.mock.accounts';
 
-type Comptes = Record<string, Session>;
+type Accounts = Record<string, Session>;
 
 /**
- * Serveur d'authentification simulé — ce dépôt n'a pas encore de backend.
- * Les comptes créés sont gardés dans le `localStorage` pour que la connexion
- * retrouve une inscription précédente. Code OTP : {@link CODE_DEMO}.
- * Invitation parent : 482913.
+ * Mock authentication server — this repository has no backend yet.
+ * Created accounts are kept in `localStorage` so that signing in finds a
+ * previous sign-up. OTP code: {@link DEMO_CODE}. Parent invitation: 482913.
  */
 @Injectable()
 export class MockAuthApi extends AuthApi {
-  async demanderCode(identifiant: Identifiant, intention: Intention): Promise<DemandeCode> {
-    await this.reseau();
-    const compte = this.comptes()[this.cle(identifiant)];
-    const qui = libelleIdentifiant(identifiant);
-    const quoi = identifiant.canal === 'telephone' ? 'ce numéro' : 'cette adresse';
-
-    if (intention === 'inscription' && compte) {
-      throw new AuthErreur('compte-existant', `Un compte utilise déjà ${qui}. Connectez-vous avec ${quoi}.`);
-    }
-    if (intention === 'connexion' && !compte) {
-      throw new AuthErreur('compte-inconnu', `Aucun compte n'utilise ${qui}. Vérifiez la saisie, ou créez un compte.`);
-    }
-    console.info(`[MockAuthApi] Code envoyé à ${qui} : ${CODE_DEMO}`);
-    return { renvoiDans: RENVOI_S };
+  async requestCode(identifier: Identifier, intent: Intent): Promise<CodeRequest> {
+    await this.network();
+    const account = this.accounts()[this.key(identifier)];
+    if (intent === 'sign-up' && account) throw new AuthError('existing-account');
+    if (intent === 'sign-in' && !account) throw new AuthError('unknown-account');
+    console.info(`[MockAuthApi] Code sent to ${identifier.value}: ${DEMO_CODE}`);
+    return { resendIn: RESEND_S };
   }
 
-  async verifierCode(identifiant: Identifiant, code: string, intention: Intention, invitation?: Invitation): Promise<Session> {
-    await this.reseau();
-    if (code !== CODE_DEMO) {
-      throw new AuthErreur('code-incorrect', 'Ce code ne correspond pas à celui envoyé. Vérifiez le message, ou demandez un nouveau code.');
-    }
-    const comptes = this.comptes();
-    const cle = this.cle(identifiant);
-    const existant = comptes[cle];
-    if (existant && intention !== 'invitation') return existant;
+  async verifyCode(identifier: Identifier, code: string, intent: Intent, invitation?: Invitation): Promise<Session> {
+    await this.network();
+    if (code !== DEMO_CODE) throw new AuthError('wrong-code');
 
-    const session: Session = existant ?? {
+    const accounts = this.accounts();
+    const key = this.key(identifier);
+    const existing = accounts[key];
+    if (existing && intent !== 'invitation') return existing;
+
+    const session: Session = existing ?? {
       id: crypto.randomUUID(),
-      role: intention === 'invitation' ? 'parent' : 'prof',
-      identifiant,
-      profilComplet: false
+      role: intent === 'invitation' ? 'parent' : 'teacher',
+      identifier,
+      profileComplete: false
     };
-    if (invitation) console.info(`[MockAuthApi] ${cle} rattaché à ${invitation.eleve}.`);
-    // Un parent qui rejoint une nouvelle invitation règle ses alertes pour cet enfant.
-    const ouverte = intention === 'invitation' ? { ...session, profilComplet: false } : session;
-    this.enregistrer({ ...comptes, [cle]: ouverte });
-    return ouverte;
+    if (invitation) console.info(`[MockAuthApi] ${key} linked to ${invitation.student}.`);
+    // A parent joining a new invitation sets their alerts for this child.
+    const opened = intent === 'invitation' ? { ...session, profileComplete: false } : session;
+    this.save({ ...accounts, [key]: opened });
+    return opened;
   }
 
-  async completerProfil(session: Session, profil: ProfilProfesseur): Promise<Session> {
-    await this.reseau();
-    return this.mettreAJour({ ...session, nom: profil.nom, profilComplet: true });
+  async completeProfile(session: Session, profile: TeacherProfile): Promise<Session> {
+    await this.network();
+    return this.update({ ...session, name: `${profile.lastName.toUpperCase()} ${profile.firstName}`, profileComplete: true });
   }
 
-  async verifierInvitation(code: string): Promise<Invitation> {
-    await this.reseau();
+  async checkInvitation(code: string): Promise<Invitation> {
+    await this.network();
     const invitation = INVITATIONS[code];
-    if (!invitation) {
-      throw new AuthErreur(
-        'invitation-inconnue',
-        'Ce code ne correspond à aucune invitation en cours. Vérifiez le SMS reçu, ou demandez un nouveau code au professeur.'
-      );
-    }
+    if (!invitation) throw new AuthError('unknown-invitation');
     return { code, ...invitation };
   }
 
-  async enregistrerAlertes(session: Session, _alertes: AlertesParent): Promise<Session> {
-    await this.reseau();
-    return this.mettreAJour({ ...session, profilComplet: true });
+  async saveAlerts(session: Session, _alerts: ParentAlerts): Promise<Session> {
+    await this.network();
+    return this.update({ ...session, profileComplete: true });
   }
 
-  private async reseau(): Promise<void> {
-    await new Promise((r) => setTimeout(r, LATENCE_MS));
-    if (!navigator.onLine) {
-      throw new AuthErreur('hors-ligne', "Hors ligne · l'envoi et la vérification du code demandent le réseau. Réessayez à son retour.");
-    }
+  private async network(): Promise<void> {
+    await new Promise((r) => setTimeout(r, LATENCY_MS));
+    if (!navigator.onLine) throw new AuthError('offline');
   }
 
-  private mettreAJour(session: Session): Session {
-    this.enregistrer({ ...this.comptes(), [this.cle(session.identifiant)]: session });
+  private update(session: Session): Session {
+    this.save({ ...this.accounts(), [this.key(session.identifier)]: session });
     return session;
   }
 
-  private cle(identifiant: Identifiant): string {
-    return `${identifiant.canal}:${identifiant.valeur}`;
+  private key(identifier: Identifier): string {
+    return `${identifier.channel}:${identifier.value}`;
   }
 
-  private comptes(): Comptes {
+  private accounts(): Accounts {
     try {
-      return JSON.parse(localStorage.getItem(CLE_COMPTES) ?? '{}') as Comptes;
+      return JSON.parse(localStorage.getItem(ACCOUNTS_KEY) ?? '{}') as Accounts;
     } catch {
       return {};
     }
   }
 
-  private enregistrer(comptes: Comptes): void {
+  private save(accounts: Accounts): void {
     try {
-      localStorage.setItem(CLE_COMPTES, JSON.stringify(comptes));
+      localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
     } catch {
-      // Stockage indisponible (navigation privée) : la session reste valable en mémoire.
+      // Storage unavailable (private browsing): the session stays valid in memory.
     }
   }
 }

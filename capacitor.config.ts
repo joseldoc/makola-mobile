@@ -6,8 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'dist/makola-mobile/browser',
   plugins: {
     SplashScreen: {
-      // Masqué par l'app (AppStore) dès le premier écran rendu : pas d'écran
-      // blanc entre le lancement natif et Angular sur terminal lent.
+      // Hidden by the app (LaunchStore) once the first screen has rendered: no
+      // white screen between the native launch and Angular on a slow device.
       launchAutoHide: false,
       launchFadeOutDuration: 150,
       backgroundColor: '#1B4FD8',
@@ -15,13 +15,13 @@ const config: CapacitorConfig = {
       showSpinner: false
     },
     StatusBar: {
-      // Edge-to-edge sur les deux plateformes : `overlaysWebView: false` est
-      // ignoré sur Android 15+ (edge-to-edge imposé), et sur iOS il laisse une
-      // bande blanche au lieu de la teinte de rôle. La WebView passe donc sous
-      // la barre de statut et `app-bar` réserve `--mk-zone-haut` (styles.scss).
+      // Edge-to-edge on both platforms: `overlaysWebView: false` is ignored on
+      // Android 15+ (edge-to-edge is enforced), and on iOS it leaves a white strip
+      // instead of the role tint. So the WebView runs under the status bar and
+      // `app-bar` reserves `--mk-safe-top` (styles.scss).
       overlaysWebView: true,
-      // `LIGHT` = icônes SOMBRES pour fond clair (`DARK` = icônes blanches).
-      // Les fonds d'app-bar @makola sont des teintes de rôle claires.
+      // `LIGHT` = DARK icons for a light background (`DARK` = white icons).
+      // @makola app bar backgrounds are light role tints.
       style: 'LIGHT'
     }
   }

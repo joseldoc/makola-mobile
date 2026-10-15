@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { IonApp } from '@ionic/angular/ion-app';
 
-import { LancementStore } from '@core/store/lancement/lancement.store';
+import { LaunchStore } from '@core/store/launch/launch.store';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,6 @@ import { LancementStore } from '@core/store/lancement/lancement.store';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('makola-mobile');
-  /** Retire l'écran de lancement natif à la fin de la première navigation. */
-  private readonly lancement = inject(LancementStore);
+  /** Removes the native launch screen at the end of the first navigation. */
+  private readonly launch = inject(LaunchStore);
 }

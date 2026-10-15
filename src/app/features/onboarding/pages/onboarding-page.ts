@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslocoPipe } from '@jsverse/transloco';
 
+import { Language } from '@core/i18n/language';
+import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
 import { FooterActionComponent } from '@core/shared/components/actions/footer-action/footer-action';
+import { LanguageSwitchComponent } from '@core/shared/components/actions/language-switch/language-switch';
 import { OutlinedButtonComponent } from '@core/shared/components/actions/outlined-button/outlined-button';
 import { ProgressDotsComponent } from '@core/shared/components/navigation/progress-dots/progress-dots';
 
@@ -10,21 +14,22 @@ import { OnboardingSlideComponent } from '../components';
 import { OnboardingStore } from '../onboarding.store';
 
 /**
- * Container de la présentation — 4 écrans, balayage natif (scroll-snap CSS,
- * aucune bibliothèque de geste), pastilles tapables dans les deux sens.
- * Vue une seule fois par appareil ; « Passer » et « Commencer » mènent à l'accueil.
+ * Onboarding container — 4 screens, native swipe (CSS scroll-snap, no gesture
+ * library), dots tappable both ways. Seen once per device; "Skip" and "Start"
+ * lead to the welcome screen. The language is chosen here, before anything else.
  */
 @Component({
   selector: 'app-onboarding-page',
-  imports: [OnboardingSlideComponent, FooterActionComponent, OutlinedButtonComponent, ProgressDotsComponent],
+  imports: [OnboardingSlideComponent, FooterActionComponent, OutlinedButtonComponent, ProgressDotsComponent, LanguageSwitchComponent, TranslocoPipe],
   providers: [OnboardingStore],
   templateUrl: './onboarding-page.html',
   styleUrl: './onboarding-page.scss',
-  host: { '(window:resize)': 'realigner()' },
+  host: { '(window:resize)': 'realign()' },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OnboardingPageComponent {
   protected readonly store = inject(OnboardingStore);
+  protected readonly language = inject(LanguageStore);
   private readonly session = inject(SessionStore);
   private readonly router = inject(Router);
 
@@ -39,25 +44,29 @@ export class OnboardingPageComponent {
     });
   }
 
-  protected aller(index: number): void {
+  protected goTo(index: number): void {
     const el = this.track().nativeElement;
-    const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollTo({ left: index * el.clientWidth, behavior: reduit ? 'auto' : 'smooth' });
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollTo({ left: index * el.clientWidth, behavior: reduced ? 'auto' : 'smooth' });
     this.store.setIndex(index);
   }
 
-  protected suivant(): void {
-    if (this.store.dernier()) this.terminer();
-    else this.aller(this.store.index() + 1);
+  protected next(): void {
+    if (this.store.last()) this.finish();
+    else this.goTo(this.store.index() + 1);
   }
 
-  protected terminer(): void {
-    this.session.terminerOnboarding();
+  protected finish(): void {
+    this.session.completeOnboarding();
     void this.router.navigateByUrl('/auth', { replaceUrl: true });
   }
 
-  /** Rotation, redimensionnement : l'écran courant reste celui affiché. */
-  protected realigner(): void {
+  protected setLanguage(language: Language): void {
+    void this.language.setLanguage(language);
+  }
+
+  /** Rotation, resize: the current screen stays the one shown. */
+  protected realign(): void {
     const el = this.track().nativeElement;
     el.scrollTo({ left: this.store.index() * el.clientWidth, behavior: 'auto' });
   }

@@ -3,21 +3,21 @@ import { FormCheckboxControl } from '@angular/forms/signals';
 
 import { IconComponent } from '../../foundation/icon/icon';
 
-export type SwitchTone = 'primaire' | 'attente' | 'succes';
+export type SwitchTone = 'primary' | 'pending' | 'success';
 
 const TONE_COLOR: Record<SwitchTone, string> = {
-  primaire: 'var(--mk-primaire)',
-  attente: 'var(--mk-attente)',
-  succes: 'var(--mk-succes)'
+  primary: 'var(--mk-primaire)',
+  pending: 'var(--mk-attente)',
+  success: 'var(--mk-succes)'
 };
 
 /**
- * Interrupteur M3, 52 × 32 dp. La poignée passe de 16 à 24 dp avec une coche :
- * c'est la transition qui porte le changement, pas un libellé « ON ».
+ * M3 switch, 52 × 32 dp. The handle grows from 16 to 24 dp with a check mark:
+ * the transition carries the change, not an "ON" label.
  * Source: @makola Design System, components/forms/Switch.jsx.
  *
- * Contrôle de formulaire signal (`FormCheckboxControl`) : se lie par `[formField]`,
- * ou à la main par `[checked]` / `(checkedChange)`.
+ * Signal forms control (`FormCheckboxControl`): bind it with `[formField]`,
+ * or by hand with `[checked]` / `(checkedChange)`.
  */
 @Component({
   selector: 'app-switch',
@@ -53,8 +53,8 @@ const TONE_COLOR: Record<SwitchTone, string> = {
 })
 export class SwitchComponent implements FormCheckboxControl {
   readonly checked = model.required<boolean>();
-  /** `attente` (ambre) sur les écrans parent, `primaire` ailleurs. */
-  readonly tone = input<SwitchTone>('primaire');
+  /** `pending` (amber) on parent screens, `primary` elsewhere. */
+  readonly tone = input<SwitchTone>('primary');
   readonly ariaLabel = input<string>();
 
   protected readonly color = computed(() => TONE_COLOR[this.tone()]);

@@ -27,7 +27,7 @@ Each feature under `src/app/features/<name>/` follows the same shape:
 
 - `<name>-routes.ts` — exports a `Routes`/`Route[]` constant (e.g. `AUTH_ROUTES`, `USERS_ROUTES`, `LEVEL_VOLTAGES`) using `loadComponent`/`loadChildren` for lazy loading, wired into `app.routes.ts`.
 - `index.ts` barrel files at the feature root and at `pages/` — components are imported via `import('./pages').then(m => m.XComponent)`, not by direct file path.
-- `pages/`, `components/`, `modele/` (interfaces), `enums/` as needed.
+- `pages/`, `components/`, `model/` (interfaces), `enums/` as needed.
 
 `core/shared/components/` follows the same barrel (`index.ts`) convention per component group (`buttons/`, `forms/`, `inputs/`, `modal/`). Prefer re-exporting new shared components through the relevant group's `index.ts`.
 
@@ -55,3 +55,25 @@ Do not use Capacitor APIs when a standard browser/Web API is sufficient.
 
 ### Forms
 Using signal forms
+
+### Language of the code
+All code is written in English: file and folder names, classes, variables,
+routes, CSS classes and comments. Two exceptions:
+- the `--mk-*` design tokens in `src/theme/tokens/` keep the names published by
+  the @makola design system (they are copied verbatim from it);
+- school data (student names, class labels such as "4ème B", school names)
+  stays as entered — it is data, not interface.
+
+### Translations (i18n)
+- Transloco (`@jsverse/transloco`), languages `en` (default) and `fr`.
+- Never hard-code user-facing text: templates use the `transloco` pipe, text
+  built in TypeScript uses `injectTranslate()` from `@core/i18n` inside a
+  `computed()` so it follows language changes.
+- Translation files `src/i18n/en.json` and `src/i18n/fr.json` are generated:
+  edit `scripts/i18n-source.py` (one entry per key, English and French side by
+  side), then run `python3 scripts/i18n-source.py && python3 scripts/i18n-check.py`.
+  The check fails on any key used in code but missing from a language.
+- Numbers and dates go through `formatDecimal()` / `formatDate()` from
+  `@core/i18n` (12.4 in English, 12,4 in French).
+- The language is held by `LanguageStore` (`core/store/language/`) and switched
+  with the `app-language-switch` component.

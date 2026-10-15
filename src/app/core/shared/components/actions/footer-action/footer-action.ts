@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 
-export type FooterActionTone = 'primaire' | 'attente' | 'refus';
+export type FooterActionTone = 'primary' | 'pending' | 'danger';
 
 /**
- * L'action principale d'un écran, en pied, pleine largeur. Une seule par écran.
- * Indisponible : `missingLabel` doit dire ce qui manque — jamais un "Valider" grisé.
+ * The main action of a screen, at the bottom, full width. One per screen.
+ * Unavailable: `missingLabel` must say what is missing — never a greyed-out "Submit".
  * Source: @makola Design System, components/actions/FooterAction.jsx.
  */
 @Component({
@@ -30,21 +30,21 @@ export type FooterActionTone = 'primaire' | 'attente' | 'refus';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterActionComponent {
-  /** Libellé au repos, à l'impératif : « Créer et saisir les notes ». */
+  /** Resting label, in the imperative: "Create and enter grades". */
   readonly label = input.required<string>();
-  /** Libellé quand `disabled` — doit dire CE QUI MANQUE, pas « Valider ». */
+  /** Label when `disabled` — must say WHAT IS MISSING. */
   readonly missingLabel = input<string>();
   readonly disabled = input(false);
-  /** `primaire` par défaut. `attente` pour un rôle parent, `refus` pour une révocation. */
-  readonly tone = input<FooterActionTone>('primaire');
+  /** `primary` by default. `pending` for the parent role, `danger` for a revocation. */
+  readonly tone = input<FooterActionTone>('primary');
   readonly pressed = output<void>();
 
   protected readonly held = signal(false);
 
   protected readonly background = computed(() => {
     if (this.disabled()) return 'var(--mk-inactif-fond)';
-    if (this.tone() === 'attente') return 'var(--mk-attente)';
-    if (this.tone() === 'refus') return 'var(--mk-refus)';
+    if (this.tone() === 'pending') return 'var(--mk-attente)';
+    if (this.tone() === 'danger') return 'var(--mk-refus)';
     return 'var(--mk-primaire)';
   });
 

@@ -4,27 +4,28 @@
       <app-onboarding-slide
         class="page"
         [slide]="slide"
-        [position]="$index + 1 + ' sur ' + store.slides().length"
+        [position]="'progressDots.position' | transloco: { current: $index + 1, total: store.slides().length }"
         [attr.aria-hidden]="$index !== store.index()"
       />
     }
   </div>
 
-  @if (!store.dernier()) {
-    <div class="passer">
-      <app-outlined-button label="Passer" [tone]="store.slides()[store.index()].role" (clicked)="terminer()" />
-    </div>
-  }
+  <div class="top">
+    <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
+    @if (!store.last()) {
+      <app-outlined-button [label]="'onboarding.skip' | transloco" [tone]="store.current().role" (clicked)="finish()" />
+    }
+  </div>
 
   <div class="controls">
     <div class="dots">
       <app-progress-dots
         [count]="store.slides().length"
         [index]="store.index()"
-        label="Écrans de présentation"
-        (indexChange)="aller($event)"
+        [label]="'onboarding.dotsLabel' | transloco"
+        (indexChange)="goTo($event)"
       />
     </div>
-    <app-footer-action [label]="store.dernier() ? 'Commencer' : 'Suivant'" (pressed)="suivant()" />
+    <app-footer-action [label]="(store.last() ? 'onboarding.start' : 'onboarding.next') | transloco" (pressed)="next()" />
   </div>
 </div>

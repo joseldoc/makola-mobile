@@ -1,0 +1,345 @@
+{
+  "common": {
+    "back": "Retour",
+    "close": "Fermer",
+    "clear": "Effacer",
+    "continue": "Continuer",
+    "search": "Rechercher",
+    "signOut": "Se déconnecter",
+    "term": "Trimestre {{n}}"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "network": {
+    "offline": "Hors ligne · la saisie fonctionne, l'envoi partira au retour du réseau.",
+    "offlinePending": "Hors ligne · saisies en attente d'envoi : {{count}}. Vous pouvez continuer.",
+    "synced": "Tout est synchronisé."
+  },
+  "keypad": {
+    "absent": "Absent",
+    "ungraded": "Non noté",
+    "backspace": "Effacer"
+  },
+  "progressDots": {
+    "position": "{{current}} sur {{total}}"
+  },
+  "countries": {
+    "CG": "République du Congo",
+    "KE": "Kenya"
+  },
+  "subjects": {
+    "maths": "Mathématiques",
+    "physics": "Physique-chimie",
+    "biology": "Sciences de la vie et de la Terre",
+    "french": "Français",
+    "english": "Anglais",
+    "history": "Histoire-géographie",
+    "philosophy": "Philosophie",
+    "sport": "Éducation physique et sportive"
+  },
+  "levels": {
+    "primary": "Primaire",
+    "middle": "Collège",
+    "high": "Lycée",
+    "university": "Université",
+    "terms": "Trimestres",
+    "semesters": "Semestres"
+  },
+  "onboarding": {
+    "screen": "écran",
+    "skip": "Passer",
+    "next": "Suivant",
+    "start": "Commencer",
+    "dotsLabel": "Écrans de présentation",
+    "slides": {
+      "classrooms": {
+        "kicker": "Le carnet de notes du professeur",
+        "title": "Vos classes, rangées par établissement",
+        "text": "Chaque classe appartient à son école. Le nom de l'établissement reste affiché pendant toute la saisie : deux contextes ne se mélangent jamais."
+      },
+      "offline": {
+        "kicker": "Hors ligne",
+        "title": "La saisie continue sans réseau",
+        "text": "Les notes sont enregistrées sur le téléphone et partent au retour du réseau. Un bandeau vous dit toujours combien de saisies attendent."
+      },
+      "parents": {
+        "kicker": "Les parents",
+        "title": "Chaque parent suit son enfant",
+        "text": "Vous invitez un parent par un code à 6 chiffres envoyé par SMS. Il voit les notes de son enfant, jamais celles des autres élèves."
+      },
+      "reportCards": {
+        "kicker": "Les bulletins",
+        "title": "Aucun rang, aucune moyenne de classe",
+        "text": "Les bulletins portent les moyennes de l'élève, pas sa place. Leur transmission à la direction reste votre décision."
+      }
+    }
+  },
+  "auth": {
+    "errors": {
+      "unknown-account": "Aucun compte n'utilise {{identifier}}. Vérifiez la saisie, ou créez un compte.",
+      "existing-account": "Un compte utilise déjà {{identifier}}. Connectez-vous plutôt.",
+      "wrong-code": "Ce code ne correspond pas à celui envoyé. Vérifiez le message, ou demandez un nouveau code.",
+      "unknown-invitation": "Ce code ne correspond à aucune invitation en cours. Vérifiez le SMS reçu, ou demandez un nouveau code au professeur.",
+      "offline": "Hors ligne · l'envoi et la vérification du code demandent le réseau. Réessayez à son retour.",
+      "invitation-declined": "Aucun rattachement n'a été fait. Demandez au professeur de vérifier l'élève concerné, puis saisissez le nouveau code.",
+      "unexpected": "Le serveur n'a pas répondu. Réessayez dans un instant."
+    },
+    "phone": {
+      "label": "Téléphone",
+      "changeCountry": "Indicatif +{{code}}, {{country}}. Changer de pays"
+    },
+    "country": {
+      "title": "Indicatif du pays",
+      "text": "Il détermine votre pays : il ne vous sera plus demandé.",
+      "digits": "+{{code}} · {{length}} chiffres après l'indicatif"
+    },
+    "welcome": {
+      "promise": "Les notes de vos élèves, saisies et gardées sur votre téléphone — avec ou sans réseau.",
+      "signUp": "Créer un compte enseignant",
+      "signIn": "J'ai déjà un compte",
+      "parent": "Parent d'élève ? Saisir le code reçu"
+    },
+    "identifier": {
+      "sign-up": {
+        "phone": {
+          "step": "Création du compte",
+          "title": "Créer votre compte",
+          "text": "Votre numéro suffit. Un code à six chiffres vous sera envoyé : pas de mot de passe à retenir."
+        },
+        "email": {
+          "step": "Création du compte",
+          "title": "Créer votre compte",
+          "text": "Votre adresse suffit. Un code à six chiffres vous sera envoyé : pas de mot de passe à retenir."
+        }
+      },
+      "sign-in": {
+        "phone": {
+          "step": "",
+          "title": "Votre numéro",
+          "text": "Un code à six chiffres vous sera envoyé. Pas de mot de passe à retenir."
+        },
+        "email": {
+          "step": "",
+          "title": "Votre adresse email",
+          "text": "Un code à six chiffres vous sera envoyé. Pas de mot de passe à retenir."
+        }
+      },
+      "invitation": {
+        "phone": {
+          "step": "Étape 2 sur 3 · Compte parent",
+          "title": "Votre numéro",
+          "text": "Il sert à vous connecter et à recevoir les alertes. Un code de confirmation vous sera envoyé."
+        },
+        "email": {
+          "step": "Étape 2 sur 3 · Compte parent",
+          "title": "Votre adresse email",
+          "text": "Elle sert à vous connecter. Un code de confirmation vous sera envoyé."
+        }
+      },
+      "phoneRequired": "Saisissez votre numéro au pavé.",
+      "phoneFormat": "Un numéro mobile (+{{code}}) commence par {{prefixes}}. Effacez et corrigez, ou changez d'indicatif.",
+      "phoneComplete": "Numéro complet. Le code partira par SMS.",
+      "phoneProgress": "{{total}} chiffres après l'indicatif · {{count}} sur {{total}}.",
+      "emailRequired": "Saisissez votre adresse pour recevoir le code.",
+      "emailFormat": "Il manque une partie de l'adresse : elle prend la forme prenom.nom@exemple.cg.",
+      "emailLabel": "Adresse email",
+      "emailHint": "Le code partira par email.",
+      "emailPlaceholder": "prenom.nom@exemple.cg",
+      "sending": "Envoi du code…",
+      "missingPhone": "Saisissez votre numéro",
+      "digitsLeft": "Chiffres restants : {{count}}",
+      "fixPhone": "Corrigez le numéro",
+      "missingEmail": "Saisissez votre adresse",
+      "fixEmail": "Corrigez votre adresse",
+      "getCode": "Recevoir le code",
+      "useEmail": "Utiliser une adresse email",
+      "usePhone": "Utiliser mon numéro"
+    },
+    "code": {
+      "step": {
+        "sign-up": "Création du compte",
+        "sign-in": "",
+        "invitation": "Étape 3 sur 3 · Compte parent"
+      },
+      "sentTo": "Envoyé au {{identifier}}. Il expire dans 10 minutes.",
+      "titleSms": "Code reçu par SMS",
+      "titleEmail": "Code reçu par email",
+      "checking": "Vérification du code…",
+      "missing": "Saisissez le code reçu",
+      "progress": "{{count}} chiffres saisis sur {{total}}.",
+      "resendIn": "Rien reçu ? Nouveau code possible dans {{seconds}} s.",
+      "nothingReceived": "Rien reçu ?",
+      "resend": "Renvoyer le code",
+      "enter": "Entrer dans @makola",
+      "changePhone": "Changer de numéro",
+      "changeEmail": "Changer d'adresse"
+    },
+    "invitation": {
+      "step": "Étape 1 sur 3 · Compte parent",
+      "title": "Code d'invitation",
+      "text": "Les 6 chiffres reçus par SMS du professeur de votre enfant.",
+      "searching": "Recherche de l'invitation…",
+      "validity": "Le code est valable 7 jours et ne sert qu'une fois.",
+      "seeStudent": "Voir l'élève concerné"
+    },
+    "child": {
+      "title": "Votre enfant",
+      "subtitle": "Étape 1 sur 3 · Vérification",
+      "intro": "Vérifiez avant de continuer : ce code rattache votre compte à un seul élève.",
+      "linkedStudent": "Élève rattaché",
+      "invitedBy": "Invitation de {{teacher}} · {{subject}}",
+      "youWillSee": "Vous verrez les notes de {{name}}, ses contrôles annoncés et ses bulletins.",
+      "neverOthers": "Jamais les notes des autres élèves.",
+      "confirm": "Oui, c'est {{name}}",
+      "decline": "Ce n'est pas mon enfant"
+    },
+    "alerts": {
+      "title": "Vos alertes",
+      "subtitle": "Modifiables à tout moment",
+      "intro": "Choisissez ce que vous recevez par SMS au sujet de {{name}}.",
+      "yourChild": "votre enfant",
+      "noSms": "Aucun SMS : vous consulterez le fil vous-même.",
+      "smsPerMonth": "Environ {{count}} SMS par mois avec ces réglages.",
+      "guarantee": "Désactiver une alerte n'ôte jamais l'accès : le fil reste consultable.",
+      "openFeed": "Ouvrir le fil de {{name}}",
+      "saving": "Enregistrement des alertes…",
+      "options": {
+        "newGrade": {
+          "label": "Nouvelle note",
+          "detail": "Dès que le professeur publie un devoir noté."
+        },
+        "gradeBelowPass": {
+          "label": "Note en dessous de 10",
+          "detail": "Seulement quand une note passe sous la moyenne."
+        },
+        "testAnnounced": {
+          "label": "Contrôle annoncé",
+          "detail": "Avec les chapitres à réviser."
+        },
+        "reportCardAvailable": {
+          "label": "Bulletin disponible",
+          "detail": "Une fois par trimestre."
+        },
+        "weeklySummary": {
+          "label": "Résumé hebdomadaire",
+          "detail": "Un SMS chaque dimanche à 19:00."
+        }
+      }
+    },
+    "profile": {
+      "steps": {
+        "identity": {
+          "title": "Qui êtes-vous ?",
+          "subtitle": "Étape 1 sur 3 · Identité",
+          "intro": "Votre nom tel que les parents et les établissements le liront."
+        },
+        "subjects": {
+          "title": "Vos matières",
+          "subtitle": "Étape 2 sur 3 · Enseignement",
+          "intro": "Ce que vous enseignez, et à quel niveau. Vous pourrez compléter plus tard."
+        },
+        "city": {
+          "title": "Où enseignez-vous ?",
+          "subtitle": "Étape 3 sur 3 · Ville",
+          "intro": "Votre ville suffit : votre adresse exacte ne vous sera jamais demandée."
+        }
+      },
+      "lastName": "Nom de famille",
+      "firstName": "Prénom",
+      "previewLabel": "Sur les listes de classe",
+      "subjectsTitle": "Matières enseignées",
+      "levelsTitle": "Niveaux enseignés",
+      "country": "Pays",
+      "countryFromNumber": "Déduit de votre numéro {{number}}.",
+      "city": "Ville",
+      "cityHint": "Votre ville seulement, jamais votre adresse exacte.",
+      "frequentCities": "Villes fréquentes",
+      "activate": "Activer mon compte",
+      "activating": "Activation du compte…",
+      "errors": {
+        "lastName": "Saisissez votre nom de famille.",
+        "firstName": "Saisissez votre prénom.",
+        "city": "Indiquez la ville où vous enseignez."
+      },
+      "missing": {
+        "lastName": "Saisissez votre nom",
+        "firstName": "Saisissez votre prénom",
+        "subjects": "Choisissez au moins une matière",
+        "levels": "Choisissez au moins un niveau",
+        "city": "Indiquez votre ville",
+        "country": "Choisissez votre pays"
+      }
+    }
+  },
+  "classroom": {
+    "tabs": {
+      "assignments": "Devoirs",
+      "students": "Élèves",
+      "reportCard": "Bulletin"
+    },
+    "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
+    "noClassAverage": "Moyenne de la classe non calculée — voir RM-11",
+    "termAverage": "Moyenne du trimestre",
+    "noMatch": "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche.",
+    "reportCardNotice": "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Aucun rang ni moyenne de classe n'y figurera.",
+    "searchPlaceholder": "Nom d'élève",
+    "newAssignment": "+ Devoir"
+  },
+  "assignment": {
+    "title": "Nouveau devoir",
+    "titleLabel": "Intitulé du devoir",
+    "titlePlaceholder": "Contrôle n°3",
+    "titleErrors": {
+      "empty": "Donnez un intitulé : c'est ce que verront les élèves et les parents.",
+      "tooShort": "Trop court pour être reconnaissable dans la liste des devoirs.",
+      "duplicate": "« {{title}} » existe déjà dans cette classe ce trimestre. Changez le numéro ou la date.",
+      "tooLong": "{{max}} caractères maximum : au-delà, l'intitulé est coupé sur le bulletin.",
+      "long": "Long pour un bulletin : il sera lisible, mais serré."
+    },
+    "scale": "Barème",
+    "coefficient": {
+      "decrease": "Diminuer le coefficient",
+      "increase": "Augmenter le coefficient",
+      "max": "Coefficient maximal. Au-delà, un seul devoir déciderait de la moyenne.",
+      "base": "Compte comme un devoir ordinaire.",
+      "weight": "Pèse {{count}} fois plus qu'un devoir de coefficient 1."
+    },
+    "dateLabel": "Date du devoir",
+    "changeDate": "Changer",
+    "create": "Créer et saisir les notes",
+    "fixField": "Corrigez le champ signalé",
+    "date": {
+      "today": "Aujourd'hui · {{date}}",
+      "inTerm": "Dans le trimestre {{term}}, en cours jusqu'au {{end}}.",
+      "afterClose": "Après la clôture du trimestre {{term}} : ce devoir comptera pour le trimestre {{next}}.",
+      "closed": "Le trimestre {{term}} est clôturé. Choisissez une date après le {{after}}."
+    }
+  },
+  "gradeEntry": {
+    "progress": "{{count}} / {{total}} saisis",
+    "inProgress": "En cours de saisie",
+    "nextStudent": "Élève suivant"
+  },
+  "parentFeed": {
+    "switchChild": "Changer d'enfant",
+    "subjectAverage": "Moyenne · {{subject}}",
+    "improving": "en progression",
+    "weeklySummary": "Résumé hebdomadaire",
+    "weeklySummaryOn": "Un SMS chaque dimanche à 19:00.",
+    "weeklySummaryOff": "Désactivé — le fil reste consultable.",
+    "allGrades": "Toutes les notes",
+    "reportCards": "Bulletins",
+    "reportCardMeta": "Trimestre {{term}} · {{subject}}",
+    "types": {
+      "newGrade": "Nouvelle note",
+      "gradeBelowPass": "Note en dessous de 10",
+      "testAnnounced": "Contrôle annoncé",
+      "reportCard": "Bulletin disponible"
+    },
+    "when": {
+      "minutesAgo": "il y a {{count}} min",
+      "yesterdayAt": "hier, {{time}}"
+    }
+  }
+}

@@ -5,8 +5,8 @@ import { IconComponent } from '../../foundation/icon/icon';
 export type MiniFabIcon = 'remove-outline' | 'add-outline';
 
 /**
- * Mini-FAB rond — uniquement remove-outline et add-outline, pour incrémenter
- * une valeur bornée. À la borne, le glyphe pâlit mais le bouton reste tapable.
+ * Round mini-FAB — remove-outline and add-outline only, to step a bounded value.
+ * At the bound the glyph fades but the button stays tappable.
  * Source: @makola Design System, components/actions/MiniFab.jsx.
  */
 @Component({
@@ -16,7 +16,7 @@ export type MiniFabIcon = 'remove-outline' | 'add-outline';
     <button
       type="button"
       class="mini-fab"
-      [attr.aria-label]="ariaLabel() || (icon() === 'add-outline' ? 'Augmenter' : 'Diminuer')"
+      [attr.aria-label]="ariaLabel()"
       (click)="clicked.emit()"
       (pointerdown)="held.set(true)"
       (pointerup)="held.set(false)"
@@ -33,11 +33,12 @@ export type MiniFabIcon = 'remove-outline' | 'add-outline';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MiniFabComponent {
-  /** `remove-outline` ou `add-outline` — pas d'autre icône. */
+  /** `remove-outline` or `add-outline` — no other icon. */
   readonly icon = input.required<MiniFabIcon>();
-  /** Valeur à sa borne : l'icône passe à 32 %, le bouton reste tapable. */
+  /** Value at its bound: the icon drops to 32 %, the button stays tappable. */
   readonly atBound = input(false);
-  readonly ariaLabel = input<string>();
+  /** Always required: the glyph alone does not say what it changes. */
+  readonly ariaLabel = input.required<string>();
   readonly clicked = output<void>();
 
   protected readonly held = signal(false);

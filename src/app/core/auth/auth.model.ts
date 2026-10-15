@@ -1,58 +1,64 @@
-/** Les deux rôles du MVP (cahier des charges §8). */
-export type Role = 'prof' | 'parent';
+import { CountryCode } from './country';
 
-/** Email **ou** téléphone — jamais de mot de passe : l'accès passe par un code (US-P01). */
-export type Canal = 'telephone' | 'email';
+/** The two roles of the MVP (functional spec §8). */
+export type Role = 'teacher' | 'parent';
 
-export interface Identifiant {
-  canal: Canal;
-  /** Normalisée : 9 chiffres (« 066123456 ») ou email en minuscules. */
-  valeur: string;
+/** Email **or** phone — never a password: access goes through a one-time code (US-P01). */
+export type Channel = 'phone' | 'email';
+
+export interface Identifier {
+  channel: Channel;
+  /** International phone number without spaces (« +242066123456 ») or lower-case email. */
+  value: string;
 }
 
-/** Pourquoi un code est demandé — change les refus opposables. */
-export type Intention = 'inscription' | 'connexion' | 'invitation';
+/** Why a code is requested — changes the refusals the server can return. */
+export type Intent = 'sign-up' | 'sign-in' | 'invitation';
 
-export interface DemandeCode {
-  /** Délai anti-spam avant de pouvoir redemander un code, en secondes. */
-  renvoiDans: number;
+export interface CodeRequest {
+  /** Anti-spam delay before a new code can be requested, in seconds. */
+  resendIn: number;
 }
 
-export type Niveau = 'primaire' | 'college' | 'lycee' | 'universite';
+export type Level = 'primary' | 'middle' | 'high' | 'university';
 
-/** Étape 2 obligatoire de l'inscription enseignant (US-P01). */
-export interface ProfilProfesseur {
-  nom: string;
-  matieres: string[];
-  niveaux: Niveau[];
-  /** Quartier et ville — jamais l'adresse exacte (RM-07). */
-  zone: string;
+/** Mandatory teacher profile (US-P01), in three steps. */
+export interface TeacherProfile {
+  /** Family name — upper-case on class lists, a school convention. */
+  lastName: string;
+  firstName: string;
+  subjects: string[];
+  levels: Level[];
+  /** The city only — never the exact address (RM-07). */
+  city: string;
+  /** Deduced from the phone number's calling code; asked only for an email sign-up. */
+  country: CountryCode;
 }
 
-/** Invitation parent : code à 6 chiffres, usage unique, 7 jours (RM-12). */
+/** Parent invitation: 6-digit code, single use, 7 days (RM-12). */
 export interface Invitation {
   code: string;
-  eleve: string;
-  classe: string;
-  etablissement: string;
-  professeur: string;
-  matiere: string;
+  student: string;
+  classroom: string;
+  school: string;
+  teacher: string;
+  subject: string;
 }
 
-/** Les cinq réglages d'alerte du parent (RM-16). */
-export interface AlertesParent {
-  nouvelleNote: boolean;
-  noteSousMoyenne: boolean;
-  controleAnnonce: boolean;
-  bulletinDisponible: boolean;
-  resumeHebdomadaire: boolean;
+/** The parent's five alert settings (RM-16). */
+export interface ParentAlerts {
+  newGrade: boolean;
+  gradeBelowPass: boolean;
+  testAnnounced: boolean;
+  reportCardAvailable: boolean;
+  weeklySummary: boolean;
 }
 
 export interface Session {
   id: string;
   role: Role;
-  identifiant: Identifiant;
-  nom?: string;
-  /** Faux tant que l'étape 2 (profil enseignant, alertes parent) n'est pas terminée. */
-  profilComplet: boolean;
+  identifier: Identifier;
+  name?: string;
+  /** False until step 2 (teacher profile, parent alerts) is done. */
+  profileComplete: boolean;
 }

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { IconComponent } from '@core/shared/components';
 
 /**
- * Case M3 — la cible de 48 dp est portée par la LIGNE entière, pas par la case.
+ * M3 checkbox — the 48 dp target is carried by the WHOLE ROW, not the box.
  * Source: @makola Design System, components/forms/Checkbox.jsx.
  */
 @Component({

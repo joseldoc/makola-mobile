@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 import { IconComponent } from '../../foundation/icon/icon';
 
 /**
- * Recherche en pilule sur fond marge. Au focus : fond blanc, contour bleu.
- * Le chargement vit DANS le champ ; le vide propose une autre entrée.
+ * Pill search on the margin background. On focus: white background, blue outline.
+ * Loading lives INSIDE the field; an empty result suggests another entry.
  * Source: @makola Design System, components/forms/SearchField.jsx.
  */
 @Component({
   selector: 'app-search-field',
-  imports: [IconComponent],
+  imports: [IconComponent, TranslocoPipe],
   template: `
     <div class="search-field" [class.focused]="focused()">
       <app-icon name="search-outline" [size]="18" color="var(--mk-text-secondaire)" />
@@ -26,7 +27,7 @@ import { IconComponent } from '../../foundation/icon/icon';
       @if (loading()) {
         <span class="spinner"></span>
       } @else if (value()) {
-        <button type="button" class="clear" aria-label="Effacer" (click)="cleared.emit()">
+        <button type="button" class="clear" [attr.aria-label]="'common.clear' | transloco" (click)="cleared.emit()">
           <app-icon name="close-outline" [size]="18" />
         </button>
       }
@@ -38,8 +39,9 @@ import { IconComponent } from '../../foundation/icon/icon';
 export class SearchFieldComponent {
   readonly value = input.required<string>();
   readonly valueChange = output<string>();
-  readonly placeholder = input('Rechercher');
-  /** Spinner 18 dp dans le champ. Doublez-le d'un bandeau à la place de la liste. */
+  /** Already translated. */
+  readonly placeholder = input.required<string>();
+  /** 18 dp spinner in the field. Pair it with a banner in place of the list. */
   readonly loading = input(false);
   readonly cleared = output<void>();
 

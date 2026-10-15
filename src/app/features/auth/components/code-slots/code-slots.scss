@@ -23,16 +23,16 @@
   color: var(--mk-text);
   transition: border-color var(--mk-transition);
 
-  &.suivante {
+  &.next {
     border: 2px solid var(--mk-primaire);
   }
 }
 
-.verification .slot {
+.checking .slot {
   color: var(--mk-text-secondaire);
 }
 
-.erreur .slot {
+.error .slot {
   border-color: var(--mk-refus);
 }
 

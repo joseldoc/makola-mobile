@@ -23,6 +23,7 @@
     "@capacitor/splash-screen": "^8.0.2",
     "@capacitor/status-bar": "^8.0.3",
     "@ionic/angular": "^9.0.4",
+    "@jsverse/transloco": "^8.4.0",
     "@ngrx/signals": "^22.0.1",
     "ionicons": "^8.1.0",
     "rxjs": "~7.8.0",

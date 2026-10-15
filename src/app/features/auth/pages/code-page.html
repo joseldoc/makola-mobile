@@ -1,34 +1,42 @@
-<div class="page">
-  <app-bar title="Code reçu" [subtitle]="sousTitre()" [role]="role()" [showBack]="true" (back)="modifier()" />
+<div class="page entry">
+  <app-auth-banner
+    [step]="step()"
+    [title]="(byEmail() ? 'auth.code.titleEmail' : 'auth.code.titleSms') | transloco"
+    [text]="text()"
+    [role]="role()"
+    (back)="change()"
+  />
 
-  <div class="code">
-    <p class="intro">Saisissez les 6 chiffres envoyés {{ destination() }}.</p>
+  <div class="input-area">
+    <app-code-slots [value]="code()" [state]="state()" />
 
-    <app-code-slots [valeur]="code()" [etat]="etat()" />
-
-    <p class="code-message" [class.refus]="!!store.erreur()" [attr.role]="store.erreur() ? 'alert' : null">
-      @if (store.erreur()) {
-        {{ store.erreur() }}
-      } @else if (store.enCours()) {
-        Vérification du code…
+    @let error = store.errorMessage();
+    <p class="hint" [class.is-error]="!!error" [attr.role]="error ? 'alert' : null">
+      @if (error) {
+        {{ error.key | transloco: error.params }}
+      } @else if (store.busy()) {
+        {{ 'auth.code.checking' | transloco }}
+      } @else if (wait() > 0) {
+        {{ 'auth.code.resendIn' | transloco: { seconds: wait() } }}
       } @else {
-        Le code est valable 10 minutes.
+        {{ 'auth.code.nothingReceived' | transloco }}
+        <button type="button" class="resend" (click)="resend()">{{ 'auth.code.resend' | transloco }}</button>
       }
     </p>
-
-    <div class="code-actions">
-      @if (attente() > 0) {
-        <span class="attente">Nouveau code possible dans {{ attenteLibelle() }}</span>
-      } @else {
-        <app-outlined-button label="Renvoyer le code" [tone]="role()" (clicked)="renvoyer()" />
-      }
-      <app-outlined-button
-        [label]="store.identifiant()?.canal === 'email' ? 'Modifier l\'adresse' : 'Modifier le numéro'"
-        [tone]="role()"
-        (clicked)="modifier()"
-      />
-    </div>
   </div>
 
-  <app-keypad [columns]="3" (digit)="chiffre($event)" (backspace)="effacer()" />
+  <div class="actions">
+    <app-footer-action
+      [label]="'auth.code.enter' | transloco"
+      [tone]="role() === 'parent' ? 'pending' : 'primary'"
+      [disabled]="!!missing()"
+      [missingLabel]="missing()"
+      (pressed)="enter()"
+    />
+    <button type="button" class="text-action" (click)="change()">
+      {{ (byEmail() ? 'auth.code.changeEmail' : 'auth.code.changePhone') | transloco }}
+    </button>
+  </div>
+
+  <app-keypad [columns]="3" (digit)="digit($event)" (backspace)="erase()" />
 </div>

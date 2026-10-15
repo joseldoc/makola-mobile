@@ -3,69 +3,68 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 
 import { Session } from '@core/auth/auth.model';
 
-const CLE_SESSION = 'mk.session';
-const CLE_ONBOARDING = 'mk.onboarding-vu';
+const SESSION_KEY = 'mk.session';
+const ONBOARDING_KEY = 'mk.onboarding-seen';
 
 interface SessionState {
   session: Session | null;
-  /** La présentation (4 écrans) n'est montrée qu'une fois par appareil. */
-  onboardingVu: boolean;
+  /** The onboarding (4 screens) is shown once per device. */
+  onboardingSeen: boolean;
 }
 
 /**
- * Session de l'utilisateur et passage de la présentation. Persistée dans le
- * `localStorage` (API web : aucune fonction native n'est nécessaire ici).
- * Lue de façon synchrone à la création, pour que les gardes de route décident
- * dès la première navigation.
+ * User session and onboarding progress. Persisted in `localStorage` (a web
+ * API: no native feature is needed here). Read synchronously at creation so
+ * route guards can decide on the very first navigation.
  */
 export const SessionStore = signalStore(
   { providedIn: 'root' },
   withState<SessionState>(() => ({
-    session: lire<Session>(CLE_SESSION),
-    onboardingVu: lire<boolean>(CLE_ONBOARDING) ?? false
+    session: read<Session>(SESSION_KEY),
+    onboardingSeen: read<boolean>(ONBOARDING_KEY) ?? false
   })),
-  withComputed(({ session, onboardingVu }) => ({
-    connecte: computed(() => session() !== null),
-    actif: computed(() => session()?.profilComplet ?? false),
+  withComputed(({ session, onboardingSeen }) => ({
+    signedIn: computed(() => session() !== null),
+    active: computed(() => session()?.profileComplete ?? false),
     role: computed(() => session()?.role ?? null),
-    /** Où envoyer l'utilisateur selon l'état de son compte. */
-    routeInitiale: computed(() => {
+    /** Where to send the user depending on the state of their account. */
+    initialRoute: computed(() => {
       const s = session();
-      if (!s) return onboardingVu() ? '/auth' : '/onboarding';
-      if (!s.profilComplet) return s.role === 'prof' ? '/auth/profil' : '/auth/alertes';
-      return s.role === 'prof' ? '/classe' : '/fil-parent';
+      if (!s) return onboardingSeen() ? '/auth' : '/onboarding';
+      if (!s.profileComplete) return s.role === 'teacher' ? '/auth/profile' : '/auth/alerts';
+      return s.role === 'teacher' ? '/classroom' : '/parent-feed';
     })
   })),
   withMethods((store) => ({
-    terminerOnboarding(): void {
-      patchState(store, { onboardingVu: true });
-      ecrire(CLE_ONBOARDING, true);
+    completeOnboarding(): void {
+      patchState(store, { onboardingSeen: true });
+      write(ONBOARDING_KEY, true);
     },
-    ouvrir(session: Session): void {
+    open(session: Session): void {
       patchState(store, { session });
-      ecrire(CLE_SESSION, session);
+      write(SESSION_KEY, session);
     },
-    fermer(): void {
+    close(): void {
       patchState(store, { session: null });
-      ecrire(CLE_SESSION, null);
+      write(SESSION_KEY, null);
     }
   }))
 );
 
-function lire<T>(cle: string): T | null {
+function read<T>(key: string): T | null {
   try {
-    const brut = localStorage.getItem(cle);
-    return brut ? (JSON.parse(brut) as T) : null;
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
   } catch {
     return null;
   }
 }
 
-function ecrire(cle: string, valeur: unknown): void {
+function write(key: string, value: unknown): void {
   try {
-    if (valeur === null) localStorage.removeItem(cle);
-    else localStorage.setItem(cle, JSON.stringify(valeur));
+    if (value === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // Stockage indisponible : l'état reste valable pour cette ouverture de l'app.
+    // Storage unavailable: the state stays valid for this app launch.
   }
 }

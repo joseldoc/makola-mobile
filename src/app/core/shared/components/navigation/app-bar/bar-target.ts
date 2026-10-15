@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output, signal } from '@angu
 import { IconComponent } from '../../foundation/icon/icon';
 
 /**
- * Cible ronde de 48 dp — toute action de barre d'app passe par elle.
+ * Round 48 dp target — every app bar action goes through it.
  * Source: @makola Design System, components/navigation/AppBar.jsx (`BarTarget`).
  */
 @Component({

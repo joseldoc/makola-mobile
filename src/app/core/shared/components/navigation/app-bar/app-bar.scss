@@ -4,18 +4,18 @@
 
 .app-bar {
   box-sizing: border-box;
-  // La teinte de rôle passe sous la barre de statut / l'encoche : seul le
-  // contenu est décalé, la hauteur utile reste 64 dp.
-  min-height: calc(var(--mk-h-barre) + var(--mk-zone-haut));
-  padding: calc(8px + var(--mk-zone-haut)) calc(var(--mk-esp-2) + var(--mk-zone-droite)) 8px
-    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+  // The role tint runs under the status bar / notch: only the content is
+  // offset, the usable height stays 64 dp.
+  min-height: calc(var(--mk-h-barre) + var(--mk-safe-top));
+  padding: calc(8px + var(--mk-safe-top)) calc(var(--mk-esp-2) + var(--mk-safe-right)) 8px
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
   display: flex;
   align-items: center;
   transition: box-shadow var(--mk-transition);
 
   &.tight {
-    padding: calc(4px + var(--mk-zone-haut)) calc(var(--mk-esp-4) + var(--mk-zone-droite)) 4px
-      calc(4px + var(--mk-zone-gauche));
+    padding: calc(4px + var(--mk-safe-top)) calc(var(--mk-esp-4) + var(--mk-safe-right)) 4px
+      calc(4px + var(--mk-safe-left));
   }
 
   &.scrolled {

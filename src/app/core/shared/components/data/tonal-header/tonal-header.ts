@@ -1,25 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-export type TonalHeaderRole = 'prof' | 'parent' | 'etab' | 'neutre';
-
-const ROLE: Record<TonalHeaderRole, [fond: string, forme: string]> = {
-  prof: ['var(--mk-role-prof)', 'var(--mk-role-prof-forme)'],
-  parent: ['var(--mk-role-parent)', 'var(--mk-role-parent-forme)'],
-  etab: ['var(--mk-role-etab)', 'var(--mk-role-etab-forme)'],
-  neutre: ['var(--mk-role-neutre)', 'var(--mk-role-neutre-forme)']
-};
+import { ROLE_TINTS, SurfaceRole } from '../../../roles';
 
 /**
- * Bandeau tonal M3 — deux formes rondes qui débordent, jamais de dégradé.
- * Un seul par écran, toujours en haut.
+ * M3 tonal header — two round shapes spilling out of the frame, never a gradient.
+ * One per screen, always at the top.
  * Source: @makola Design System, components/data/TonalHeader.jsx.
  */
 @Component({
   selector: 'app-tonal-header',
   template: `
-    <div class="tonal-header" [class.compact]="compact()" [class.plein-cadre]="pleinCadre()" [style.background]="fond()">
-      <div class="shape shape-top" [style.background]="forme()"></div>
-      <div class="shape shape-bottom" [style.background]="forme()"></div>
+    <div class="tonal-header" [class.compact]="compact()" [class.full-bleed]="fullBleed()" [style.background]="tint()[0]">
+      <div class="shape shape-top" [style.background]="tint()[1]"></div>
+      <div class="shape shape-bottom" [style.background]="tint()[1]"></div>
       <div class="content">
         <ng-content />
       </div>
@@ -29,12 +22,11 @@ const ROLE: Record<TonalHeaderRole, [fond: string, forme: string]> = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TonalHeaderComponent {
-  readonly role = input<TonalHeaderRole>('prof');
-  /** Padding réduit — pour un bandeau sous une barre d'app. */
+  readonly role = input<SurfaceRole>('teacher');
+  /** Reduced padding — for a header under an app bar. */
   readonly compact = input(false);
-  /** Bandeau en haut d'écran, sans barre d'app : la teinte passe sous la barre de statut. */
-  readonly pleinCadre = input(false);
+  /** Header at the top of a screen without app bar: the tint runs under the status bar. */
+  readonly fullBleed = input(false);
 
-  protected readonly fond = computed(() => ROLE[this.role()][0]);
-  protected readonly forme = computed(() => ROLE[this.role()][1]);
+  protected readonly tint = computed(() => ROLE_TINTS[this.role()]);
 }

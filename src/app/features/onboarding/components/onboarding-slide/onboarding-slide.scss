@@ -8,15 +8,16 @@
   flex-direction: column;
 }
 
-.visuel {
-  // Assez haut pour laisser la place à « Passer » au-dessus du disque.
-  min-height: clamp(168px, 34vh, 280px);
+.visual {
+  // Tall enough to leave room for the top controls above the disc, short enough
+  // for an entry-level phone (360 × 640 dp) to show the whole text.
+  min-height: clamp(112px, 24vh, 280px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.disque {
+.disc {
   width: 88px;
   height: 88px;
   border-radius: var(--mk-rayon-rond);
@@ -27,29 +28,29 @@
   justify-content: center;
 }
 
-.corps {
-  padding: var(--mk-esp-6) calc(var(--mk-esp-5) + var(--mk-zone-droite)) var(--mk-esp-4)
-    calc(var(--mk-esp-5) + var(--mk-zone-gauche));
+.body {
+  padding: var(--mk-esp-6) calc(var(--mk-esp-5) + var(--mk-safe-right)) var(--mk-esp-4)
+    calc(var(--mk-esp-5) + var(--mk-safe-left));
   display: flex;
   flex-direction: column;
   gap: var(--mk-esp-2);
-  // Mesure lisible sur tablette : pas de paragraphe d'un bord à l'autre.
+  // Readable measure on tablets: no edge-to-edge paragraph.
   max-width: 560px;
 }
 
-.rubrique {
+.kicker {
   margin: 0;
   font: var(--mk-sous-titre);
   color: var(--mk-text-secondaire);
 }
 
-.titre {
+.title {
   margin: 0;
   font: var(--mk-titre-ecran);
   color: var(--mk-text);
 }
 
-.texte {
+.text {
   margin: var(--mk-esp-1) 0 0;
   font: var(--mk-corps);
   color: var(--mk-text-secondaire);

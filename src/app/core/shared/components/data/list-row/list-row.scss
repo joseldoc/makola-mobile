@@ -7,8 +7,8 @@
   align-items: center;
   gap: var(--mk-esp-3);
   min-height: var(--mk-h-ligne);
-  // Encoche en paysage : le fond reste plein cadre, seul le contenu est décalé.
-  padding: 12px calc(var(--mk-esp-4) + var(--mk-zone-droite)) 12px calc(13px + var(--mk-zone-gauche));
+  // Landscape notch: the background stays full bleed, only the content is offset.
+  padding: 12px calc(var(--mk-esp-4) + var(--mk-safe-right)) 12px calc(13px + var(--mk-safe-left));
   border-left: 3px solid transparent;
   border-bottom: 1px solid var(--mk-separateur);
   background: var(--mk-surface);
@@ -57,7 +57,7 @@
   text-align: right;
   flex: none;
 
-  &.grand {
+  &.large {
     font: var(--mk-note);
     font-variant-numeric: var(--mk-num);
   }

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { compteActif, redirectionInitiale } from '@core/auth/guards';
+import { activeAccount, initialRedirect } from '@core/auth/guards';
 
 export const routes: Routes = [
   {
@@ -12,26 +12,26 @@ export const routes: Routes = [
     loadChildren: () => import('./features/auth').then((m) => m.AUTH_ROUTES)
   },
   {
-    path: 'classe',
-    canActivate: [compteActif('prof')],
-    loadChildren: () => import('./features/classe/classe-routes').then((m) => m.CLASSE_ROUTES)
+    path: 'classroom',
+    canActivate: [activeAccount('teacher')],
+    loadChildren: () => import('./features/classroom').then((m) => m.CLASSROOM_ROUTES)
   },
   {
-    path: 'saisie',
-    canActivate: [compteActif('prof')],
-    loadChildren: () => import('./features/saisie/saisie-routes').then((m) => m.SAISIE_ROUTES)
+    path: 'grade-entry',
+    canActivate: [activeAccount('teacher')],
+    loadChildren: () => import('./features/grade-entry').then((m) => m.GRADE_ENTRY_ROUTES)
   },
   {
-    path: 'devoir',
-    canActivate: [compteActif('prof')],
-    loadChildren: () => import('./features/devoir/devoir-routes').then((m) => m.DEVOIR_ROUTES)
+    path: 'assignment',
+    canActivate: [activeAccount('teacher')],
+    loadChildren: () => import('./features/assignment').then((m) => m.ASSIGNMENT_ROUTES)
   },
   {
-    path: 'fil-parent',
-    canActivate: [compteActif('parent')],
-    loadChildren: () => import('./features/fil-parent/fil-parent-routes').then((m) => m.FIL_PARENT_ROUTES)
+    path: 'parent-feed',
+    canActivate: [activeAccount('parent')],
+    loadChildren: () => import('./features/parent-feed').then((m) => m.PARENT_FEED_ROUTES)
   },
-  // Chacun arrive là où son compte en est : présentation, connexion, profil ou écran d'accueil.
-  { path: '', pathMatch: 'full', redirectTo: redirectionInitiale },
-  { path: '**', redirectTo: redirectionInitiale }
+  // Everyone lands where their account stands: onboarding, sign-in, profile or home.
+  { path: '', pathMatch: 'full', redirectTo: initialRedirect },
+  { path: '**', redirectTo: initialRedirect }
 ];

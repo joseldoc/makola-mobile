@@ -4,7 +4,7 @@
 
 .tabs {
   display: grid;
-  padding: 0 var(--mk-zone-droite) 0 var(--mk-zone-gauche);
+  padding: 0 var(--mk-safe-right) 0 var(--mk-safe-left);
   border-bottom: 1px solid var(--mk-separateur);
 }
 

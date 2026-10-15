@@ -19,8 +19,8 @@
     width var(--mk-bascule),
     background var(--mk-bascule);
 
-  // Pastille de 6 dp, cible de 44 dp de haut ; en largeur, la cible
-  // s'étend jusqu'au milieu de l'espacement pour ne pas chevaucher sa voisine.
+  // 6 dp dot, 44 dp tall target; horizontally the target reaches the middle
+  // of the gap so it never overlaps its neighbour.
   &::after {
     content: '';
     position: absolute;

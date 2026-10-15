@@ -1,37 +1,33 @@
 import { ChangeDetectionStrategy, Component, computed, input, model, output, signal } from '@angular/core';
 import { FormValueControl, ValidationError } from '@angular/forms/signals';
 
-export type TextFieldState = 'repos' | 'focus' | 'erreur' | 'alerte' | 'valide';
+export type TextFieldState = 'idle' | 'focus' | 'error' | 'warning' | 'valid';
 
-const TEINTE: Record<TextFieldState, string> = {
-  repos: 'var(--mk-contour)',
+const TINT: Record<TextFieldState, string> = {
+  idle: 'var(--mk-contour)',
   focus: 'var(--mk-primaire)',
-  erreur: 'var(--mk-refus)',
-  alerte: 'var(--mk-attente)',
-  valide: 'var(--mk-succes)'
+  error: 'var(--mk-refus)',
+  warning: 'var(--mk-attente)',
+  valid: 'var(--mk-succes)'
 };
 
-let prochainId = 0;
+let nextId = 0;
 
 /**
- * Champ M3 outlined — libellé dans l'encoche du contour. Cinq états : repos,
- * focus, erreur (bloque), alerte (n'empêche pas), valide. Un refus dit
- * toujours quoi faire. Source: @makola Design System, components/forms/TextField.jsx.
+ * M3 outlined field — label in the outline notch. Five states: idle, focus,
+ * error (blocks), warning (does not block), valid. A refusal always says what
+ * to do. Source: @makola Design System, components/forms/TextField.jsx.
  *
- * Contrôle de formulaire signal (`FormValueControl`) : se lie par `[formField]`,
- * ou à la main par `[value]` / `(valueChange)`. Lié à un champ, il affiche la
- * première erreur de validation une fois le champ quitté.
+ * Signal forms control (`FormValueControl`): bind it with `[formField]`, or by
+ * hand with `[value]` / `(valueChange)`. Bound to a field, it shows the first
+ * validation error once the field has been left.
  */
 @Component({
   selector: 'app-text-field',
   template: `
     <div>
-      <div
-        class="field"
-        [class.focused]="etat() === 'focus'"
-        [style.border-color]="col()"
-      >
-        <label class="label" [for]="id" [style.color]="col()">{{ label() }}</label>
+      <div class="field" [class.focused]="state_() === 'focus'" [style.border-color]="tint()">
+        <label class="label" [for]="id" [style.color]="tint()">{{ label() }}</label>
         @if (multiline()) {
           <textarea
             class="control"
@@ -40,8 +36,8 @@ let prochainId = 0;
             [value]="value()"
             [disabled]="disabled()"
             [placeholder]="placeholder()"
-            [attr.aria-invalid]="etat() === 'erreur'"
-            [attr.aria-describedby]="texteAide() ? id + '-aide' : null"
+            [attr.aria-invalid]="state_() === 'error'"
+            [attr.aria-describedby]="helpText() ? id + '-help' : null"
             (input)="onInput($event)"
             (focus)="focused.set(true)"
             (blur)="onBlur()"
@@ -57,23 +53,23 @@ let prochainId = 0;
             [attr.inputmode]="inputmode() || null"
             [attr.autocomplete]="autocomplete() || null"
             [attr.enterkeyhint]="enterkeyhint() || null"
-            [attr.aria-invalid]="etat() === 'erreur'"
-            [attr.aria-describedby]="texteAide() ? id + '-aide' : null"
+            [attr.aria-invalid]="state_() === 'error'"
+            [attr.aria-describedby]="helpText() ? id + '-help' : null"
             (input)="onInput($event)"
             (focus)="focused.set(true)"
             (blur)="onBlur()"
           />
         }
       </div>
-      @if (texteAide() || counter()) {
+      @if (helpText() || counter()) {
         <div class="meta">
           <div
             class="message"
-            [id]="id + '-aide'"
-            [attr.role]="etat() === 'erreur' ? 'alert' : null"
-            [style.color]="etat() === 'repos' || etat() === 'focus' ? 'var(--mk-text-secondaire)' : col()"
+            [id]="id + '-help'"
+            [attr.role]="state_() === 'error' ? 'alert' : null"
+            [style.color]="state_() === 'idle' || state_() === 'focus' ? 'var(--mk-text-secondaire)' : tint()"
           >
-            {{ texteAide() }}
+            {{ helpText() }}
           </div>
           @if (counter()) {
             <div class="counter">{{ counter() }}</div>
@@ -86,47 +82,46 @@ let prochainId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TextFieldComponent implements FormValueControl<string> {
-  /** Affiché dans l'encoche du contour, jamais en placeholder seul. */
+  /** Shown in the outline notch, never as a placeholder alone. Already translated. */
   readonly label = input.required<string>();
   readonly value = model.required<string>();
   readonly placeholder = input('');
-  /** `erreur` bloque l'envoi, `alerte` ne l'empêche pas, `valide` l'affirme. */
-  readonly state = input<TextFieldState>('repos');
-  /** Obligatoire dès que `state` vaut erreur / alerte / valide : dites QUOI FAIRE. */
+  /** `error` blocks submission, `warning` does not, `valid` affirms. */
+  readonly state = input<TextFieldState>('idle');
+  /** Required as soon as `state` is error / warning / valid: say WHAT TO DO. */
   readonly message = input('');
-  /** Ex. « 48 / 60 ». Réservé aux champs à longueur bornée. */
+  /** E.g. "48 / 60". Reserved for length-bounded fields. */
   readonly counter = input('');
   readonly type = input('text');
-  /** Réservé aux valeurs dictées par une règle de gestion, jamais par confort. */
+  /** Reserved for values dictated by a business rule, never for comfort. */
   readonly disabled = input(false);
   readonly multiline = input(false);
-  /** Clavier virtuel adapté : `tel`, `email`, `numeric`… */
+  /** Adapted virtual keyboard: `tel`, `email`, `numeric`… */
   readonly inputmode = input('');
   readonly autocomplete = input('');
   readonly enterkeyhint = input('');
 
-  // ── Liaison signal forms (renseignées par `[formField]`) ──
+  // ── Signal forms binding (set by `[formField]`) ──
   readonly errors = input<readonly ValidationError.WithOptionalFieldTree[]>([]);
   readonly touched = input(false);
   readonly touch = output<void>();
 
-  protected readonly id = `mk-champ-${prochainId++}`;
-
+  protected readonly id = `mk-field-${nextId++}`;
   protected readonly focused = signal(false);
 
-  /** Erreur de validation à montrer : seulement après que l'utilisateur a quitté le champ. */
-  private readonly erreurVisible = computed(() => (this.touched() ? this.errors()[0] : undefined));
+  /** Validation error to show: only once the user has left the field. */
+  private readonly visibleError = computed(() => (this.touched() ? this.errors()[0] : undefined));
 
-  protected readonly texteAide = computed(() => this.erreurVisible()?.message ?? this.message());
+  protected readonly helpText = computed(() => this.visibleError()?.message ?? this.message());
 
-  protected readonly etat = computed<TextFieldState>(() => {
-    if (this.disabled()) return 'repos';
-    if (this.erreurVisible()) return 'erreur';
-    if (this.focused() && this.state() === 'repos') return 'focus';
+  protected readonly state_ = computed<TextFieldState>(() => {
+    if (this.disabled()) return 'idle';
+    if (this.visibleError()) return 'error';
+    if (this.focused() && this.state() === 'idle') return 'focus';
     return this.state();
   });
 
-  protected readonly col = computed(() => TEINTE[this.etat()]);
+  protected readonly tint = computed(() => TINT[this.state_()]);
 
   protected onInput(event: Event): void {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;

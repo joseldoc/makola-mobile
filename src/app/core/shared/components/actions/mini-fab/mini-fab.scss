@@ -17,7 +17,7 @@
     transform var(--mk-presse),
     background var(--mk-presse);
 
-  // Visuel de 32 dp, cible de 48 dp (44 pt iOS / 48 dp Android).
+  // 32 dp visual, 48 dp touch target (44 pt iOS / 48 dp Android).
   &::after {
     content: '';
     position: absolute;

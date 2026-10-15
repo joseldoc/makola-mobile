@@ -1,17 +1,10 @@
 import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 
-export type OutlinedButtonTone = 'prof' | 'parent' | 'etab' | 'neutre';
-
-const TONE_BACKGROUND: Record<OutlinedButtonTone, string> = {
-  prof: 'var(--mk-role-prof)',
-  parent: 'var(--mk-role-parent)',
-  etab: 'var(--mk-role-etab)',
-  neutre: 'var(--mk-role-neutre)'
-};
+import { ROLE_TINTS, SurfaceRole } from '../../../roles';
 
 /**
- * Bouton M2 outlined — dans une ligne de liste ou un bloc de contenu.
- * Pas d'état inactif : un bouton de ligne qui ne sert pas n'est pas affiché.
+ * M2 outlined button — in a list row or a content block.
+ * No disabled state: a row button that does nothing is not shown.
  * Source: @makola Design System, components/actions/OutlinedButton.jsx.
  */
 @Component({
@@ -33,14 +26,14 @@ const TONE_BACKGROUND: Record<OutlinedButtonTone, string> = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OutlinedButtonComponent {
-  /** Court : il est mis en majuscules et doit tenir sur une ligne. */
+  /** Short: it is uppercased and must fit on one line. */
   readonly label = input.required<string>();
-  /** Teinte du fond au pressé — celle du rôle de l'écran. */
-  readonly tone = input<OutlinedButtonTone>('prof');
-  /** `true` pour partager la largeur avec ses frères dans un flex. */
+  /** Pressed background — the tint of the screen's role. */
+  readonly tone = input<SurfaceRole>('teacher');
+  /** `true` to share the width with its siblings in a flex row, or fill a column. */
   readonly full = input(false);
   readonly clicked = output<void>();
 
   protected readonly held = signal(false);
-  protected readonly toneBackground = computed(() => TONE_BACKGROUND[this.tone()]);
+  protected readonly toneBackground = computed(() => ROLE_TINTS[this.tone()][0]);
 }

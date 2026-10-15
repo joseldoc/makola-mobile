@@ -6,8 +6,8 @@ import { registerIcons } from '@core/shared/icons';
 registerIcons();
 
 /**
- * Icône Ionicons, style outline uniquement — voir `ICONS` (@core/shared/icons)
- * pour l'inventaire. Source: @makola Design System, components/foundation/Icon.jsx.
+ * Ionicons icon, outline style only — see `ICONS` (@core/shared/icons) for
+ * the inventory. Source: @makola Design System, components/foundation/Icon.jsx.
  */
 @Component({
   selector: 'app-icon',
@@ -28,11 +28,11 @@ registerIcons();
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent {
-  /** Nom Ionicons complet, ou une valeur de `ICONS`. Toujours un `-outline`. */
+  /** Full Ionicons name, or a value of `ICONS`. Always an `-outline`. */
   readonly name = input.required<string>();
-  /** 22 par défaut (cible de barre d'app). 18 dans un champ, 16 en ligne de texte. */
+  /** 22 by default (app bar target). 18 in a field, 16 inline with text. */
   readonly size = input(22);
   readonly color = input('currentColor');
-  /** Renseigner seulement si l'icône est seule et porteuse de sens ; sinon décorative. */
+  /** Set only when the icon stands alone and carries meaning; otherwise decorative. Already translated. */
   readonly label = input<string>();
 }

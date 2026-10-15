@@ -1,35 +1,39 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
-export type CodeSlotsEtat = 'repos' | 'verification' | 'erreur';
+export type CodeSlotsState = 'idle' | 'checking' | 'error';
 
 /**
- * Les cases d'un code à chiffres — saisi au pavé dédié, jamais au clavier
- * système (Keypad, columns=3). Chiffres en 30 sp tabulaires ; la case suivante
- * porte le contour bleu, le refus passe tout le code en rouge.
+ * The boxes of a digit code — typed on the dedicated keypad, never on the system
+ * keyboard (Keypad, columns=3). Digits in tabular 30 sp; the next box carries the
+ * blue outline, a refusal turns the whole code red.
  */
 @Component({
   selector: 'app-code-slots',
+  imports: [TranslocoPipe],
   template: `
-    <div class="slots" [class.erreur]="etat() === 'erreur'" [class.verification]="etat() === 'verification'" aria-hidden="true">
-      @for (i of cases(); track i) {
-        <div class="slot" [class.pleine]="i < valeur().length" [class.suivante]="i === valeur().length && etat() === 'repos'">
-          {{ valeur()[i] ?? '' }}
+    <div class="slots" [class.error]="state() === 'error'" [class.checking]="state() === 'checking'" aria-hidden="true">
+      @for (i of boxes(); track i) {
+        <div class="slot" [class.filled]="i < value().length" [class.next]="i === value().length && state() === 'idle'">
+          {{ value()[i] ?? '' }}
         </div>
       }
     </div>
-    <span class="sr" aria-live="polite">{{ annonce() }}</span>
+    <span class="sr" aria-live="polite">
+      @if (state() === 'checking') {
+        {{ 'auth.code.checking' | transloco }}
+      } @else {
+        {{ 'auth.code.progress' | transloco: { count: value().length, total: length() } }}
+      }
+    </span>
   `,
   styleUrl: './code-slots.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CodeSlotsComponent {
-  readonly valeur = input.required<string>();
-  readonly longueur = input(6);
-  readonly etat = input<CodeSlotsEtat>('repos');
+  readonly value = input.required<string>();
+  readonly length = input(6);
+  readonly state = input<CodeSlotsState>('idle');
 
-  protected readonly cases = computed(() => Array.from({ length: this.longueur() }, (_, i) => i));
-  protected readonly annonce = computed(() => {
-    if (this.etat() === 'verification') return 'Vérification du code.';
-    return `${this.valeur().length} chiffre(s) saisi(s) sur ${this.longueur()}.`;
-  });
+  protected readonly boxes = computed(() => Array.from({ length: this.length() }, (_, i) => i));
 }

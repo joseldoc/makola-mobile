@@ -1,0 +1,109 @@
+:host {
+  display: block;
+  flex: none;
+}
+
+.banner {
+  position: relative;
+  overflow: hidden;
+  border-bottom-left-radius: var(--mk-rayon-bandeau);
+  border-bottom-right-radius: var(--mk-rayon-bandeau);
+  // Full bleed: the tint runs under the status bar.
+  padding: calc(var(--mk-esp-2) + var(--mk-safe-top)) calc(var(--mk-esp-6) + var(--mk-safe-right)) var(--mk-esp-5)
+    calc(var(--mk-esp-6) + var(--mk-safe-left));
+}
+
+// Two round shapes in the darker tint spilling out of the frame — never a gradient.
+.shape {
+  position: absolute;
+  border-radius: var(--mk-rayon-rond);
+}
+
+.shape-top {
+  top: -84px;
+  right: -70px;
+  width: 230px;
+  height: 230px;
+}
+
+.shape-bottom {
+  bottom: -104px;
+  left: -70px;
+  width: 190px;
+  height: 190px;
+  opacity: 0.6;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+  max-width: 520px;
+  color: var(--mk-text);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-1);
+  min-height: var(--mk-cible-barre);
+  // The back target aligns with the edge, the mark stays in the 24 margin.
+  margin-left: calc(-1 * var(--mk-esp-3));
+  margin-bottom: var(--mk-esp-2);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-3);
+  padding-left: var(--mk-esp-3);
+}
+
+.name {
+  font: 400 26px/1 var(--mk-font);
+  letter-spacing: -0.5px;
+}
+
+.step {
+  margin: 0;
+  font: var(--mk-sous-titre);
+}
+
+.title {
+  margin: 0;
+  font: var(--mk-titre-ecran);
+}
+
+.text {
+  margin: 0;
+  font: 400 15px/1.5 var(--mk-font);
+  max-width: 300px;
+}
+
+// Entry-level phone (≈ 640 dp): the mark gives way to the keypad, the banner
+// tightens so the field, the hint and the actions stay visible.
+@media (max-height: 700px) {
+  .brand {
+    display: none;
+  }
+
+  .head {
+    min-height: var(--mk-cible);
+    margin-bottom: 0;
+  }
+
+  .content {
+    gap: var(--mk-esp-1);
+  }
+
+  .banner {
+    padding-top: calc(var(--mk-esp-1) + var(--mk-safe-top));
+    padding-bottom: var(--mk-esp-3);
+  }
+
+  .text {
+    max-width: none;
+    font: 400 14px/1.45 var(--mk-font);
+  }
+}

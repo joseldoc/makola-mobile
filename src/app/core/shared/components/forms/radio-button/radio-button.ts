@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 /**
- * Bouton radio M3 — contour 2 dp, pastille intérieure 10 dp.
+ * M3 radio button — 2 dp outline, 10 dp inner dot.
  * Source: @makola Design System, components/forms/RadioButton.jsx.
  */
 @Component({

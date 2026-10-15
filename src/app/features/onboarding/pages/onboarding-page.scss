@@ -34,24 +34,30 @@
   overflow-y: auto;
 }
 
-.passer {
+// Language on the left, "Skip" on the right — above the tonal header.
+.top {
   position: absolute;
-  top: calc(var(--mk-esp-2) + var(--mk-zone-haut));
-  right: calc(var(--mk-esp-4) + var(--mk-zone-droite));
+  top: calc(var(--mk-esp-2) + var(--mk-safe-top));
+  left: calc(var(--mk-esp-4) + var(--mk-safe-left));
+  right: calc(var(--mk-esp-4) + var(--mk-safe-right));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mk-esp-2);
 }
 
 .controls {
   display: flex;
   flex-direction: column;
-  gap: var(--mk-esp-5);
-  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-zone-droite)) calc(var(--mk-esp-5) + var(--mk-zone-bas))
-    calc(var(--mk-esp-4) + var(--mk-zone-gauche));
+  gap: var(--mk-esp-4);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-5) + var(--mk-safe-bottom))
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
 }
 
 .dots {
   display: flex;
   justify-content: center;
-  // Cible de 44 dp portée par les pastilles elles-mêmes.
+  // 44 dp target carried by the dots themselves.
   min-height: var(--mk-cible);
   align-items: center;
 }

@@ -18,14 +18,14 @@
   cursor: pointer;
   transition: background var(--mk-presse);
 
-  // Pleine largeur dans une colonne, parts égales entre frères dans une ligne.
-  // (`flex: 1` seul écraserait la hauteur dans un conteneur en colonne.)
+  // Full width in a column, equal shares between siblings in a row.
+  // (`flex: 1` alone would crush the height in a column container.)
   &.full {
     flex: 1 1 auto;
     width: 100%;
   }
 
-  // Bouton M2 de 36 dp, cible de 48 dp (44 pt iOS / 48 dp Android).
+  // 36 dp M2 button, 48 dp touch target (44 pt iOS / 48 dp Android).
   &::after {
     content: '';
     position: absolute;
@@ -33,8 +33,8 @@
   }
 }
 
-// L'ellipse vit sur le libellé : sur le bouton, `overflow: hidden` couperait
-// la cible étendue ci-dessus.
+// The ellipsis lives on the label: on the button, `overflow: hidden` would clip
+// the extended target above.
 .label {
   display: block;
   overflow: hidden;

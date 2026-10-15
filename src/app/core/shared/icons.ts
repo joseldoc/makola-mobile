@@ -1,9 +1,8 @@
 // Source: @makola Design System (claude.ai/design) — components/foundation/Icon.jsx
-// Ionicons, style outline exclusivement. Aucune variante pleine, aucune `-sharp`.
-// Quinze noms, et c'est tout : une icône absente d'ici est une décision à prendre,
-// pas un détail d'implémentation.
-// Seizième, ajoutée avec l'entrée par compte : `deconnexion` — à reporter dans
-// le Design System (components/foundation/Icon.jsx).
+// Ionicons, outline style only. No filled variant, no `-sharp`.
+// This list IS the inventory: an icon missing from it is a decision to make,
+// not an implementation detail. `logout` (16th) was added with account sign-in —
+// to be reported to the design system (components/foundation/Icon.jsx).
 import { addIcons } from 'ionicons';
 import {
   chevronBackOutline,
@@ -25,48 +24,48 @@ import {
 } from 'ionicons/icons';
 
 export const ICONS = {
-  retour: 'chevron-back-outline',
-  deplier: 'chevron-down-outline',
-  recherche: 'search-outline',
-  effacer: 'close-outline',
-  effacementPave: 'backspace-outline',
-  coche: 'checkmark-outline',
-  moins: 'remove-outline',
+  back: 'chevron-back-outline',
+  expand: 'chevron-down-outline',
+  search: 'search-outline',
+  clear: 'close-outline',
+  backspace: 'backspace-outline',
+  check: 'checkmark-outline',
+  minus: 'remove-outline',
   plus: 'add-outline',
-  progression: 'trending-up-outline',
+  progress: 'trending-up-outline',
   document: 'document-text-outline',
-  calendrier: 'calendar-outline',
-  horsLigne: 'cloud-offline-outline',
-  synchronise: 'cloud-done-outline',
-  eleve: 'person-outline',
-  classe: 'people-outline',
-  deconnexion: 'log-out-outline'
+  calendar: 'calendar-outline',
+  offline: 'cloud-offline-outline',
+  synced: 'cloud-done-outline',
+  student: 'person-outline',
+  classroom: 'people-outline',
+  logout: 'log-out-outline'
 } as const;
 
 export type IconName = (typeof ICONS)[keyof typeof ICONS];
 
 let registered = false;
 
-/** Enregistre les 16 icônes une fois par app. Appelé automatiquement par IconComponent. */
+/** Registers the 16 icons once per app. Called automatically by IconComponent. */
 export function registerIcons(): void {
   if (registered) return;
   registered = true;
   addIcons({
-    [ICONS.retour]: chevronBackOutline,
-    [ICONS.deplier]: chevronDownOutline,
-    [ICONS.recherche]: searchOutline,
-    [ICONS.effacer]: closeOutline,
-    [ICONS.effacementPave]: backspaceOutline,
-    [ICONS.coche]: checkmarkOutline,
-    [ICONS.moins]: removeOutline,
+    [ICONS.back]: chevronBackOutline,
+    [ICONS.expand]: chevronDownOutline,
+    [ICONS.search]: searchOutline,
+    [ICONS.clear]: closeOutline,
+    [ICONS.backspace]: backspaceOutline,
+    [ICONS.check]: checkmarkOutline,
+    [ICONS.minus]: removeOutline,
     [ICONS.plus]: addOutline,
-    [ICONS.progression]: trendingUpOutline,
+    [ICONS.progress]: trendingUpOutline,
     [ICONS.document]: documentTextOutline,
-    [ICONS.calendrier]: calendarOutline,
-    [ICONS.horsLigne]: cloudOfflineOutline,
-    [ICONS.synchronise]: cloudDoneOutline,
-    [ICONS.eleve]: personOutline,
-    [ICONS.classe]: peopleOutline,
-    [ICONS.deconnexion]: logOutOutline
+    [ICONS.calendar]: calendarOutline,
+    [ICONS.offline]: cloudOfflineOutline,
+    [ICONS.synced]: cloudDoneOutline,
+    [ICONS.student]: personOutline,
+    [ICONS.classroom]: peopleOutline,
+    [ICONS.logout]: logOutOutline
   });
 }
