@@ -1,0 +1,137 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.welcome {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  // Light entry surface: the lightest dilution of the blue.
+  background: var(--mk-actif-fond);
+  color: var(--mk-text);
+}
+
+.shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+// No gradient: four flat shapes, the same tints as the roles.
+.shape {
+  position: absolute;
+}
+
+.shape-blue {
+  top: -120px;
+  right: -90px;
+  width: 340px;
+  height: 340px;
+  border-radius: var(--mk-rayon-rond);
+  background: var(--mk-role-etab);
+}
+
+.shape-green {
+  top: 96px;
+  left: -140px;
+  width: 250px;
+  height: 250px;
+  border-radius: var(--mk-rayon-rond);
+  background: var(--mk-role-prof);
+}
+
+.shape-amber {
+  bottom: 120px;
+  right: -110px;
+  width: 300px;
+  height: 300px;
+  border-radius: 160px 60px 60px 60px;
+  background: var(--mk-role-parent);
+}
+
+.shape-dot {
+  top: calc(var(--mk-esp-6) + var(--mk-safe-top) + 48px);
+  left: var(--mk-esp-6);
+  width: 76px;
+  height: 76px;
+  border-radius: var(--mk-rayon-rond);
+  background: var(--mk-role-etab-forme);
+}
+
+.language {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  padding: calc(var(--mk-esp-3) + var(--mk-safe-top)) calc(var(--mk-esp-4) + var(--mk-safe-right)) 0;
+}
+
+.brand {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mk-esp-3);
+  padding: var(--mk-esp-4) calc(40px + var(--mk-safe-right)) var(--mk-esp-6) calc(40px + var(--mk-safe-left));
+  text-align: center;
+}
+
+.name {
+  margin-top: var(--mk-esp-4);
+  font: 400 40px/1 var(--mk-font);
+  letter-spacing: -1px;
+}
+
+.promise {
+  margin: 0;
+  max-width: 260px;
+  font: 400 16px/1.5 var(--mk-font);
+  // Full ink: the sentence runs over the shapes, and only ink keeps its
+  // contrast there (≥ 13:1 on every role tint — audit 30a).
+  color: var(--mk-text);
+}
+
+// Text and actions live on white, never on a role surface: the footer is a
+// white sheet with rounded top corners, laid over the shapes.
+.welcome-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+  padding: var(--mk-esp-5) calc(var(--mk-esp-5) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
+    calc(var(--mk-esp-5) + var(--mk-safe-left));
+  background: var(--mk-surface);
+  border-top-left-radius: var(--mk-rayon-pleine);
+  border-top-right-radius: var(--mk-rayon-pleine);
+}
+
+.text-action {
+  height: var(--mk-h-action);
+  border: 0;
+  border-radius: var(--mk-rayon-pleine);
+  background: transparent;
+  color: var(--mk-primaire);
+  font: var(--mk-bouton-action);
+  cursor: pointer;
+  transition: background var(--mk-presse);
+
+  &:active {
+    background: var(--mk-actif-fond);
+  }
+}
+
+@media (max-height: 700px) {
+  .brand {
+    gap: var(--mk-esp-2);
+  }
+
+  .name {
+    margin-top: var(--mk-esp-2);
+    font-size: 34px;
+  }
+}

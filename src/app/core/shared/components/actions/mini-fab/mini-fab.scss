@@ -1,0 +1,27 @@
+:host {
+  display: contents;
+}
+
+.mini-fab {
+  position: relative;
+  width: var(--mk-h-mini-fab);
+  height: var(--mk-h-mini-fab);
+  flex: none;
+  border-radius: var(--mk-rayon-rond);
+  border: 1px solid rgba(16, 26, 46, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform var(--mk-presse),
+    background var(--mk-presse);
+
+  // 32 dp visual, 48 dp touch target (44 pt iOS / 48 dp Android).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: var(--mk-rayon-rond);
+  }
+}

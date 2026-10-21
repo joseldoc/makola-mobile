@@ -1,0 +1,32 @@
+<div class="grade-entry-page">
+  <app-bar [title]="store.assignment()" [subtitle]="subtitle()" role="teacher" [showBack]="true" (back)="back()" />
+
+  <app-network-banner state="offline" [pending]="store.entered()" />
+
+  <div class="list">
+    @for (name of store.names(); track name; let k = $index) {
+      <app-list-row
+        [index]="k"
+        [primary]="name"
+        [secondary]="k === store.activeIndex() ? ('gradeEntry.inProgress' | transloco) : ''"
+        [value]="display(store.grades()[k])"
+        [valueTone]="valueTone(store.grades()[k])"
+        [active]="k === store.activeIndex()"
+        [flash]="store.flashIndex() === k"
+        (rowClick)="store.setActive(k)"
+      />
+    }
+  </div>
+
+  <app-keypad
+    [columns]="4"
+    [decimalSeparator]="separator()"
+    [nextLabel]="'gradeEntry.nextStudent' | transloco"
+    (digit)="store.typeDigit($event)"
+    (decimal)="store.typeDecimal()"
+    (backspace)="store.eraseDigit()"
+    (absent)="store.markAbsent()"
+    (ungraded)="store.markUngraded()"
+    (next)="store.next()"
+  />
+</div>

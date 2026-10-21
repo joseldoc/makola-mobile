@@ -1,0 +1,81 @@
+.group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.group-title {
+  padding: 0;
+  margin-bottom: var(--mk-esp-1);
+  font: var(--mk-sous-titre);
+  font-weight: 500;
+  color: var(--mk-text-secondaire);
+}
+
+// Preview and deduced country: @makola boxes (1 px outline, radius 8), no shadow.
+.preview,
+.country {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--mk-esp-3) var(--mk-esp-4);
+  border: 1px solid var(--mk-separateur);
+  border-radius: var(--mk-rayon-encadre);
+}
+
+.preview-label {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+}
+
+.preview-name,
+.country-name {
+  font: var(--mk-ligne-liste);
+  color: var(--mk-text);
+}
+
+.country-source {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+}
+
+// Frequent cities: outlined M2 buttons, tappable, wrapping onto new lines.
+.cities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mk-esp-2);
+  margin-top: calc(-1 * var(--mk-esp-2));
+}
+
+.city {
+  position: relative;
+  height: var(--mk-h-bouton-m2);
+  padding: 0 var(--mk-esp-3);
+  border: 1px solid var(--mk-contour-m2);
+  border-radius: var(--mk-rayon-remplir);
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  font: var(--mk-bouton-m2);
+  cursor: pointer;
+  transition: background var(--mk-presse);
+
+  // 36 dp visual, 44 dp target.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px 0;
+  }
+
+  &:active {
+    background: var(--mk-role-prof);
+  }
+
+  &.active {
+    border-color: var(--mk-primaire);
+    background: var(--mk-actif-fond);
+    color: var(--mk-primaire);
+  }
+}

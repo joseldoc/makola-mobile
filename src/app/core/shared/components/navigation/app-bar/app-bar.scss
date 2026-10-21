@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+.app-bar {
+  box-sizing: border-box;
+  // The role tint runs under the status bar / notch: only the content is
+  // offset, the usable height stays 64 dp.
+  min-height: calc(var(--mk-h-barre) + var(--mk-safe-top));
+  padding: calc(8px + var(--mk-safe-top)) calc(var(--mk-esp-2) + var(--mk-safe-right)) 8px
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  display: flex;
+  align-items: center;
+  transition: box-shadow var(--mk-transition);
+
+  &.tight {
+    padding: calc(4px + var(--mk-safe-top)) calc(var(--mk-esp-4) + var(--mk-safe-right)) 4px
+      calc(4px + var(--mk-safe-left));
+  }
+
+  &.scrolled {
+    box-shadow: 0 2px 8px rgba(16, 26, 46, 0.14);
+  }
+}
+
+.titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font: var(--mk-titre-ecran);
+  color: var(--mk-text);
+}
+
+.subtitle {
+  font: var(--mk-sous-titre);
+  color: var(--mk-text-secondaire);
+  margin-top: 2px;
+}

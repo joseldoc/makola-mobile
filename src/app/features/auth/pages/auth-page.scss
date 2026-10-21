@@ -1,0 +1,143 @@
+// Shared layout of the entry screens: app bar or tonal banner, scrolling
+// content, fixed footer action (one per screen). Imported by every /auth page.
+:host {
+  display: block;
+  height: 100%;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: var(--mk-esp-5) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-6)
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-5);
+}
+
+.intro {
+  margin: 0;
+  font: var(--mk-corps);
+  color: var(--mk-text-secondaire);
+  max-width: 560px;
+}
+
+.error-text {
+  margin: 0;
+  font: 400 13px/1.45 var(--mk-font);
+  color: var(--mk-refus);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-3);
+  border-top: 1px solid var(--mk-separateur);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+}
+
+// ── Entry screens (mock-up 24c) ─────────────────────────────────────────────
+// Tonal banner at the top, field on white, actions, then the keypad at the bottom.
+.input-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: var(--mk-esp-5) calc(var(--mk-esp-6) + var(--mk-safe-right)) 0 calc(var(--mk-esp-6) + var(--mk-safe-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-3);
+}
+
+.hint {
+  margin: 0;
+  min-height: 19px;
+  font: 400 13px/1.45 var(--mk-font);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text-secondaire);
+
+  &.is-error {
+    color: var(--mk-refus);
+  }
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-1);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-6) + var(--mk-safe-right)) var(--mk-esp-2)
+    calc(var(--mk-esp-6) + var(--mk-safe-left));
+
+  // Without keypad (email entry), the actions carry the bottom safe area.
+  &.last {
+    padding-bottom: calc(var(--mk-esp-3) + var(--mk-safe-bottom));
+  }
+}
+
+// Text action: blue on white, 48 dp tall — the alternative, never the main action.
+.text-action {
+  height: var(--mk-h-action);
+  border: 0;
+  border-radius: var(--mk-rayon-pleine);
+  background: transparent;
+  color: var(--mk-primaire);
+  font: var(--mk-bouton-action);
+  cursor: pointer;
+  transition: background var(--mk-presse);
+
+  &:active {
+    background: var(--mk-actif-fond);
+  }
+}
+
+.resend {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--mk-primaire);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  // 44 dp target around a link inside a sentence.
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -14px -8px;
+  }
+}
+
+@media (max-height: 700px) {
+  // 46 dp keys instead of 52 on entry screens only: the target stays above
+  // 44 dp, and the grade-entry keypad is untouched.
+  .entry {
+    --mk-h-touche: 46px;
+  }
+
+  .input-area {
+    padding-top: var(--mk-esp-3);
+    gap: var(--mk-esp-2);
+  }
+
+  .actions {
+    padding-top: var(--mk-esp-1);
+    gap: 0;
+  }
+
+  .text-action {
+    height: var(--mk-cible);
+  }
+}

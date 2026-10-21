@@ -1,0 +1,36 @@
+<div class="page entry">
+  <app-auth-banner
+    [step]="'auth.invitation.step' | transloco"
+    [title]="'auth.invitation.title' | transloco"
+    [text]="'auth.invitation.text' | transloco"
+    role="parent"
+    (back)="goBack()"
+  />
+
+  <div class="input-area">
+    <app-code-slots [value]="code()" [state]="state()" />
+
+    @let error = store.errorMessage();
+    <p class="hint" [class.is-error]="!!error" [attr.role]="error ? 'alert' : null">
+      @if (error) {
+        {{ error.key | transloco: error.params }}
+      } @else if (store.busy()) {
+        {{ 'auth.invitation.searching' | transloco }}
+      } @else {
+        {{ 'auth.invitation.validity' | transloco }}
+      }
+    </p>
+  </div>
+
+  <div class="actions">
+    <app-footer-action
+      [label]="'auth.invitation.seeStudent' | transloco"
+      tone="pending"
+      [disabled]="!!missing()"
+      [missingLabel]="missing()"
+      (pressed)="confirm()"
+    />
+  </div>
+
+  <app-keypad [columns]="3" (digit)="digit($event)" (backspace)="erase()" />
+</div>

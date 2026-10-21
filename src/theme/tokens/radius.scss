@@ -1,0 +1,11 @@
+// Source: @makola Design System (claude.ai/design) — tokens/radius.css
+// Copied verbatim.
+:root{
+  /* Cinq valeurs, une intention chacune */
+  --mk-rayon-remplir:4px;  /* ce qui se remplit : champ, bouton M2 */
+  --mk-rayon-encadre:8px;  /* encadrés, blocs d'aide */
+  --mk-rayon-touche:16px;  /* touches de pavé, feuille modale */
+  --mk-rayon-pleine:24px;  /* ce qui se tape en pleine largeur */
+  --mk-rayon-rond:999px;   /* cibles ponctuelles, pilules, mini-FAB */
+  --mk-rayon-bandeau:32px; /* bas d'un bandeau tonal (28–32) */
+}

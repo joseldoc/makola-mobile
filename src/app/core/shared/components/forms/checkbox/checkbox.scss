@@ -1,0 +1,48 @@
+:host {
+  display: block;
+}
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mk-esp-3);
+  min-height: var(--mk-cible-barre);
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.box {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 2px;
+  border-radius: 2px;
+  box-sizing: border-box;
+  border: 2px solid var(--mk-contour-fort);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--mk-transition),
+    border-color var(--mk-transition);
+
+  &.checked {
+    border-color: var(--mk-primaire);
+    background: var(--mk-primaire);
+  }
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font: 400 15px/1.35 var(--mk-font);
+}
+
+.sublabel {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+  margin-top: 2px;
+}

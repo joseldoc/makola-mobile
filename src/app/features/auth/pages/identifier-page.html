@@ -1,0 +1,50 @@
+<div class="page entry">
+  <app-auth-banner
+    [step]="textsKey() + '.step' | transloco"
+    [title]="textsKey() + '.title' | transloco"
+    [text]="textsKey() + '.text' | transloco"
+    [role]="role()"
+    (back)="goBack()"
+  />
+
+  <form class="input-area" novalidate (submit)="send($event)">
+    @if (channel() === 'phone') {
+      <app-phone-field [country]="country()" [digits]="digits()" [error]="hintIsError()" (changeCountry)="choosingCountry.set(true)" />
+      <p class="hint" [class.is-error]="hintIsError()" [attr.role]="hintIsError() ? 'alert' : null">{{ hint() }}</p>
+    } @else {
+      @let serverError = store.errorMessage();
+      <app-text-field
+        [formField]="form.value"
+        [label]="'auth.identifier.emailLabel' | transloco"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        enterkeyhint="send"
+        [placeholder]="'auth.identifier.emailPlaceholder' | transloco"
+        [state]="serverError ? 'error' : 'idle'"
+        [message]="serverError ? (serverError.key | transloco: serverError.params) : ('auth.identifier.emailHint' | transloco)"
+      />
+    }
+  </form>
+
+  <div class="actions" [class.last]="channel() === 'email'">
+    <app-footer-action
+      [label]="'auth.identifier.getCode' | transloco"
+      [tone]="role() === 'parent' ? 'pending' : 'primary'"
+      [disabled]="!!missing()"
+      [missingLabel]="missing()"
+      (pressed)="send()"
+    />
+    <button type="button" class="text-action" (click)="switchChannel()">
+      {{ (channel() === 'phone' ? 'auth.identifier.useEmail' : 'auth.identifier.usePhone') | transloco }}
+    </button>
+  </div>
+
+  @if (channel() === 'phone') {
+    <app-keypad [columns]="3" (digit)="digit($event)" (backspace)="erase()" />
+  }
+
+  @if (choosingCountry()) {
+    <app-country-sheet [countries]="countries" [selected]="countryCode()" (choose)="chooseCountry($event)" (close)="choosingCountry.set(false)" />
+  }
+</div>

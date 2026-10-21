@@ -1,0 +1,31 @@
+<div class="onboarding">
+  <div class="track" #track (scroll)="onScroll()">
+    @for (slide of store.slides(); track $index) {
+      <app-onboarding-slide
+        class="page"
+        [slide]="slide"
+        [position]="'progressDots.position' | transloco: { current: $index + 1, total: store.slides().length }"
+        [attr.aria-hidden]="$index !== store.index()"
+      />
+    }
+  </div>
+
+  <div class="top">
+    <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
+    @if (!store.last()) {
+      <app-outlined-button [label]="'onboarding.skip' | transloco" [tone]="store.current().role" (clicked)="finish()" />
+    }
+  </div>
+
+  <div class="controls">
+    <div class="dots">
+      <app-progress-dots
+        [count]="store.slides().length"
+        [index]="store.index()"
+        [label]="'onboarding.dotsLabel' | transloco"
+        (indexChange)="goTo($event)"
+      />
+    </div>
+    <app-footer-action [label]="(store.last() ? 'onboarding.start' : 'onboarding.next') | transloco" (pressed)="next()" />
+  </div>
+</div>

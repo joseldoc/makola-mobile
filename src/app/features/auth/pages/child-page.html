@@ -1,0 +1,36 @@
+<div class="page">
+  <app-bar
+    [title]="'auth.child.title' | transloco"
+    [subtitle]="'auth.child.subtitle' | transloco"
+    role="parent"
+    [showBack]="true"
+    (back)="goBack()"
+  />
+
+  @if (store.invitation(); as invitation) {
+    <div class="content">
+      <p class="intro">{{ 'auth.child.intro' | transloco }}</p>
+
+      <section class="student" [attr.aria-label]="'auth.child.linkedStudent' | transloco">
+        <app-icon name="person-outline" [size]="22" />
+        <div class="student-texts">
+          <p class="student-name">{{ invitation.student }}</p>
+          <p class="student-meta">{{ invitation.classroom }} · {{ invitation.school }}</p>
+          <p class="student-meta">
+            {{ 'auth.child.invitedBy' | transloco: { teacher: invitation.teacher, subject: invitation.subject } }}
+          </p>
+        </div>
+      </section>
+
+      <p class="intro">
+        {{ 'auth.child.youWillSee' | transloco: { name: firstName() } }}
+        <strong>{{ 'auth.child.neverOthers' | transloco }}</strong>
+      </p>
+    </div>
+  }
+
+  <div class="footer">
+    <app-footer-action [label]="'auth.child.confirm' | transloco: { name: firstName() }" tone="pending" (pressed)="confirm()" />
+    <app-outlined-button [label]="'auth.child.decline' | transloco" tone="parent" [full]="true" (clicked)="decline()" />
+  </div>
+</div>

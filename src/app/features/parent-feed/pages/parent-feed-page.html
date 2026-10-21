@@ -1,0 +1,56 @@
+<div class="parent-feed-page">
+  <app-bar
+    [title]="store.student()"
+    [subtitle]="store.classroom()"
+    role="parent"
+    [scrolled]="store.scrolled()"
+    [actions]="barActions()"
+    [hasLeading]="true"
+    (actionSelected)="onAction($event)"
+  >
+    <div leading class="avatar">{{ store.initials() }}</div>
+  </app-bar>
+
+  <div class="cards">
+    <div class="card highlight">
+      <div class="card-label">{{ 'parentFeed.subjectAverage' | transloco: { subject: store.subject() } }}</div>
+      <div class="card-value">{{ average() }}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">{{ 'common.term' | transloco: { n: store.term() } }}</div>
+      <div class="card-progress">↑ {{ 'parentFeed.improving' | transloco }}</div>
+    </div>
+  </div>
+
+  <div class="list" (scroll)="onScroll($event)">
+    @for (row of rows(); track $index; let i = $index) {
+      <app-list-row
+        [index]="i"
+        [primary]="row.title"
+        [secondary]="row.meta"
+        [tertiary]="row.when"
+        [value]="row.value"
+        [valueTone]="row.belowPass ? 'danger' : 'neutral'"
+      />
+    }
+    <div class="summary-row">
+      <div class="summary-text">
+        <div class="summary-title">{{ 'parentFeed.weeklySummary' | transloco }}</div>
+        <div class="summary-sub">
+          {{ (store.weeklySummary() ? 'parentFeed.weeklySummaryOn' : 'parentFeed.weeklySummaryOff') | transloco }}
+        </div>
+      </div>
+      <app-switch
+        [checked]="store.weeklySummary()"
+        tone="pending"
+        [ariaLabel]="'parentFeed.weeklySummary' | transloco"
+        (checkedChange)="store.setWeeklySummary($event)"
+      />
+    </div>
+  </div>
+
+  <div class="footer">
+    <app-outlined-button [label]="'parentFeed.allGrades' | transloco" tone="parent" [full]="true" />
+    <app-outlined-button [label]="'parentFeed.reportCards' | transloco" tone="parent" [full]="true" />
+  </div>
+</div>

@@ -1,0 +1,42 @@
+:host {
+  display: contents;
+}
+
+.outlined-button {
+  position: relative;
+  height: var(--mk-h-bouton-m2);
+  padding: 0 var(--mk-esp-4);
+  flex: none;
+  min-width: 0;
+  border-radius: var(--mk-rayon-remplir);
+  border: 1px solid var(--mk-contour-m2);
+  color: var(--mk-text);
+  font: var(--mk-bouton-m2);
+  letter-spacing: var(--mk-bouton-m2-suivi);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--mk-presse);
+
+  // Full width in a column, equal shares between siblings in a row.
+  // (`flex: 1` alone would crush the height in a column container.)
+  &.full {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  // 36 dp M2 button, 48 dp touch target (44 pt iOS / 48 dp Android).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+  }
+}
+
+// The ellipsis lives on the label: on the button, `overflow: hidden` would clip
+// the extended target above.
+.label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

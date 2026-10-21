@@ -1,0 +1,79 @@
+<div class="overlay">
+  <div class="sheet">
+    <button type="button" class="handle-row" [attr.aria-label]="'common.close' | transloco" (click)="close()">
+      <span class="handle"></span>
+    </button>
+
+    <div class="header">
+      <div class="title">{{ 'assignment.title' | transloco }}</div>
+      <div class="context">{{ store.classroom() }} · {{ store.subject() }}</div>
+    </div>
+
+    <div class="field">
+      <app-text-field
+        [label]="'assignment.titleLabel' | transloco"
+        [value]="store.title()"
+        [placeholder]="'assignment.titlePlaceholder' | transloco"
+        [state]="store.titleState()"
+        [message]="titleMessage()"
+        [counter]="store.titleCounter()"
+        (valueChange)="store.setTitle($event)"
+      />
+    </div>
+
+    <div class="row">
+      <div class="scales" role="group" [attr.aria-label]="'assignment.scale' | transloco">
+        @for (s of scales; track s) {
+          <button
+            type="button"
+            class="chip"
+            [class.active]="store.scale() === s"
+            [attr.aria-pressed]="store.scale() === s"
+            (click)="store.setScale(s)"
+          >/{{ s }}</button>
+        }
+      </div>
+      <div class="coefficient">
+        <app-mini-fab
+          icon="remove-outline"
+          [atBound]="store.atMinCoefficient()"
+          [ariaLabel]="'assignment.coefficient.decrease' | transloco"
+          (clicked)="store.decrementCoefficient()"
+        />
+        <div class="coefficient-value">×{{ store.coefficient() }}</div>
+        <app-mini-fab
+          icon="add-outline"
+          [atBound]="store.atMaxCoefficient()"
+          [ariaLabel]="'assignment.coefficient.increase' | transloco"
+          (clicked)="store.incrementCoefficient()"
+        />
+      </div>
+    </div>
+    <div class="coefficient-message" [class.pending]="store.atMaxCoefficient()">
+      {{ store.coefficientMessage().key | transloco: store.coefficientMessage().params }}
+    </div>
+
+    <div class="row date-row">
+      <div class="date-field">
+        <app-text-field
+          [label]="'assignment.dateLabel' | transloco"
+          [value]="dateLabel()"
+          [state]="store.currentDate().state"
+          [message]="dateMessage()"
+        />
+      </div>
+      <div class="date-action">
+        <app-outlined-button [label]="'assignment.changeDate' | transloco" (clicked)="store.nextDate()" />
+      </div>
+    </div>
+
+    <div class="footer">
+      <app-footer-action
+        [label]="'assignment.create' | transloco"
+        [disabled]="store.blocked()"
+        [missingLabel]="'assignment.fixField' | transloco"
+        (pressed)="create()"
+      />
+    </div>
+  </div>
+</div>

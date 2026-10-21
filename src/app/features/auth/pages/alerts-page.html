@@ -1,0 +1,40 @@
+<div class="page">
+  <app-bar [title]="'auth.alerts.title' | transloco" [subtitle]="'auth.alerts.subtitle' | transloco" role="parent" [scrolled]="scrolled()" />
+
+  <div class="list" (scroll)="onScroll($event)">
+    <p class="intro alerts-intro">{{ 'auth.alerts.intro' | transloco: { name: firstName() } }}</p>
+
+    @for (option of options; track option.key; let i = $index) {
+      <div class="row" [class.alt]="i % 2 === 1" (click)="toggle(option)">
+        <div class="row-texts">
+          <div class="row-title">{{ 'auth.alerts.options.' + option.key + '.label' | transloco }}</div>
+          <div class="row-detail">{{ 'auth.alerts.options.' + option.key + '.detail' | transloco }}</div>
+        </div>
+        <app-switch
+          [formField]="form[option.key]"
+          tone="pending"
+          [ariaLabel]="'auth.alerts.options.' + option.key + '.label' | transloco"
+          (click)="$event.stopPropagation()"
+        />
+      </div>
+    }
+
+    <div class="summary">
+      <p class="estimate" aria-live="polite">{{ estimate() }}</p>
+      <p class="guarantee">{{ 'auth.alerts.guarantee' | transloco }}</p>
+      @if (store.errorMessage(); as error) {
+        <p class="error-text" role="alert">{{ error.key | transloco: error.params }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="footer">
+    <app-footer-action
+      [label]="'auth.alerts.openFeed' | transloco: { name: firstName() }"
+      tone="pending"
+      [disabled]="store.busy()"
+      [missingLabel]="'auth.alerts.saving' | transloco"
+      (pressed)="save()"
+    />
+  </div>
+</div>

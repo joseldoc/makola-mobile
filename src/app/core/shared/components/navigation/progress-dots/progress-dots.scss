@@ -1,0 +1,29 @@
+:host {
+  display: contents;
+}
+
+.progress-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  position: relative;
+  padding: 0;
+  border: 0;
+  height: 6px;
+  border-radius: var(--mk-rayon-rond);
+  cursor: pointer;
+  transition:
+    width var(--mk-bascule),
+    background var(--mk-bascule);
+
+  // 6 dp dot, 44 dp tall target; horizontally the target reaches the middle
+  // of the gap so it never overlaps its neighbour.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -19px -3px;
+  }
+}

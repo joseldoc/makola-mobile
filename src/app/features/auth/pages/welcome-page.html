@@ -1,0 +1,28 @@
+<div class="welcome">
+  <!-- Entry surface (mock-up 24a): the tints already in the code, diluted, as large shapes.
+       Blue first: at this point we don't know yet who is signing in. -->
+  <div class="shapes" aria-hidden="true">
+    <div class="shape shape-blue"></div>
+    <div class="shape shape-green"></div>
+    <div class="shape shape-amber"></div>
+    <div class="shape shape-dot"></div>
+  </div>
+
+  <div class="language">
+    <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
+  </div>
+
+  <main class="brand">
+    <app-logo variant="icon" [size]="96" />
+    <div class="name">makola</div>
+    <p class="promise">{{ 'auth.welcome.promise' | transloco }}</p>
+  </main>
+
+  <div class="welcome-footer">
+    <app-footer-action [label]="'auth.welcome.signUp' | transloco" (pressed)="open('sign-up')" />
+    <app-outlined-button [label]="'auth.welcome.signIn' | transloco" tone="school" [full]="true" (clicked)="open('sign-in')" />
+    <button type="button" class="text-action" (click)="open('invitation')">
+      {{ 'auth.welcome.parent' | transloco }}
+    </button>
+  </div>
+</div>

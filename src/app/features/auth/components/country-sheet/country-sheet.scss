@@ -1,0 +1,62 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 26, 46, 0.42);
+}
+
+.sheet {
+  position: relative;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  border-top-left-radius: var(--mk-rayon-touche);
+  border-top-right-radius: var(--mk-rayon-touche);
+  padding: 0 calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+}
+
+.handle {
+  align-self: center;
+  width: 96px;
+  height: var(--mk-cible);
+  border: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  padding-top: var(--mk-esp-2);
+  cursor: pointer;
+
+  span {
+    width: 36px;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(16, 26, 46, 0.24);
+  }
+}
+
+.title {
+  margin: 0;
+  font: var(--mk-titre-ecran);
+}
+
+.text {
+  margin: var(--mk-esp-1) 0 var(--mk-esp-2);
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+}
+
+.list {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}

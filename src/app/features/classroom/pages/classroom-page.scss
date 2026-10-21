@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.classroom-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+.search {
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-2) calc(var(--mk-esp-4) + var(--mk-safe-left));
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  // No bounce dragging the page (iOS), no chained glow (Android).
+  overscroll-behavior-y: contain;
+  border-top: 1px solid var(--mk-separateur);
+
+  &.no-border {
+    border-top: 0;
+  }
+}
+
+.empty {
+  padding: 24px calc(var(--mk-esp-4) + var(--mk-safe-right)) 24px calc(var(--mk-esp-4) + var(--mk-safe-left));
+  font: 400 15px/1.5 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.report-card {
+  padding: 20px calc(var(--mk-esp-4) + var(--mk-safe-right)) 20px calc(var(--mk-esp-4) + var(--mk-safe-left));
+  font: 400 15px/1.55 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.footer {
+  border-top: 1px solid var(--mk-separateur);
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+}

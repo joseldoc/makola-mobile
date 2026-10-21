@@ -1,0 +1,57 @@
+:host {
+  display: block;
+}
+
+.slide {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.visual {
+  // Tall enough to leave room for the top controls above the disc, short enough
+  // for an entry-level phone (360 × 640 dp) to show the whole text.
+  min-height: clamp(112px, 24vh, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disc {
+  width: 88px;
+  height: 88px;
+  border-radius: var(--mk-rayon-rond);
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body {
+  padding: var(--mk-esp-6) calc(var(--mk-esp-5) + var(--mk-safe-right)) var(--mk-esp-4)
+    calc(var(--mk-esp-5) + var(--mk-safe-left));
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+  // Readable measure on tablets: no edge-to-edge paragraph.
+  max-width: 560px;
+}
+
+.kicker {
+  margin: 0;
+  font: var(--mk-sous-titre);
+  color: var(--mk-text-secondaire);
+}
+
+.title {
+  margin: 0;
+  font: var(--mk-titre-ecran);
+  color: var(--mk-text);
+}
+
+.text {
+  margin: var(--mk-esp-1) 0 0;
+  font: var(--mk-corps);
+  color: var(--mk-text-secondaire);
+}

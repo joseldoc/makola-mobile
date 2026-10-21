@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+
+.field {
+  position: relative;
+  box-sizing: border-box;
+  height: var(--mk-h-champ);
+  padding: 0 var(--mk-esp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--mk-esp-2);
+  border-radius: var(--mk-rayon-remplir);
+  border: 1px solid var(--mk-contour);
+  background: var(--mk-surface);
+  transition: border-color var(--mk-transition);
+
+  // The keypad is always open: the field is always "focused".
+  &.active {
+    border: 2px solid var(--mk-primaire);
+    padding: 0 calc(var(--mk-esp-4) - 1px);
+
+    .label {
+      color: var(--mk-primaire);
+    }
+  }
+
+  &.error {
+    border: 2px solid var(--mk-refus);
+    padding: 0 calc(var(--mk-esp-4) - 1px);
+
+    .label {
+      color: var(--mk-refus);
+    }
+  }
+}
+
+.label {
+  position: absolute;
+  top: -7px;
+  left: 12px;
+  padding: 0 4px;
+  background: var(--mk-surface);
+  font: var(--mk-indicatif);
+  color: var(--mk-text-secondaire);
+}
+
+// The calling code is a target of its own: 44 dp tall, separated from the number.
+.calling-code {
+  position: relative;
+  flex: none;
+  height: var(--mk-cible);
+  margin-left: calc(-1 * var(--mk-esp-2));
+  padding: 0 var(--mk-esp-2);
+  border: 0;
+  border-radius: var(--mk-rayon-remplir);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font: 400 16px/1 var(--mk-font);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text);
+  cursor: pointer;
+  transition: background var(--mk-presse);
+
+  &:active {
+    background: var(--mk-touche-presse);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    right: -4px;
+    width: 1px;
+    background: var(--mk-contour);
+  }
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  padding-left: var(--mk-esp-1);
+  display: flex;
+  align-items: center;
+  font: 400 16px/1 var(--mk-font);
+  font-variant-numeric: var(--mk-num);
+  letter-spacing: 0.5px;
+  color: var(--mk-text);
+}
+
+.caret {
+  width: 2px;
+  height: 20px;
+  margin-left: 1px;
+  background: var(--mk-primaire);
+  animation: mk-caret 1s steps(1) infinite;
+}
+
+@keyframes mk-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}

@@ -30,6 +30,10 @@
               }
             ],
             "styles": [
+              "@ionic/angular/css/core.css",
+              "@ionic/angular/css/normalize.css",
+              "@ionic/angular/css/structure.css",
+              "@ionic/angular/css/display.css",
               "src/styles.scss"
             ]
           },

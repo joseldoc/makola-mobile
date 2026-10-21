@@ -1,0 +1,66 @@
+<div class="classroom-page">
+  <app-bar
+    [title]="title()"
+    [subtitle]="subtitle()"
+    role="teacher"
+    [scrolled]="store.scrolled()"
+    [actions]="barActions()"
+    (actionSelected)="onAction($event)"
+  />
+
+  @if (store.offline()) {
+    <app-network-banner state="offline" [pending]="0" />
+  }
+
+  <app-tabs [items]="views()" [value]="store.view()" (valueChange)="onViewChange($event)" />
+
+  @if (store.view() === 1) {
+    <div class="search">
+      <app-search-field
+        [value]="store.search()"
+        [placeholder]="'classroom.searchPlaceholder' | transloco"
+        (valueChange)="store.setSearch($event)"
+        (cleared)="store.clearSearch()"
+      />
+    </div>
+  }
+
+  <div class="list" [class.no-border]="store.view() === 1" (scroll)="onScroll($event)">
+    @if (store.view() === 0) {
+      @for (assignment of store.assignments(); track assignment.name; let i = $index) {
+        <app-list-row
+          [index]="i"
+          [primary]="assignment.name"
+          [secondary]="assignmentMeta(assignment)"
+          [value]="decimal(assignment.average)"
+          [tertiary]="'classroom.noClassAverage' | transloco"
+          (rowClick)="enterGrades()"
+        />
+      }
+    }
+
+    @if (store.view() === 1) {
+      @if (store.filteredStudents().length) {
+        @for (student of store.filteredStudents(); track student.name; let i = $index) {
+          <app-list-row
+            [index]="i"
+            [primary]="student.name"
+            [secondary]="'classroom.termAverage' | transloco"
+            [value]="decimal(student.average)"
+            [valueTone]="student.belowPass ? 'danger' : 'neutral'"
+          />
+        }
+      } @else {
+        <p class="empty">{{ 'classroom.noMatch' | transloco: { query: store.search() } }}</p>
+      }
+    }
+
+    @if (store.view() === 2) {
+      <p class="report-card">{{ 'classroom.reportCardNotice' | transloco }}</p>
+    }
+  </div>
+
+  <div class="footer">
+    <app-footer-action [label]="'classroom.newAssignment' | transloco" (pressed)="newAssignment()" />
+  </div>
+</div>

@@ -1,0 +1,39 @@
+:host {
+  display: inline-flex;
+}
+
+.switch {
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  border-radius: var(--mk-rayon-rond);
+  border: 1px solid var(--mk-contour-m2);
+  background: var(--mk-surface);
+}
+
+.option {
+  position: relative;
+  min-width: 40px;
+  height: 30px;
+  padding: 0 var(--mk-esp-2);
+  border: 0;
+  border-radius: var(--mk-rayon-rond);
+  background: transparent;
+  color: var(--mk-text);
+  font: var(--mk-bouton-m2);
+  letter-spacing: var(--mk-bouton-m2-suivi);
+  cursor: pointer;
+  transition: background var(--mk-transition);
+
+  // 30 dp visual, 44 dp target.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -7px -1px;
+  }
+
+  &.active {
+    background: var(--mk-primaire);
+    color: var(--mk-text-sur-primaire);
+  }
+}

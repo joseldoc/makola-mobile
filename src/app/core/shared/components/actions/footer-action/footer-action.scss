@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.footer-action {
+  width: 100%;
+  height: var(--mk-h-action);
+  border: 0;
+  border-radius: var(--mk-rayon-pleine);
+  font: var(--mk-bouton-action);
+  cursor: pointer;
+  transition:
+    transform var(--mk-presse),
+    background var(--mk-transition),
+    filter var(--mk-presse);
+
+  &:disabled {
+    cursor: default;
+  }
+}

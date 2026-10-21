@@ -1,0 +1,65 @@
+:host {
+  display: block;
+}
+
+.field {
+  position: relative;
+  border-radius: var(--mk-rayon-remplir);
+  border: 1px solid var(--mk-contour);
+  background: var(--mk-surface);
+  transition: border-color var(--mk-transition);
+
+  &.focused {
+    border-width: 2px;
+  }
+}
+
+.label {
+  position: absolute;
+  top: -7px;
+  left: 12px;
+  padding: 0 4px;
+  background: var(--mk-surface);
+  font: var(--mk-indicatif);
+}
+
+.control {
+  width: 100%;
+  box-sizing: border-box;
+  height: calc(var(--mk-h-champ) - 2px);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 0 var(--mk-esp-4);
+  font: 400 16px/1.3 var(--mk-font);
+  color: var(--mk-text);
+
+  &:disabled {
+    color: var(--mk-text-tertiaire);
+  }
+}
+
+textarea.control {
+  height: auto;
+  resize: vertical;
+  padding: 14px var(--mk-esp-4);
+}
+
+.meta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mk-esp-2);
+  padding: 6px 4px 0;
+}
+
+.message {
+  flex: 1;
+  font: 400 13px/1.45 var(--mk-font);
+}
+
+.counter {
+  flex: none;
+  font: var(--mk-indicatif);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text-tertiaire);
+}

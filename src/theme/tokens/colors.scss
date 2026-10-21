@@ -1,0 +1,50 @@
+// Source: @makola Design System (claude.ai/design) — tokens/colors.css
+// Copied verbatim. Do not hand-edit values here; change them in the design
+// system project and re-copy, so this repo and the design stay in sync.
+:root{
+  /* Base — six couleurs, pas une de plus */
+  --mk-encre:#101A2E;
+  --mk-bleu:#1B4FD8;
+  --mk-bleu-presse:#0F3299;
+  --mk-vert:#1E7A46;
+  --mk-ambre:#9A5A0B;
+  --mk-rouge:#C8341F;
+  --mk-marge:#EEF1F5;
+
+  /* Surfaces de rôle — dilutions des mêmes hexadécimaux.
+     Elles ne portent JAMAIS de texte, seulement des surfaces. */
+  --mk-role-prof:#D8EBE0;
+  --mk-role-prof-forme:#AFD6C0;
+  --mk-role-parent:#F7E7CE;
+  --mk-role-parent-forme:#EFD0A4;
+  --mk-role-etab:#DCE4FA;
+  --mk-role-etab-forme:#B9C9F5;
+  --mk-role-neutre:#E9ECF2;
+  --mk-role-neutre-forme:#D3D9E4;
+
+  /* Blancs et gris de liste */
+  --mk-blanc:#FFFFFF;
+  --mk-blanc-alterne:#FBFCFD;
+  --mk-touche-presse:#D3DCEF;
+  --mk-actif-fond:#F5F8FF;
+
+  /* Aliases sémantiques — utilisez ceux-ci dans les composants */
+  --mk-text:var(--mk-encre);
+  --mk-text-secondaire:rgba(16,26,46,.62);
+  --mk-text-tertiaire:rgba(16,26,46,.45);
+  --mk-text-sur-primaire:#FFFFFF;
+  --mk-contour:rgba(16,26,46,.28);
+  --mk-contour-fort:rgba(16,26,46,.55);
+  --mk-contour-m2:rgba(16,26,46,.50);
+  --mk-separateur:#EEF1F5;
+  --mk-surface:#FFFFFF;
+  --mk-surface-alterne:#FBFCFD;
+  --mk-surface-pavé:#EEF1F5;
+  --mk-primaire:var(--mk-bleu);
+  --mk-primaire-halo:rgba(27,79,216,.24);
+  --mk-succes:var(--mk-vert);
+  --mk-attente:var(--mk-ambre);
+  --mk-refus:var(--mk-rouge);
+  --mk-inactif-fond:var(--mk-marge);
+  --mk-inactif-text:rgba(16,26,46,.45);
+}
