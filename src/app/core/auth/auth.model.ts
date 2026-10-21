@@ -3,6 +3,8 @@ import { CountryCode } from './country';
 /** The two roles of the MVP (functional spec §8). */
 export type Role = 'teacher' | 'parent';
 
+export const ROLES: Role[] = ['teacher', 'parent'];
+
 /** Email **or** phone — never a password: access goes through a one-time code (US-P01). */
 export type Channel = 'phone' | 'email';
 

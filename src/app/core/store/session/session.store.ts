@@ -1,7 +1,7 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
-import { Session } from '@core/auth/auth.model';
+import { ROLES, Session } from '@core/auth/auth.model';
 
 const SESSION_KEY = 'mk.session';
 const ONBOARDING_KEY = 'mk.onboarding-seen';
@@ -20,7 +20,7 @@ interface SessionState {
 export const SessionStore = signalStore(
   { providedIn: 'root' },
   withState<SessionState>(() => ({
-    session: read<Session>(SESSION_KEY),
+    session: readSession(),
     onboardingSeen: read<boolean>(ONBOARDING_KEY) ?? false
   })),
   withComputed(({ session, onboardingSeen }) => ({
@@ -50,6 +50,18 @@ export const SessionStore = signalStore(
     }
   }))
 );
+
+/**
+ * A session saved by an older version of the app (e.g. role `prof` before the
+ * code went English) is dropped: the guards would otherwise redirect forever
+ * between `initialRoute` and a guard that refuses it — a white screen at launch.
+ */
+function readSession(): Session | null {
+  const session = read<Session>(SESSION_KEY);
+  if (session && ROLES.includes(session.role) && typeof session.profileComplete === 'boolean') return session;
+  if (session) write(SESSION_KEY, null);
+  return null;
+}
 
 function read<T>(key: string): T | null {
   try {
