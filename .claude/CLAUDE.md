@@ -23,7 +23,6 @@ Guidance for Claude Code (and anyone else) working in this repository — a gene
 - **esbuild/Vite-based application builder** (`@angular/build`) — not the deprecated Webpack-based `@angular-devkit/build-angular` builders.
 - **Event-oriented dumb/smart architecture**: presentational ("dumb") components emit a single typed event tied to an enum member defined in that feature's `enums/` folder; routed ("smart") components listen to that event and `switch`/`case` on the enum to decide what to do. See "Event-oriented component architecture" below.
 
-
 ## Commands
 
 ```bash
@@ -357,6 +356,7 @@ export class HapticsService {
 - **Always guard with `Capacitor.isNativePlatform()`** (or the plugin's own `isAvailable()`/capability check where one exists) before calling into a plugin, with a sane no-op or web fallback — `ng serve` and Playwright's web e2e both run in a browser context where most native plugins are unavailable or behave differently.
 - **Request permissions explicitly and lazily** (at the point of use, not at app startup) via each plugin's own permission API, and surface a denied/restricted state back through the wrapper service rather than letting a raw plugin exception bubble into a component.
 - **Prefer Capacitor's own plugins over a general web library** for anything that has a first-party plugin (storage, filesystem, network status) — they're the ones kept in sync with Capacitor's lifecycle and platform channels.
+
 ## Best practices to follow in this codebase
 
 ### Angular 21/22 fundamentals
@@ -422,11 +422,13 @@ export class HapticsService {
 6. **Selectors**: prefer Playwright's role/label/text-based locators over CSS selectors for resilience; add `data-testid` only where a reliable accessible role/label isn't available.
 7. **`playwright.config.ts`** should run against a served app via its `webServer` option, with a real or seeded/mocked backend documented as a prerequisite.
 8. **Native-only behavior (camera, push, haptics, biometrics, …) isn't covered by Playwright** — verify it manually on a simulator/device per release, or, for critical flows, with a native-level e2e tool (e.g. Appium/XCUITest/Espresso) if the project's size justifies the investment; don't try to fake these through the web e2e suite.
+
 ### Build & tooling
 1. **Use the esbuild/Vite application builder**; don't add Webpack-based builders.
 2. **Lean on the Angular CLI's MCP server** when using an AI coding assistant on this repo: `get_best_practices`, `search_documentation`, and `find_examples` keep generated code aligned with current APIs — especially relevant for Signal Forms and Angular Aria. The `onpush_zoneless_migration` tool is the recommended way to plan any remaining zoneless migration work.
 3. **TypeScript 6** — keep `tsconfig` strict-mode settings.
 4. **Run `npx cap sync` after every dependency change that touches a native plugin**, and after every `npm run build` before testing on-device — a stale native shell is a common source of "it works on web but not on device" bugs.
+
 ### General hygiene
 - `dist/`, `ios/App/Pods`, `android/.gradle`, and other native build artifacts are generated — never hand-edit them; regenerate via the commands above.
 - Match naming: `kebab-case` file names, `app-` prefixed selectors, `XComponent`/`XService`/`XStore` suffixes.
