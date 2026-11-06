@@ -110,6 +110,9 @@ ng generate --help
 ```
 src/
 ├── app/           # Application source (components, routes, config)
+│   ├── core/      #   guards/, services/, models/, i18n/, store/ (alias @core/*)
+│   ├── shared/    #   design-system building blocks (alias @shared/*)
+│   └── <feature>/ #   <feature>.routes.ts, pages/<page>/, components/, state/, models/
 ├── index.html     # App entry HTML
 ├── main.ts        # App bootstrap
 └── styles.scss    # Global styles

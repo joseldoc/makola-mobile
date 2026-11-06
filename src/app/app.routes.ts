@@ -1,37 +1,47 @@
 import { Routes } from '@angular/router';
 
-import { activeAccount, initialRedirect } from '@core/auth/guards';
+import { activeAccount } from '@core/guards/active-account.guard';
+import { initialRedirect } from '@core/guards/initial-redirect';
+
+// Importing a feature's *.routes.ts is a synchronous import of a Route[] array:
+// the lazy chunks come from each leaf's loadComponent, one chunk per page.
+import { ASSIGNMENT_ROUTES } from './assignment/assignment.routes';
+import { AUTH_ROUTES } from './auth/auth.routes';
+import { CLASSROOM_ROUTES } from './classroom/classroom.routes';
+import { GRADE_ENTRY_ROUTES } from './grade-entry/grade-entry.routes';
+import { ONBOARDING_ROUTES } from './onboarding/onboarding.routes';
+import { PARENT_FEED_ROUTES } from './parent-feed/parent-feed.routes';
 
 export const routes: Routes = [
   {
     path: 'onboarding',
-    loadChildren: () => import('./features/onboarding').then((m) => m.ONBOARDING_ROUTES)
+    children: ONBOARDING_ROUTES,
   },
   {
     path: 'auth',
-    loadChildren: () => import('./features/auth').then((m) => m.AUTH_ROUTES)
+    children: AUTH_ROUTES,
   },
   {
     path: 'classroom',
     canActivate: [activeAccount('teacher')],
-    loadChildren: () => import('./features/classroom').then((m) => m.CLASSROOM_ROUTES)
+    children: CLASSROOM_ROUTES,
   },
   {
     path: 'grade-entry',
     canActivate: [activeAccount('teacher')],
-    loadChildren: () => import('./features/grade-entry').then((m) => m.GRADE_ENTRY_ROUTES)
+    children: GRADE_ENTRY_ROUTES,
   },
   {
     path: 'assignment',
     canActivate: [activeAccount('teacher')],
-    loadChildren: () => import('./features/assignment').then((m) => m.ASSIGNMENT_ROUTES)
+    children: ASSIGNMENT_ROUTES,
   },
   {
     path: 'parent-feed',
     canActivate: [activeAccount('parent')],
-    loadChildren: () => import('./features/parent-feed').then((m) => m.PARENT_FEED_ROUTES)
+    children: PARENT_FEED_ROUTES,
   },
   // Everyone lands where their account stands: onboarding, sign-in, profile or home.
   { path: '', pathMatch: 'full', redirectTo: initialRedirect },
-  { path: '**', redirectTo: initialRedirect }
+  { path: '**', redirectTo: initialRedirect },
 ];
