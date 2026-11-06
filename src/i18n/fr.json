@@ -279,7 +279,7 @@
       "reportCard": "Bulletin"
     },
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
-    "noClassAverage": "Moyenne de la classe non calculée — voir RM-11",
+    "classAverage": "Moyenne de la classe",
     "termAverage": "Moyenne du trimestre",
     "noMatch": "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche.",
     "reportCardNotice": "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Aucun rang ni moyenne de classe n'y figurera.",
@@ -331,6 +331,7 @@
     "allGrades": "Toutes les notes",
     "reportCards": "Bulletins",
     "reportCardMeta": "Trimestre {{term}} · {{subject}}",
+    "classAverage": "Moyenne de la classe {{value}}",
     "types": {
       "newGrade": "Nouvelle note",
       "gradeBelowPass": "Note en dessous de 10",

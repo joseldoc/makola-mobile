@@ -279,7 +279,7 @@
       "reportCard": "Report card"
     },
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
-    "noClassAverage": "Class average not calculated — see RM-11",
+    "classAverage": "Class average",
     "termAverage": "Term average",
     "noMatch": "No student is named « {{query}} ». Try a family name alone, or clear the search.",
     "reportCardNotice": "The term 2 report card will be available after closing, on 27 March. It will show no ranking and no class average.",
@@ -331,6 +331,7 @@
     "allGrades": "All grades",
     "reportCards": "Report cards",
     "reportCardMeta": "Term {{term}} · {{subject}}",
+    "classAverage": "Class average {{value}}",
     "types": {
       "newGrade": "New grade",
       "gradeBelowPass": "Grade below 10",

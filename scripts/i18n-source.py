@@ -293,7 +293,7 @@ T = {
       "reportCard": ("Report card", "Bulletin"),
     },
     "assignmentMeta": ("coef {{coefficient}} · /{{scale}} · {{date}}", "coef {{coefficient}} · /{{scale}} · {{date}}"),
-    "noClassAverage": ("Class average not calculated — see RM-11", "Moyenne de la classe non calculée — voir RM-11"),
+    "classAverage": ("Class average", "Moyenne de la classe"),
     "termAverage": ("Term average", "Moyenne du trimestre"),
     "noMatch": ("No student is named « {{query}} ». Try a family name alone, or clear the search.",
                 "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche."),
@@ -351,6 +351,8 @@ T = {
     "allGrades": ("All grades", "Toutes les notes"),
     "reportCards": ("Report cards", "Bulletins"),
     "reportCardMeta": ("Term {{term}} · {{subject}}", "Trimestre {{term}} · {{subject}}"),
+    # Non-breaking spaces: the label and its value wrap as one block, never "Class / average 12.4".
+    "classAverage": ("Class\u00a0average\u00a0{{value}}", "Moyenne\u00a0de\u00a0la\u00a0classe\u00a0{{value}}"),
     "types": {
       "newGrade": ("New grade", "Nouvelle note"),
       "gradeBelowPass": ("Grade below 10", "Note en dessous de 10"),

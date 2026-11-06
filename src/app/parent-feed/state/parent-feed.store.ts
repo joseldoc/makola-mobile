@@ -7,13 +7,14 @@ const FEED: FeedItem[] = [
   {
     type: 'newGrade',
     meta: 'Contrôle n°2 · Maths · coef 2',
-    value: { kind: 'grade', value: 18 },
+    // Same assignment, same class as the teacher's classroom screen: same class average.
+    value: { kind: 'grade', value: 18, classAverage: 12.4 },
     when: { kind: 'relative', message: { key: 'parentFeed.when.minutesAgo', params: { count: 2 } } }
   },
   {
     type: 'gradeBelowPass',
     meta: 'Interrogation ch. 5 · Maths',
-    value: { kind: 'grade', value: 9 },
+    value: { kind: 'grade', value: 9, classAverage: 11.8 },
     when: { kind: 'date', date: '2026-03-11' }
   },
   {

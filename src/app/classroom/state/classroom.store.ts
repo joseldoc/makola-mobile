@@ -9,9 +9,9 @@ import { Assignment, Student } from '../models/classroom.model';
  * labels are Congolese school data: they stay as entered, whatever the language.
  */
 const ASSIGNMENTS: Assignment[] = [
-  { name: 'Contrôle n°2', coefficient: 2, scale: 20, date: '2026-03-12', average: 12.4 },
-  { name: 'Interrogation ch. 5', coefficient: 1, scale: 20, date: '2026-03-06', average: 11.8 },
-  { name: 'Devoir maison n°1', coefficient: 1, scale: 20, date: '2026-02-28', average: 14.1 }
+  { name: 'Contrôle n°2', coefficient: 2, scale: 20, date: '2026-03-12', classAverage: 12.4 },
+  { name: 'Interrogation ch. 5', coefficient: 1, scale: 20, date: '2026-03-06', classAverage: 11.8 },
+  { name: 'Devoir maison n°1', coefficient: 1, scale: 20, date: '2026-02-28', classAverage: 14.1 }
 ];
 
 const STUDENTS: Student[] = [

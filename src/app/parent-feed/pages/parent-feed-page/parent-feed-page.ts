@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { formatDate, formatDecimal } from '@core/i18n/format';
+import { Language } from '@core/i18n/language';
 import { injectTranslate } from '@core/i18n/translate';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
@@ -57,7 +58,7 @@ export class ParentFeedPageComponent {
     const language = this.language.language();
     return this.store.feed().map((item) => ({
       title: this.t(`parentFeed.types.${item.type}`),
-      meta: typeof item.meta === 'string' ? item.meta : this.t(item.meta.key, item.meta.params),
+      meta: this.formatMeta(item, language),
       value: this.formatValue(item, language),
       when: item.when.kind === 'date' ? formatDate(item.when.date, language) : this.t(item.when.message.key, item.when.message.params),
       belowPass: item.type === 'gradeBelowPass'
@@ -78,7 +79,19 @@ export class ParentFeedPageComponent {
     // Will navigate to the child picker once that entry point is built.
   }
 
-  private formatValue(item: FeedItem, language: 'en' | 'fr'): string {
+  /**
+   * Assignment meta, followed by the class average when the server sent one —
+   * on the secondary line, the one that holds 4.5:1 in light mode (the tertiary
+   * line does not). The child's grade stays the row's value; nothing compares them.
+   */
+  private formatMeta(item: FeedItem, language: Language): string {
+    const meta = typeof item.meta === 'string' ? item.meta : this.t(item.meta.key, item.meta.params);
+    const v = item.value;
+    if (v.kind !== 'grade' || v.classAverage === undefined) return meta;
+    return `${meta} · ${this.t('parentFeed.classAverage', { value: formatDecimal(v.classAverage, language) })}`;
+  }
+
+  private formatValue(item: FeedItem, language: Language): string {
     const v = item.value;
     if (v.kind === 'grade') return formatDecimal(v.value, language);
     if (v.kind === 'date') return formatDate(v.date, language);
