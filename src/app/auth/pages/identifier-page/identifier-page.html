@@ -40,7 +40,7 @@
 
   <div class="actions" [class.last]="channel() === 'email'">
     <app-footer-action
-      [label]="'auth.identifier.getCode' | transloco"
+      [label]="actionLabel()"
       [tone]="role() === 'parent' ? 'pending' : 'primary'"
       [disabled]="!!missing()"
       [missingLabel]="missing()"

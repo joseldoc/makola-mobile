@@ -60,6 +60,33 @@ export interface Invitation {
   subject: string;
 }
 
+/**
+ * Parental consents a parent gives when accepting an invitation (RI-20): the
+ * processing of the child's data, and their storage outside the country of the
+ * parent–child link (hosting in Europe, ID-10).
+ *
+ * The values are Identity's document identifiers (glossary: `CHILD_DATA`,
+ * `CROSS_BORDER_TRANSFER`), read in the invitation preview (`requiredConsents`)
+ * and sent back in the acceptance (`consents`), and listed again by
+ * `GET /v1/me/consents` for their withdrawal: kept verbatim, the HTTP adapter
+ * passes them through instead of keeping a translation table in step.
+ *
+ * Which ones are asked is server data (`country_config.parental_consents`, union
+ * of the parent's and the inviting teacher's countries): the app never works it
+ * out, it shows what the server asks for. `TERMS` and `PRIVACY` (RI-16), also in
+ * `requiredConsents` for an account to create, are not collected by any screen yet.
+ */
+export type ParentalConsent = 'CHILD_DATA' | 'CROSS_BORDER_TRANSFER';
+
+/** Every parental consent, in the order the consent screen shows them. */
+export const PARENTAL_CONSENTS: ParentalConsent[] = ['CHILD_DATA', 'CROSS_BORDER_TRANSFER'];
+
+/** Accepting an invitation: the invitation, and the consents given for it (RI-20). */
+export interface InvitationAcceptance {
+  invitation: Invitation;
+  consents: ParentalConsent[];
+}
+
 /** The parent's five alert settings (RM-16). */
 export interface ParentAlerts {
   newGrade: boolean;

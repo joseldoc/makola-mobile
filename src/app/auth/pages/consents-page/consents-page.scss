@@ -1,0 +1,11 @@
+// The consents, one per row, separated by @makola lines (#EEF1F5): each row is
+// tappable across the whole width of the content (interface contract §7.6).
+.consents {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--mk-separateur);
+}
+
+app-checkbox {
+  border-bottom: 1px solid var(--mk-separateur);
+}

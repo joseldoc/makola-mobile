@@ -28,9 +28,16 @@ import {
   PhoneFieldComponent,
 } from '../../components';
 import { CountrySheetActions } from '../../enums/country-sheet-actions.enum';
+import { ContactNext } from '../../models/auth.model';
 import { AuthFlowStore } from '../../state/auth.store';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/** The parental consents when the server asks for some (RI-20), else the code. */
+const NEXT_ROUTES: Record<ContactNext, string> = {
+  consents: '/auth/invitation/consents',
+  code: '/auth/code',
+};
 
 /**
  * "Identifier" step container (@makola mock-up 24c). Phone by default, typed on
@@ -74,6 +81,13 @@ export class IdentifierPageComponent implements OnInit {
     () => `auth.identifier.${this.intent()}.${this.channel()}`,
   );
   protected readonly role = computed(() => (this.intent() === 'invitation' ? 'parent' : 'school'));
+  /**
+   * An invitation may ask for parental consents before the code (RI-20): its
+   * button continues rather than promising the code at once.
+   */
+  protected readonly actionLabel = computed(() =>
+    this.t(this.intent() === 'invitation' ? 'common.continue' : 'auth.identifier.getCode'),
+  );
 
   private readonly model = signal({ value: '' });
   protected readonly form = form(this.model, (p) => {
@@ -119,7 +133,9 @@ export class IdentifierPageComponent implements OnInit {
 
   /** The button says what is missing — never a greyed-out "Get the code". */
   protected readonly missing = computed(() => {
-    if (this.store.busy()) return this.t('auth.identifier.sending');
+    if (this.store.busy()) {
+      return this.t(this.intent() === 'invitation' ? 'auth.identifier.checkingInvitation' : 'auth.identifier.sending');
+    }
     const error = this.form.value().errors()[0];
     if (!error) return '';
     if (this.channel() === 'phone') {
@@ -197,9 +213,8 @@ export class IdentifierPageComponent implements OnInit {
         this.channel() === 'phone'
           ? phoneIdentifier(this.country(), value)
           : emailIdentifier(value);
-      if (await this.store.requestCode(identifier)) {
-        void this.router.navigateByUrl('/auth/code');
-      }
+      const next = await this.store.submitContact(identifier);
+      if (next) void this.router.navigateByUrl(NEXT_ROUTES[next]);
       return undefined;
     });
   }
