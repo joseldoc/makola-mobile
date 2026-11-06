@@ -177,7 +177,7 @@ type là où une marque irait ; ne pas dessiner de logo.
 | `src/theme/tokens/radius.scss` | Les cinq rayons et leur intention |
 | `src/theme/tokens/motion.scss` | Quatre durées, trois échelles de pression |
 | `src/theme/tokens/dark.scss` | La dérivation sombre (`[data-mk-theme="sombre"]`) |
-| `src/theme/tokens/fonts.scss` | Import Google Fonts (Roboto 400/500/600) |
+| `src/theme/tokens/fonts.scss` | Roboto embarquée (variable 100–900, latin et latin-ext, paquet `@fontsource-variable/roboto`, OFL-1.1) ; remplace l'import Google Fonts de la source le 6 novembre 2026 (hors ligne, construction sans réseau) |
 | `src/app/shared/icons.ts` | Inventaire des 15 icônes Ionicons + `registerIcons()` |
 
 ## Composants — React (référence) → Angular (ce dépôt)
