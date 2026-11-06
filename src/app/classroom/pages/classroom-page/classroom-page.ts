@@ -4,6 +4,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import { formatDate, formatDecimal } from '@core/i18n/format';
 import { injectTranslate } from '@core/i18n/translate';
+import { Role } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
 import { AppBarAction, AppBarComponent } from '@shared/navigation/app-bar/app-bar';
@@ -14,12 +15,16 @@ import { SearchFieldComponent } from '@shared/forms/search-field/search-field';
 import { FooterActionComponent } from '@shared/actions/footer-action/footer-action';
 import { ICONS } from '@shared/icons';
 
+import { ClassroomBarActions } from '../../enums/classroom-bar-actions.enum';
 import { Assignment } from '../../models/classroom.model';
 import { ClassroomStore } from '../../state/classroom.store';
 
-const ACTION_SEARCH = 0;
-const ACTION_LOGOUT = 1;
 const VIEW_STUDENTS = 1;
+
+/** An app-bar action and what it asks for: `app-bar` emits its index in the list. */
+interface ClassroomBarAction extends AppBarAction {
+  action: ClassroomBarActions;
+}
 
 /**
  * Classroom screen container (assignments / students / report card).
@@ -50,9 +55,13 @@ export class ClassroomPageComponent {
     { id: 2, label: this.t('classroom.tabs.reportCard') }
   ]);
 
-  protected readonly barActions = computed<AppBarAction[]>(() => [
-    { icon: ICONS.search, label: this.t('common.search') },
-    { icon: ICONS.logout, label: this.t('common.signOut') }
+  /** The parent space appears only when the account also holds that role (ID-02). */
+  protected readonly barActions = computed<ClassroomBarAction[]>(() => [
+    { action: ClassroomBarActions.Search, icon: ICONS.search, label: this.t('common.search') },
+    ...(this.session.hasRole('parent')
+      ? [{ action: ClassroomBarActions.ParentSpace, icon: ICONS.student, label: this.t('spaces.parent') }]
+      : []),
+    { action: ClassroomBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') }
   ]);
 
   protected assignmentMeta(a: Assignment): string {
@@ -73,9 +82,21 @@ export class ClassroomPageComponent {
     this.store.setScrolled(target.scrollTop > 0);
   }
 
+  /** The index is read in the list shown, which changes with the account's roles. */
   protected onAction(index: number): void {
-    if (index === ACTION_SEARCH) this.store.setView(VIEW_STUDENTS);
-    else if (index === ACTION_LOGOUT) this.signOut();
+    const selected = this.barActions()[index];
+    if (!selected) return;
+    switch (selected.action) {
+      case ClassroomBarActions.Search:
+        this.store.setView(VIEW_STUDENTS);
+        return;
+      case ClassroomBarActions.ParentSpace:
+        this.switchSpace('parent');
+        return;
+      case ClassroomBarActions.SignOut:
+        this.signOut();
+        return;
+    }
   }
 
   protected enterGrades(): void {
@@ -84,6 +105,16 @@ export class ClassroomPageComponent {
 
   protected newAssignment(): void {
     void this.router.navigate(['/assignment/new']);
+  }
+
+  /**
+   * The other space becomes the active one — reopened at the next launch — and
+   * opens on its step 2 if it is not done yet. The two spaces are peers: the
+   * history does not go back from one to the other.
+   */
+  private switchSpace(role: Role): void {
+    this.session.switchSpace(role);
+    void this.router.navigateByUrl(this.session.initialRoute(), { replaceUrl: true });
   }
 
   /** Closes the session and goes back to the welcome screen; onboarding is not replayed. */

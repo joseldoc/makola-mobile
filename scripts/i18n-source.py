@@ -13,9 +13,16 @@ T = {
     "continue": ("Continue", "Continuer"),
     "search": ("Search", "Rechercher"),
     "signOut": ("Sign out", "Se déconnecter"),
-    "term": ("Term {{n}}", "Trimestre {{n}}"),
+    # Non-breaking space: the number never wraps away from its word ("Term / 2"),
+    # e.g. in an app-bar subtitle narrowed by a third action (ID-02).
+    "term": ("Term {{n}}", "Trimestre {{n}}"),
   },
   "language": {"label": ("Language", "Langue")},
+  # App-bar action towards the account's other space (ID-02), shown only when it holds both roles.
+  "spaces": {
+    "teacher": ("Teacher space", "Espace professeur"),
+    "parent": ("Parent space", "Espace parent"),
+  },
   "network": {
     "offline": ("Offline · entry works, sending will go out when the network is back.",
                 "Hors ligne · la saisie fonctionne, l'envoi partira au retour du réseau."),

@@ -5,6 +5,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { formatDate, formatDecimal } from '@core/i18n/format';
 import { Language } from '@core/i18n/language';
 import { injectTranslate } from '@core/i18n/translate';
+import { Role } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
 import { AppBarAction, AppBarComponent } from '@shared/navigation/app-bar/app-bar';
@@ -13,11 +14,14 @@ import { SwitchComponent } from '@shared/forms/switch/switch';
 import { OutlinedButtonComponent } from '@shared/actions/outlined-button/outlined-button';
 import { ICONS } from '@shared/icons';
 
+import { ParentFeedBarActions } from '../../enums/parent-feed-bar-actions.enum';
 import { FeedItem } from '../../models/parent-feed.model';
 import { ParentFeedStore } from '../../state/parent-feed.store';
 
-const ACTION_SWITCH_CHILD = 0;
-const ACTION_LOGOUT = 1;
+/** An app-bar action and what it asks for: `app-bar` emits its index in the list. */
+interface ParentFeedBarAction extends AppBarAction {
+  action: ParentFeedBarActions;
+}
 
 interface FeedRow {
   title: string;
@@ -46,9 +50,13 @@ export class ParentFeedPageComponent {
   private readonly router = inject(Router);
   private readonly t = injectTranslate();
 
-  protected readonly barActions = computed<AppBarAction[]>(() => [
-    { icon: ICONS.expand, label: this.t('parentFeed.switchChild') },
-    { icon: ICONS.logout, label: this.t('common.signOut') }
+  /** The teacher space appears only when the account also holds that role (ID-02). */
+  protected readonly barActions = computed<ParentFeedBarAction[]>(() => [
+    { action: ParentFeedBarActions.SwitchChild, icon: ICONS.expand, label: this.t('parentFeed.switchChild') },
+    ...(this.session.hasRole('teacher')
+      ? [{ action: ParentFeedBarActions.TeacherSpace, icon: ICONS.classroom, label: this.t('spaces.teacher') }]
+      : []),
+    { action: ParentFeedBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') }
   ]);
 
   protected readonly average = computed(() => formatDecimal(this.store.subjectAverage(), this.language.language()));
@@ -70,9 +78,21 @@ export class ParentFeedPageComponent {
     this.store.setScrolled(target.scrollTop > 0);
   }
 
+  /** The index is read in the list shown, which changes with the account's roles. */
   protected onAction(index: number): void {
-    if (index === ACTION_SWITCH_CHILD) this.switchChild();
-    else if (index === ACTION_LOGOUT) this.signOut();
+    const selected = this.barActions()[index];
+    if (!selected) return;
+    switch (selected.action) {
+      case ParentFeedBarActions.SwitchChild:
+        this.switchChild();
+        return;
+      case ParentFeedBarActions.TeacherSpace:
+        this.switchSpace('teacher');
+        return;
+      case ParentFeedBarActions.SignOut:
+        this.signOut();
+        return;
+    }
   }
 
   protected switchChild(): void {
@@ -96,6 +116,16 @@ export class ParentFeedPageComponent {
     if (v.kind === 'grade') return formatDecimal(v.value, language);
     if (v.kind === 'date') return formatDate(v.date, language);
     return v.text;
+  }
+
+  /**
+   * The other space becomes the active one — reopened at the next launch — and
+   * opens on its step 2 if it is not done yet. The two spaces are peers: the
+   * history does not go back from one to the other.
+   */
+  private switchSpace(role: Role): void {
+    this.session.switchSpace(role);
+    void this.router.navigateByUrl(this.session.initialRoute(), { replaceUrl: true });
   }
 
   /** Closes the session and goes back to the welcome screen; onboarding is not replayed. */
