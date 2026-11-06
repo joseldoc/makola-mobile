@@ -1,7 +1,7 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
-import { ROLES, Session } from '@core/auth/auth.model';
+import { ROLES, Session } from '@core/models/auth.model';
 
 const SESSION_KEY = 'mk.session';
 const ONBOARDING_KEY = 'mk.onboarding-seen';

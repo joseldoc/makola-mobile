@@ -43,7 +43,7 @@ Dans le doute entre deux niveaux, prendre le plus élevé : une sous-estimation 
 Le code généré respecte SOLID ; c'est une exigence du projet, pas une cérémonie.
 
 - **S** — une page intelligente orchestre (store, routeur, services) et décide ; un composant présentationnel affiche et émet ; un store tient l'état d'une feature ; un service parle à une seule chose (un service HTTP, un plugin Capacitor). Signaux d'alerte : un composant de plus de 250 lignes, un store qui sert deux features, un composant présentationnel qui `inject()` autre chose que de la configuration d'affichage.
-- **O** — on étend par ajout : un nouveau pays est une entrée de `COUNTRIES` (`core/auth/country.ts`), jamais un `if`/`switch` sur un indicatif ou un code pays ; une nouvelle action d'un composant est un membre de son enum, pas une nouvelle sortie.
+- **O** — on étend par ajout : un nouveau pays est une entrée de `COUNTRIES` (`core/models/country.ts`), jamais un `if`/`switch` sur un indicatif ou un code pays ; une nouvelle action d'un composant est un membre de son enum, pas une nouvelle sortie.
 - **L** — toute implémentation d'un contrat abstrait est substituable : `AuthApi` a aujourd'hui `MockAuthApi`, demain une implémentation HTTP, « sans changer un écran » (commentaire de `app.config.ts`). Une implémentation ne lève pas « non implémenté », n'avale pas une erreur en silence, rejette avec le type d'erreur annoncé (`AuthError`).
 - **I** — un store n'expose que des signaux en lecture et des méthodes nommées ; jamais `patchState` au composant. Un contrat (`AuthApi`) n'impose pas à son consommateur des méthodes qu'il n'appelle pas.
 - **D** — les pages dépendent d'abstractions fournies dans `app.config.ts` (`AuthApi`), jamais d'une implémentation ni d'un `@capacitor/*` ; l'adresse d'API vient d'un `InjectionToken`, jamais d'une chaîne en dur. Pas d'abstraction spéculative : une interface naît d'une frontière (serveur, natif) ou de deux implémentations.
@@ -56,8 +56,9 @@ Le code généré respecte SOLID ; c'est une exigence du projet, pas une cérém
 - Ionic **9.0** (`@ionic/angular/standalone`, `provideIonicAngular` depuis `@ionic/angular/provide`), **mode `md` forcé** dans `app.config.ts` — @makola suit Material (champs M3, boutons M2, barres d'app M3), pas le style iOS d'Ionic. Ne pas laisser la détection de plateforme changer l'apparence.
 - Capacitor **8.5** (`@capacitor/splash-screen`, `@capacitor/status-bar` seulement). `ios/` et `android/` sont ignorés par git et générés localement (`npx cap add`, `npx cap sync`). Ajouter un plugin = une dépendance native à annoncer, puis `npx cap sync`.
 - Transloco 8 (`@jsverse/transloco`), langues `en` (défaut) et `fr`.
-- Ionicons 8, **contour uniquement**, inventaire dans `src/app/core/shared/icons.ts`.
-- Pas de Playwright, pas de dossier `e2e/`, un seul test (`app.spec.ts`), pas de `HttpClient` fourni, pas d'intercepteur, pas de jeton d'adresse d'API : tout ce qui touche au serveur est encore à poser.
+- Ionicons 8, **contour uniquement**, inventaire dans `src/app/shared/icons.ts`.
+- Pas de Playwright, pas de dossier `e2e/`, peu de tests Vitest (`app.spec.ts`, `SplashScreenService`, `LaunchStore`, `app-country-sheet`, `IdentifierPageComponent`), pas de `HttpClient` fourni, pas d'intercepteur, pas de jeton d'adresse d'API : tout ce qui touche au serveur est encore à poser.
+- Alias TypeScript (`tsconfig.json`) : `@core/*` → `src/app/core/*`, `@shared/*` → `src/app/shared/*`.
 
 **Exactitude des API.** Angular 22 a renommé et ajouté des API (`@Service`, `injectAsync`, Signal Forms). Tu ne devines jamais une signature : tu la vérifies dans les types installés (`node_modules/@angular/core/types/core.d.ts`, `node_modules/@angular/forms/types/`, `node_modules/@ngrx/signals/`, `node_modules/@ionic/angular/`) ou dans les références du dépôt (`.agents/skills/angular-developer/references/*.md`, `.agents/skills/capacitor-*/`). Si une vérification est impossible, tu le dis au lieu de supposer.
 
@@ -67,14 +68,11 @@ CLAUDE.md décrit la cible ; le dépôt en diverge sur les points suivants. **R�
 
 | Point | CLAUDE.md | Le dépôt | Conduite |
 |---|---|---|---|
-| Routes de premier niveau | `loadComponent` partout, jamais `loadChildren` | `app.routes.ts` charge chaque feature par `loadChildren` | Écart connu : ne pas en ajouter ; le signaler si tu touches `app.routes.ts`. |
-| Découpage du lazy-loading | un morceau par page | chaque `loadComponent` importe le baril `./pages` : toutes les pages d'une feature tombent dans le même morceau | Écart connu, même conduite. Une nouvelle feature importe la page par son propre fichier. |
-| Arborescence d'une feature | `<feature>/state/<feature>.store.ts`, `models/`, `enums/`, `services/`, `<feature>.routes.ts` | `features/<feature>/<feature>.store.ts`, `model/` (singulier), `<feature>-routes.ts`, `pages/index.ts` ; aucun `enums/` | Décision en attente de l'utilisateur. Une feature existante garde sa forme ; pour une feature neuve, demander. |
-| Composants partagés | `src/app/shared/` | `src/app/core/shared/components/<groupe>/` (alias `@core/*`) | Suivre le dépôt : c'est là que vivent les composants portés du système de conception. |
-| Architecture à événements | une sortie typée par un enum d'actions, la page `switch`e | aucun enum dans le dépôt ; les composants ont une sortie par action (`app-keypad` : `digit`, `decimal`, `backspace`, `absent`, `ungraded`, `next`) | Les briques du système de conception à **un seul** événement naturel (`pressed`, `valueChange`) restent telles. Tout **nouveau** composant de feature à plusieurs actions suit la règle de l'enum. Ne pas refondre les briques existantes sans décision. |
-| Accès natif | jamais un `@capacitor/*` hors d'un service | `LaunchStore` (`core/store/launch/`) importe `@capacitor/splash-screen` directement | Écart connu. Tout nouvel accès natif passe par un service dédié. |
+| Architecture à événements | une sortie typée par un enum d'actions, la page `switch`e | Les composants de feature la suivent (`auth/enums/country-sheet-actions.enum.ts` : `app-country-sheet` émet `sheetAction`, `IdentifierPageComponent` `switch`e dessus). Les briques de `shared/`, portées du système de conception, gardent une sortie par action : `app-keypad` (`digit`, `decimal`, `backspace`, `absent`, `ungraded`, `next`), `app-bar` (`back`, `actionSelected`), `app-search-field` (`valueChange`, `cleared`) | Les briques à **un seul** événement naturel (`pressed`, `valueChange`) restent telles ; celles à plusieurs sorties ne se refondent pas sans décision. Tout composant de feature à plusieurs actions suit la règle de l'enum, dans `<feature>/enums/`. |
 | Session | stockage sécurisé natif pour les jetons | `SessionStore` persiste la session en `localStorage` (aucun jeton aujourd'hui) | Acceptable tant qu'il n'y a pas de jeton. Le jour où l'authentification réelle arrive, jetons dans un stockage sécurisé derrière un service, `localStorage` en repli web seulement. |
 | Identité de l'app | — | `capacitor.config.ts` : `appId: 'com.example.app'` | Valeur provisoire à faire choisir par l'utilisateur avant toute publication. |
+
+L'arborescence suit CLAUDE.md depuis le 6 novembre 2026 : features à la racine de `src/app/` (`<feature>.routes.ts`, `pages/<page>/`, `components/`, `state/<feature>.store.ts`, `models/`, `enums/` s'il y a un enum), routes de premier niveau en `children` d'un `*.routes.ts` importé, un `loadComponent` par page vers son propre fichier, `core/guards/`, `core/services/` (dont `SplashScreenService`, seul importateur de `@capacitor/splash-screen`), `core/models/`, briques partagées dans `shared/`. Une feature neuve prend la même forme.
 
 ## Règles produit (non négociables)
 
@@ -141,17 +139,17 @@ Lire `docs/design-system.md` avant tout écran. Ce qui se casse le plus facileme
 - **Type** : Roboto seule, cinq tailles, plancher 12 px, titre d'écran en 400 ; toute valeur numérique en chiffres tabulaires.
 - **Formes** : pas de dégradé, pas d'illustration, pas de photo, pas de flou, pas d'ombre (sauf la barre d'app au défilement), pas de carte flottante : un groupe se délimite par un contour 1 px rayon 8 ou une ligne `#EEF1F5`. Rayons 4 / 8 / 16 / 24 / rond (32 pour le bas d'un bandeau tonal).
 - **Mouvement** : 70 ms (touche, action de pied), 120 ms (focus), 150 ms (interrupteur, pastille), 420 ms (flash de confirmation d'une ligne). Aucun rebond, ressort ni fondu d'entrée. Pas d'état de survol.
-- **Icônes** : Ionicons contour, l'inventaire de `core/shared/icons.ts` et rien d'autre ; une icône absente est une décision à demander, pas un détail. Aucun glyphe Unicode, aucun emoji.
+- **Icônes** : Ionicons contour, l'inventaire de `shared/icons.ts` et rien d'autre ; une icône absente est une décision à demander, pas un détail. Aucun glyphe Unicode, aucun emoji.
 - **Mise en page** : marge 16 px (20 dans un bandeau) ; barre d'app en haut, une action de pied fixe en bas, la liste défile entre ; frères espacés par `gap`, jamais par des marges individuelles ; zones sûres par `--mk-safe-*` (`styles.scss`).
 - **Mode sombre** : une dérivation (`[data-mk-theme="sombre"]`, `src/theme/tokens/dark.scss`), mêmes composants et mesures, jamais de noir pur.
-- **Briques existantes** : réemploie `src/app/core/shared/components/` (`app-bar`, `app-footer-action`, `app-keypad`, `app-list-row`, `app-tonal-header`, `app-network-banner`, `app-text-field`, `app-switch`…) avant d'en écrire une. Une nouvelle brique partagée cite sa source (`Source:` en en-tête) et documente ses écarts au React.
-- **Marque** : l'export du 15 septembre dit « @makola n'a pas de logo » ; le projet claude.ai/design a depuis ajouté une marque, portée dans `core/shared/components/brand/logo` (`app-logo`). Elle sert au lancement, à l'entrée et en tête de document — **jamais dans une barre d'app**.
+- **Briques existantes** : réemploie `src/app/shared/` (`app-bar`, `app-footer-action`, `app-keypad`, `app-list-row`, `app-tonal-header`, `app-network-banner`, `app-text-field`, `app-switch`…) avant d'en écrire une. Une nouvelle brique partagée cite sa source (`Source:` en en-tête) et documente ses écarts au React.
+- **Marque** : l'export du 15 septembre dit « @makola n'a pas de logo » ; le projet claude.ai/design a depuis ajouté une marque, portée dans `shared/brand/logo` (`app-logo`). Elle sert au lancement, à l'entrée et en tête de document — **jamais dans une barre d'app**.
 
 **Voix et textes.** Le système de conception a écrit ses règles en français ; elles valent pour les deux langues. Sobre, factuel, jamais familier ni enjoué — on annonce des notes d'enfants. En français : « vous », jamais « tu » ni « nous » (« Le code partira par SMS », pas « Nous avons envoyé… ») ; en anglais, le même registre neutre. Casse de phrase partout ; noms de famille en majuscules dans les listes (« ILUNGA Marie »). Jamais « Champ invalide », « Aucun résultat », « Bien noté », « Oups », ni point d'exclamation de circonstance. Le message dit **ce qu'on peut faire** et **énonce les limites** du produit. Les noms d'élèves, de classes et de devoirs saisis sont des données : jamais traduits.
 
 ## Comment tu travailles
 
-1. **Lire avant d'écrire** : la feature voisine la plus proche, les briques de `core/shared/components`, le store concerné, le `.jsx` du kit pour les mesures. Prolonger ses patrons.
+1. **Lire avant d'écrire** : la feature voisine la plus proche, les briques de `shared/`, le store concerné, le `.jsx` du kit pour les mesures. Prolonger ses patrons.
 2. **Textes** : aucun texte en dur. Templates par le tube `transloco`, texte construit en TypeScript par `injectTranslate()` dans un `computed()`. Les clés s'ajoutent dans `scripts/i18n-source.py` (anglais et français côte à côte), puis `python3 scripts/i18n-source.py && python3 scripts/i18n-check.py` ; ne jamais éditer `src/i18n/*.json` à la main. Nombres et dates par `formatDecimal()` et `formatDate()` (`@core/i18n`) : 16.75 en anglais, 16,75 en français.
 3. **Formulaires** : Signal Forms seulement (`form()`, schéma de validation, directive `FormField` liée par `[formField]` — le nom `[field]` des premières versions n'existe pas en 22.1) ; jamais `FormsModule` ni `ReactiveFormsModule`.
 4. **Natif** : un service par capacité, garde `Capacitor.isNativePlatform()` et repli web, permissions demandées au moment de l'usage.
@@ -168,4 +166,4 @@ Ils ne sont **pas** à corriger au passage : chacun appelle une décision de l'u
 - **Consentements kenyans** : aucun écran ; nécessaires avant l'ouverture au Kenya.
 - **Plusieurs rôles par compte (ID-02)** : `Session` n'en porte qu'un.
 - **Serveur** : `MockAuthApi` partout ; ni `HttpClient`, ni intercepteur, ni adresse d'API, ni file hors ligne ; `ClassroomStore.offline` vaut `true` en dur, aucun suivi réel du réseau.
-- Les écarts de forme du tableau « Ce que CLAUDE.md dit et ce que le dépôt fait ».
+- Les écarts encore ouverts du tableau « Ce que CLAUDE.md dit et ce que le dépôt fait » : briques partagées à plusieurs sorties, session en `localStorage`, `appId` provisoire.

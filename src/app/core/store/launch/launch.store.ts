@@ -1,9 +1,10 @@
 import { inject } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
-import { SplashScreen } from '@capacitor/splash-screen';
 import { patchState, signalStore, withHooks, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { filter, pipe, switchMap, take, tap } from 'rxjs';
+
+import { SplashScreenService } from '@core/services/splash-screen.service';
 
 /**
  * Native launch screen (the @makola mark on primary blue). `launchAutoHide` is
@@ -14,23 +15,28 @@ import { filter, pipe, switchMap, take, tap } from 'rxjs';
 export const LaunchStore = signalStore(
   { providedIn: 'root' },
   withState({ ready: false }),
-  withHooks((store, router = inject(Router)) => {
+  withHooks((store, router = inject(Router), splashScreen = inject(SplashScreenService)) => {
     const onFirstNavigation = rxMethod<void>(
       pipe(
         switchMap(() =>
           router.events.pipe(
-            filter((e) => e instanceof NavigationEnd || e instanceof NavigationCancel || e instanceof NavigationError),
-            take(1)
-          )
+            filter(
+              (e) =>
+                e instanceof NavigationEnd ||
+                e instanceof NavigationCancel ||
+                e instanceof NavigationError,
+            ),
+            take(1),
+          ),
         ),
         tap(() => {
           patchState(store, { ready: true });
-          void SplashScreen.hide();
-        })
-      )
+          void splashScreen.hide();
+        }),
+      ),
     );
     return {
-      onInit: () => onFirstNavigation()
+      onInit: () => onFirstNavigation(),
     };
-  })
+  }),
 );
