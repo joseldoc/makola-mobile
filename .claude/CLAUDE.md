@@ -5,6 +5,14 @@ Guidance for Claude Code (and anyone else) working in this repository — a gene
 > 
 > **State management note**: use **`@ngrx/signals` (`signalStore`)** for shared/cross-component domain state, and the built-in **`resource`/`httpResource`** APIs (stable since v22) for simple, store-less data fetching. Do **not** use classic `@ngrx/store`/`@ngrx/effects` (actions/reducers/effects/selectors) — that pattern predates signals and adds boilerplate this stack doesn't need.
 
+## @makola — what this generic guide leaves out
+
+This repository is `makola-mobile`, the mobile app of @makola (a teacher's grade book, with a read-only feed for parents; Republic of the Congo and Kenya). Everything specific to @makola — product rules (no class average or rank, absent ≠ zero, offline never blocks…), the @makola design system, the contract with the backend services, and the known gaps between this guide and the code — lives in the brief of the **`angular-mobile-expert`** agent (`.claude/agents/angular-mobile-expert.md`), written in French like the rest of the project's documentation.
+
+- **All front-end work goes through the `angular-mobile-expert` agent.** The effort level is chosen at each delegation according to the real complexity of the task (mechanical → low/medium; a full screen, a multi-screen flow, a real HTTP adapter or a native wrapper → high; offline replay, session/tokens, multi-role accounts, Kenyan parental consents, a reorganisation of the tree or an open arbitration → xhigh/max); details in the agent's brief.
+- **Every change reaches `main` through a pull request** — never a direct push, not even for a one-line fix. Until a CI exists, `npm run build` and `npm test` must pass before the PR is opened.
+- Design reference: `docs/design-system.md` (copy of the claude.ai/design project "@makola Design System"; export in the `joseldoc/makola-design` repository).
+
 ## Target stack
 
 - **Angular 22** (Node.js **≥ 22.12** required; TypeScript 6)
@@ -399,7 +407,7 @@ export class HapticsService {
 
 ### Forms
 1. **Signal Forms for every form in this app, with no exceptions.**
-2. **Never import `FormsModule` or `ReactiveFormsModule`.** Validation goes through a schema (`required`, `minLength`, custom validators) passed to `form()`; template binding is `[field]="someForm.someField"`; custom form controls implement the Signal Forms field contract instead of `ControlValueAccessor`. Where a field is rendered with an Ionic input (`ion-input`, `ion-select`, `ion-checkbox`, …), bind it through `[field]` the same way — Ionic's form components support the standard control-value-accessor-compatible binding surface Signal Forms targets.
+2. **Never import `FormsModule` or `ReactiveFormsModule`.** Validation goes through a schema (`required`, `minLength`, custom validators) passed to `form()`; template binding is `[formField]="someForm.someField"` (the `FormField` directive from `@angular/forms/signals` — the earlier `[field]` name does not exist in Angular 22.1); custom form controls implement the Signal Forms field contract instead of `ControlValueAccessor`. Where a field is rendered with an Ionic input (`ion-input`, `ion-select`, `ion-checkbox`, …), bind it through `[formField]` the same way — Ionic's form components support the standard control-value-accessor-compatible binding surface Signal Forms targets.
 3. Treat Signal Forms as **stable but still evolving in edge cases** — check the Angular MCP server's `get_best_practices`/`search_documentation` tools before relying on a specific validator or API shape from training data.
 
 ### Accessibility
