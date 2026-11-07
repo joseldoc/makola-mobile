@@ -126,6 +126,45 @@ describe('ParentFeedPageComponent — class average in the subject card (RM-11, 
   });
 });
 
+describe('ParentFeedPageComponent — term card: a date, never a judgement of the child', () => {
+  let fixture: ComponentFixture<ParentFeedPageComponent>;
+
+  const card = () => (fixture.nativeElement as HTMLElement).querySelectorAll('.card')[1];
+  const text = () => card().textContent!.replace(/\u00a0/g, ' ');
+  const part = (name: string) =>
+    card()
+      .querySelector(`.${name}`)!
+      .textContent!.replace(/\u00a0/g, ' ')
+      .trim();
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ParentFeedPageComponent);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('states when the term closes, in the interface language', async () => {
+    expect(part('card-label')).toBe('Term 2');
+    expect(part('card-detail')).toBe('Closes on 27 Mar');
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(part('card-label')).toBe('Trimestre 2');
+    expect(part('card-detail')).toBe('Clôture le 27 mars');
+  });
+
+  it('carries no arrow, trend word or colour: a colour never rewards a student', () => {
+    expect(text()).not.toMatch(/[↑↓▲▼]|improving|progress/i);
+    expect(card().querySelector('ion-icon, app-icon')).toBeNull();
+    const detail = card().querySelector<HTMLElement>('.card-detail')!;
+    expect(detail.getAttribute('style')).toBeNull();
+    expect(card().querySelector('.card-progress')).toBeNull();
+  });
+});
+
 describe('ParentFeedPageComponent — app-bar actions and the teacher space (ID-02)', () => {
   const identifier = { channel: 'phone', value: '+242066123456' } as const;
   let fixture: ComponentFixture<ParentFeedPageComponent>;

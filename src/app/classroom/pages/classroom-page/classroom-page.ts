@@ -59,6 +59,14 @@ export class ClassroomPageComponent {
     () => `${this.store.school()} · ${this.t('common.term', { n: this.store.term() })}`,
   );
 
+  /** What the report card will show, and when — term and date are data of the class. */
+  protected readonly reportCardNotice = computed(() =>
+    this.t('classroom.reportCardNotice', {
+      term: this.store.term(),
+      date: formatDate(this.store.termCloses(), this.language.language(), 'long'),
+    }),
+  );
+
   protected readonly views = computed<TabItem[]>(() => [
     { id: 0, label: this.t('classroom.tabs.assignments') },
     { id: 1, label: this.t('classroom.tabs.students') },

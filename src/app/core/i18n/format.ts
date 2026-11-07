@@ -15,7 +15,10 @@ export function decimalSeparator(language: Language): string {
   return language === 'fr' ? ',' : '.';
 }
 
-/** « 12 Mar » / « 12 mars » — or with the year: « 19 March 2026 ». */
+/**
+ * « 12 Mar » / « 12 mars » — or with the year: « 19 March 2026 ». Non-breaking
+ * spaces: a date never wraps between its day and its month.
+ */
 export function formatDate(
   iso: string,
   language: Language,
@@ -26,5 +29,5 @@ export function formatDate(
     style === 'short'
       ? { day: 'numeric', month: 'short' }
       : { day: 'numeric', month: 'long', year: 'numeric' };
-  return new Intl.DateTimeFormat(LOCALES[language], options).format(date);
+  return new Intl.DateTimeFormat(LOCALES[language], options).format(date).replace(/ /g, '\u00a0');
 }

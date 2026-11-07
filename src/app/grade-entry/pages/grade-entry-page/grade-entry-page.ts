@@ -44,7 +44,12 @@ export class GradeEntryPageComponent {
   protected readonly subtitle = computed(() => {
     const s = this.store;
     const progress = this.t('gradeEntry.progress', { count: s.entered(), total: s.names().length });
-    return `${s.classroom()} · /${s.scale()} · coef ${s.coefficient()} · ${progress}`;
+    return this.t('gradeEntry.subtitle', {
+      classroom: s.classroom(),
+      scale: s.scale(),
+      coefficient: s.coefficient(),
+      progress,
+    });
   });
 
   /** « 9.5 » → « 9,5 » in French; codes read as words, never as a zero. */

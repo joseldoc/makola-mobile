@@ -62,10 +62,11 @@
   margin-top: var(--mk-esp-1);
 }
 
-.card-progress {
+// Closing date of the term: ink, never a tone — it says a date, not how the child does.
+.card-detail {
   font: 500 15px/1.35 var(--mk-font);
   margin-top: 5px;
-  color: var(--mk-succes);
+  color: var(--mk-text);
 }
 
 .list {

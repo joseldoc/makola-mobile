@@ -46,10 +46,13 @@ export class AssignmentPageComponent {
     return m ? this.t(m.key, m.params) : '';
   });
 
-  /** « Today · 19 March 2026 » — the date in the interface language. */
+  /**
+   * « Today · 19 Mar » — the date in the interface language, without the year:
+   * the long form (« Aujourd'hui · 19 mars 2026 ») was cut beside « Change » at 360 dp.
+   */
   protected readonly dateLabel = computed(() => {
     const d = this.store.currentDate();
-    const date = formatDate(d.date, this.language.language(), 'long');
+    const date = formatDate(d.date, this.language.language());
     return d.today ? this.t('assignment.date.today', { date }) : date;
   });
 

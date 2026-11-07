@@ -52,6 +52,11 @@ interface ParentFeedState {
    */
   classSubjectAverage: number | undefined;
   term: number;
+  /**
+   * Closing date of the term in this subject (RM-14, decided by its teacher, A-20),
+   * ISO 8601 — the term card's only line: a fact, never a judgement of the child.
+   */
+  termCloses: string;
   feed: FeedItem[];
   weeklySummary: boolean;
   scrolled: boolean;
@@ -68,6 +73,8 @@ const initialState: ParentFeedState = {
   // (12.4 × 2 + 11.8 × 1 + 14.1 × 1) / 4 = 12.675, shown to two decimals.
   classSubjectAverage: 12.68,
   term: 2,
+  // Same class and term as the teacher's screens (classroom, new assignment).
+  termCloses: '2026-03-27',
   feed: FEED,
   weeklySummary: true,
   scrolled: false,
