@@ -34,10 +34,18 @@ interface ClassroomBarAction extends AppBarAction {
  */
 @Component({
   selector: 'app-classroom-page',
-  imports: [AppBarComponent, TabsComponent, ListRowComponent, NetworkBannerComponent, SearchFieldComponent, FooterActionComponent, TranslocoPipe],
+  imports: [
+    AppBarComponent,
+    TabsComponent,
+    ListRowComponent,
+    NetworkBannerComponent,
+    SearchFieldComponent,
+    FooterActionComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './classroom-page.html',
   styleUrl: './classroom-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassroomPageComponent {
   protected readonly store = inject(ClassroomStore);
@@ -47,26 +55,38 @@ export class ClassroomPageComponent {
   private readonly t = injectTranslate();
 
   protected readonly title = computed(() => `${this.store.classroom()} · ${this.store.subject()}`);
-  protected readonly subtitle = computed(() => `${this.store.school()} · ${this.t('common.term', { n: this.store.term() })}`);
+  protected readonly subtitle = computed(
+    () => `${this.store.school()} · ${this.t('common.term', { n: this.store.term() })}`,
+  );
 
   protected readonly views = computed<TabItem[]>(() => [
     { id: 0, label: this.t('classroom.tabs.assignments') },
     { id: 1, label: this.t('classroom.tabs.students') },
-    { id: 2, label: this.t('classroom.tabs.reportCard') }
+    { id: 2, label: this.t('classroom.tabs.reportCard') },
   ]);
 
   /** The parent space appears only when the account also holds that role (ID-02). */
   protected readonly barActions = computed<ClassroomBarAction[]>(() => [
     { action: ClassroomBarActions.Search, icon: ICONS.search, label: this.t('common.search') },
     ...(this.session.hasRole('parent')
-      ? [{ action: ClassroomBarActions.ParentSpace, icon: ICONS.student, label: this.t('spaces.parent') }]
+      ? [
+          {
+            action: ClassroomBarActions.ParentSpace,
+            icon: ICONS.student,
+            label: this.t('spaces.parent'),
+          },
+        ]
       : []),
-    { action: ClassroomBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') }
+    { action: ClassroomBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') },
   ]);
 
   protected assignmentMeta(a: Assignment): string {
     const language = this.language.language();
-    return this.t('classroom.assignmentMeta', { coefficient: a.coefficient, scale: a.scale, date: formatDate(a.date, language) });
+    return this.t('classroom.assignmentMeta', {
+      coefficient: a.coefficient,
+      scale: a.scale,
+      date: formatDate(a.date, language),
+    });
   }
 
   protected decimal(value: number): string {

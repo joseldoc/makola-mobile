@@ -22,10 +22,16 @@ const SCALES: Scale[] = [20, 10, 5];
  */
 @Component({
   selector: 'app-assignment-page',
-  imports: [TextFieldComponent, MiniFabComponent, OutlinedButtonComponent, FooterActionComponent, TranslocoPipe],
+  imports: [
+    TextFieldComponent,
+    MiniFabComponent,
+    OutlinedButtonComponent,
+    FooterActionComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './assignment-page.html',
   styleUrl: './assignment-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssignmentPageComponent {
   protected readonly store = inject(AssignmentStore);
@@ -52,7 +58,10 @@ export class AssignmentPageComponent {
     const { key, params = {} } = this.store.currentDate().message;
     const language = this.language.language();
     const formatted = Object.fromEntries(
-      Object.entries(params).map(([k, v]) => [k, typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? formatDate(v, language) : v])
+      Object.entries(params).map(([k, v]) => [
+        k,
+        typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? formatDate(v, language) : v,
+      ]),
     );
     return this.t(key, formatted);
   });

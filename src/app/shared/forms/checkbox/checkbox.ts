@@ -33,7 +33,7 @@ import { IconComponent } from '../../foundation/icon/icon';
     </div>
   `,
   styleUrl: './checkbox.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxComponent {
   readonly checked = input.required<boolean>();

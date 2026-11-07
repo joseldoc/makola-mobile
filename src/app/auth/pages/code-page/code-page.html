@@ -20,7 +20,9 @@
         {{ 'auth.code.resendIn' | transloco: { seconds: wait() } }}
       } @else {
         {{ 'auth.code.nothingReceived' | transloco }}
-        <button type="button" class="resend" (click)="resend()">{{ 'auth.code.resend' | transloco }}</button>
+        <button type="button" class="resend" (click)="resend()">
+          {{ 'auth.code.resend' | transloco }}
+        </button>
       }
     </p>
   </div>

@@ -25,7 +25,7 @@ registerIcons();
       style="flex: none; display: block"
     ></ion-icon>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {
   /** Full Ionicons name, or a value of `ICONS`. Always an `-outline`. */

@@ -30,7 +30,7 @@ export type MiniFabIcon = 'remove-outline' | 'add-outline';
     </button>
   `,
   styleUrl: './mini-fab.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MiniFabComponent {
   /** `remove-outline` or `add-outline` — no other icon. */

@@ -1,5 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree, provideRouter } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+  provideRouter,
+} from '@angular/router';
 
 import { Identifier, Invitation, ParentalConsent } from '@core/models/auth.model';
 import { AuthApi } from '@core/services/auth-api';
@@ -25,7 +31,12 @@ function stubApi(required: ParentalConsent[]) {
     checkInvitation: vi.fn().mockResolvedValue(invitation),
     requiredConsents: vi.fn().mockResolvedValue(required),
     requestCode: vi.fn().mockResolvedValue({ resendIn: 45 }),
-    verifyCode: vi.fn().mockResolvedValue({ id: 'a1', identifier: kenyan, activeRole: 'parent', roles: { parent: 'setup' } }),
+    verifyCode: vi.fn().mockResolvedValue({
+      id: 'a1',
+      identifier: kenyan,
+      activeRole: 'parent',
+      roles: { parent: 'setup' },
+    }),
     completeProfile: vi.fn(),
     saveAlerts: vi.fn(),
   };
@@ -81,7 +92,10 @@ describe('AuthFlowStore — parental consents in the invitation flow (RI-20)', (
     expect(api.requestCode).toHaveBeenCalledWith(kenyan, 'invitation');
 
     await store.verifyCode('123456');
-    expect(api.verifyCode).toHaveBeenCalledWith(kenyan, '123456', 'invitation', { invitation, consents: BOTH });
+    expect(api.verifyCode).toHaveBeenCalledWith(kenyan, '123456', 'invitation', {
+      invitation,
+      consents: BOTH,
+    });
   });
 
   it('forgets them on a new number, a new invitation, or a decline', async () => {

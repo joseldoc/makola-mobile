@@ -10,8 +10,14 @@ import { Assignment, Student } from '../models/classroom.model';
  */
 const ASSIGNMENTS: Assignment[] = [
   { name: 'Contrôle n°2', coefficient: 2, scale: 20, date: '2026-03-12', classAverage: 12.4 },
-  { name: 'Interrogation ch. 5', coefficient: 1, scale: 20, date: '2026-03-06', classAverage: 11.8 },
-  { name: 'Devoir maison n°1', coefficient: 1, scale: 20, date: '2026-02-28', classAverage: 14.1 }
+  {
+    name: 'Interrogation ch. 5',
+    coefficient: 1,
+    scale: 20,
+    date: '2026-03-06',
+    classAverage: 11.8,
+  },
+  { name: 'Devoir maison n°1', coefficient: 1, scale: 20, date: '2026-02-28', classAverage: 14.1 },
 ];
 
 const STUDENTS: Student[] = [
@@ -20,7 +26,7 @@ const STUDENTS: Student[] = [
   { name: 'NGOMA Divine', average: 13.5 },
   { name: 'OBAMBI Junior', average: 11.05 },
   { name: 'SAMBA Rose', average: 15.4 },
-  { name: 'TATI Gloire', average: 8.75, belowPass: true }
+  { name: 'TATI Gloire', average: 8.75, belowPass: true },
 ];
 
 interface ClassroomState {
@@ -46,7 +52,7 @@ const initialState: ClassroomState = {
   view: 0,
   search: '',
   scrolled: false,
-  offline: true
+  offline: true,
 };
 
 export const ClassroomStore = signalStore(
@@ -56,7 +62,7 @@ export const ClassroomStore = signalStore(
     filteredStudents: computed(() => {
       const q = search().toLowerCase();
       return students().filter((s) => s.name.toLowerCase().includes(q));
-    })
+    }),
   })),
   withMethods((store) => ({
     setView(view: number): void {
@@ -70,6 +76,6 @@ export const ClassroomStore = signalStore(
     },
     setScrolled(scrolled: boolean): void {
       patchState(store, { scrolled });
-    }
-  }))
+    },
+  })),
 );

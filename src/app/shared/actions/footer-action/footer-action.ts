@@ -24,10 +24,12 @@ export type FooterActionTone = 'primary' | 'pending' | 'danger';
       [style.box-shadow]="disabled() ? 'none' : '0 0 0 3px var(--mk-primaire-halo)'"
       [style.transform]="held() && !disabled() ? 'scale(var(--mk-echelle-action))' : 'none'"
       [style.filter]="held() && !disabled() ? 'brightness(.92)' : 'none'"
-    >{{ disabled() ? (missingLabel() || label()) : label() }}</button>
+    >
+      {{ disabled() ? missingLabel() || label() : label() }}
+    </button>
   `,
   styleUrl: './footer-action.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterActionComponent {
   /** Resting label, in the imperative: "Create and enter grades". */

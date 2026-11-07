@@ -19,7 +19,12 @@ const accounts = () =>
 
 /** Everything the mock has stored. */
 const stored = () =>
-  Object.fromEntries(Array.from({ length: localStorage.length }, (_, i) => localStorage.key(i)!).map((k) => [k, localStorage.getItem(k)]));
+  Object.fromEntries(
+    Array.from({ length: localStorage.length }, (_, i) => localStorage.key(i)!).map((k) => [
+      k,
+      localStorage.getItem(k),
+    ]),
+  );
 
 /** Runs a call through the mock network delay (fake timers). */
 async function call<T>(promise: Promise<T>): Promise<T> {
@@ -67,7 +72,9 @@ describe('MockAuthApi — several roles on one account (ID-02)', () => {
     const teacher = await teacherAccount();
     expect(teacher.roles).toEqual({ teacher: 'ready' });
 
-    const opened = await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+    const opened = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
 
     expect(opened.id).toBe(teacher.id);
     expect(opened.name).toBe('NKOUKA Joseph');
@@ -78,7 +85,9 @@ describe('MockAuthApi — several roles on one account (ID-02)', () => {
 
   it('the parent alerts then make both spaces ready', async () => {
     await teacherAccount();
-    const opened = await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+    const opened = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
 
     const ready = await call(
       api.saveAlerts(opened, {
@@ -99,14 +108,18 @@ describe('MockAuthApi — several roles on one account (ID-02)', () => {
   });
 
   it('a contact without an account gets a parent account, alerts to set', async () => {
-    const opened = await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+    const opened = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
 
     expect(opened.roles).toEqual({ parent: 'setup' });
     expect(opened.activeRole).toBe('parent');
   });
 
   it('a parent joining a new invitation sets their alerts for this child again', async () => {
-    const first = await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+    const first = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
     await call(
       api.saveAlerts(first, {
         newGrade: true,
@@ -117,7 +130,9 @@ describe('MockAuthApi — several roles on one account (ID-02)', () => {
       }),
     );
 
-    const again = await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+    const again = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
 
     expect(again.id).toBe(first.id);
     expect(again.roles).toEqual({ parent: 'setup' });
@@ -154,7 +169,9 @@ describe('MockAuthApi — several roles on one account (ID-02)', () => {
       roles: { teacher: 'ready' },
     });
 
-    const opened = await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+    const opened = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
     expect(opened.roles).toEqual({ teacher: 'ready', parent: 'setup' });
     expect(accounts()[`phone:${number.value}`]).toEqual(opened);
   });
@@ -214,7 +231,12 @@ describe('MockAuthApi — Kenyan parental consents (RI-20)', () => {
   });
 
   it('already given by this account for this student: not asked again', async () => {
-    await call(api.verifyCode(congolese, DEMO_CODE, 'invitation', { invitation: kenya, consents: ['CHILD_DATA', 'CROSS_BORDER_TRANSFER'] }));
+    await call(
+      api.verifyCode(congolese, DEMO_CODE, 'invitation', {
+        invitation: kenya,
+        consents: ['CHILD_DATA', 'CROSS_BORDER_TRANSFER'],
+      }),
+    );
 
     expect(await call(api.requiredConsents(congolese, kenya))).toEqual([]);
     // Another contact, or another student, is asked again.
@@ -232,7 +254,12 @@ describe('MockAuthApi — Kenyan parental consents (RI-20)', () => {
       call(api.verifyCode(congolese, DEMO_CODE, 'invitation', { invitation: kenya, consents: [] })),
     ).rejects.toEqual(new AuthError('parental-consent-required'));
     await expect(
-      call(api.verifyCode(congolese, DEMO_CODE, 'invitation', { invitation: kenya, consents: ['CHILD_DATA'] })),
+      call(
+        api.verifyCode(congolese, DEMO_CODE, 'invitation', {
+          invitation: kenya,
+          consents: ['CHILD_DATA'],
+        }),
+      ),
     ).rejects.toEqual(new AuthError('parental-consent-required'));
 
     expect(stored()).toEqual(before);
@@ -241,11 +268,16 @@ describe('MockAuthApi — Kenyan parental consents (RI-20)', () => {
 
   it('accepts once both are given; a Congolese invitation needs none', async () => {
     const opened = await call(
-      api.verifyCode(kenyan, DEMO_CODE, 'invitation', { invitation: kenya, consents: ['CROSS_BORDER_TRANSFER', 'CHILD_DATA'] }),
+      api.verifyCode(kenyan, DEMO_CODE, 'invitation', {
+        invitation: kenya,
+        consents: ['CROSS_BORDER_TRANSFER', 'CHILD_DATA'],
+      }),
     );
     expect(opened.roles).toEqual({ parent: 'setup' });
 
-    const other = await call(api.verifyCode(congolese, DEMO_CODE, 'invitation', { invitation: congo, consents: [] }));
+    const other = await call(
+      api.verifyCode(congolese, DEMO_CODE, 'invitation', { invitation: congo, consents: [] }),
+    );
     expect(other.roles).toEqual({ parent: 'setup' });
   });
 });

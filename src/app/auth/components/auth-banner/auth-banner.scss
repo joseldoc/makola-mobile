@@ -9,8 +9,8 @@
   border-bottom-left-radius: var(--mk-rayon-bandeau);
   border-bottom-right-radius: var(--mk-rayon-bandeau);
   // Full bleed: the tint runs under the status bar.
-  padding: calc(var(--mk-esp-2) + var(--mk-safe-top)) calc(var(--mk-esp-6) + var(--mk-safe-right)) var(--mk-esp-5)
-    calc(var(--mk-esp-6) + var(--mk-safe-left));
+  padding: calc(var(--mk-esp-2) + var(--mk-safe-top)) calc(var(--mk-esp-6) + var(--mk-safe-right))
+    var(--mk-esp-5) calc(var(--mk-esp-6) + var(--mk-safe-left));
 }
 
 // Two round shapes in the darker tint spilling out of the frame — never a gradient.

@@ -1,11 +1,25 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  computed,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { FieldTree, FormField, form, submit, validate } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { Level, TeacherProfile } from '@core/models/auth.model';
 import { formatIdentifier } from '@core/models/identifier';
-import { COUNTRIES, CountryCode, DEFAULT_COUNTRY, countryByCode, countryOfNumber } from '@core/models/country';
+import {
+  COUNTRIES,
+  CountryCode,
+  DEFAULT_COUNTRY,
+  countryByCode,
+  countryOfNumber,
+} from '@core/models/country';
 import { injectTranslate } from '@core/i18n/translate';
 import { SessionStore } from '@core/store/session/session.store';
 import { AppBarComponent } from '@shared/navigation/app-bar/app-bar';
@@ -28,10 +42,18 @@ const STEPS = ['identity', 'subjects', 'city'] as const;
  */
 @Component({
   selector: 'app-profile-page',
-  imports: [AppBarComponent, TextFieldComponent, CheckboxComponent, RadioButtonComponent, FooterActionComponent, FormField, TranslocoPipe],
+  imports: [
+    AppBarComponent,
+    TextFieldComponent,
+    CheckboxComponent,
+    RadioButtonComponent,
+    FooterActionComponent,
+    FormField,
+    TranslocoPipe,
+  ],
   templateUrl: './profile-page.html',
   styleUrls: ['../auth-page.scss', './profile-page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilePageComponent {
   protected readonly store = inject(AuthFlowStore);
@@ -65,19 +87,25 @@ export class ProfilePageComponent {
     subjects: [],
     levels: [],
     city: '',
-    country: this.deducedCountry()?.code ?? DEFAULT_COUNTRY
+    country: this.deducedCountry()?.code ?? DEFAULT_COUNTRY,
   });
   protected readonly form = form(this.model, (p) => {
     validate(p.lastName, ({ value }) =>
-      value().trim().length < 2 ? { kind: 'lastName', message: this.t('auth.profile.errors.lastName') } : null
+      value().trim().length < 2
+        ? { kind: 'lastName', message: this.t('auth.profile.errors.lastName') }
+        : null,
     );
     validate(p.firstName, ({ value }) =>
-      value().trim().length < 2 ? { kind: 'firstName', message: this.t('auth.profile.errors.firstName') } : null
+      value().trim().length < 2
+        ? { kind: 'firstName', message: this.t('auth.profile.errors.firstName') }
+        : null,
     );
     validate(p.subjects, ({ value }) => (value().length ? null : { kind: 'subjects' }));
     validate(p.levels, ({ value }) => (value().length ? null : { kind: 'levels' }));
     validate(p.city, ({ value }) =>
-      value().trim().length < 2 ? { kind: 'city', message: this.t('auth.profile.errors.city') } : null
+      value().trim().length < 2
+        ? { kind: 'city', message: this.t('auth.profile.errors.city') }
+        : null,
     );
   });
 
@@ -92,7 +120,11 @@ export class ProfilePageComponent {
 
   private readonly fieldsByStep = computed<FieldTree<unknown>[][]>(() => {
     const f = this.form;
-    return [[f.lastName, f.firstName], [f.subjects, f.levels], [f.city, f.country]];
+    return [
+      [f.lastName, f.firstName],
+      [f.subjects, f.levels],
+      [f.city, f.country],
+    ];
   });
 
   /** What is missing, said on the button. */
@@ -151,7 +183,12 @@ export class ProfilePageComponent {
   private activate(): void {
     void submit(this.form, async () => {
       const p = this.model();
-      const profile = { ...p, lastName: p.lastName.trim(), firstName: p.firstName.trim(), city: p.city.trim() };
+      const profile = {
+        ...p,
+        lastName: p.lastName.trim(),
+        firstName: p.firstName.trim(),
+        city: p.city.trim(),
+      };
       if (await this.store.completeProfile(profile)) {
         void this.router.navigateByUrl('/classroom', { replaceUrl: true });
       }

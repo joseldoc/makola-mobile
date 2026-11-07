@@ -15,7 +15,12 @@ import { OnboardingSlide } from '../../models/onboarding.model';
   selector: 'app-onboarding-slide',
   imports: [TonalHeaderComponent, IconComponent, TranslocoPipe],
   template: `
-    <article class="slide" role="group" [attr.aria-roledescription]="'onboarding.screen' | transloco" [attr.aria-label]="position()">
+    <article
+      class="slide"
+      role="group"
+      [attr.aria-roledescription]="'onboarding.screen' | transloco"
+      [attr.aria-label]="position()"
+    >
       <app-tonal-header [role]="slide().role" [fullBleed]="true">
         <div class="visual">
           <div class="disc">
@@ -31,7 +36,7 @@ import { OnboardingSlide } from '../../models/onboarding.model';
     </article>
   `,
   styleUrl: './onboarding-slide.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OnboardingSlideComponent {
   readonly slide = input.required<OnboardingSlide>();

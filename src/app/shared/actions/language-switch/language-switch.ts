@@ -6,7 +6,7 @@ import { Language, LANGUAGES } from '@core/i18n/language';
 /** Each language is named in itself: a French speaker must find « Français » in an English UI. */
 const NATIVE_NAMES: Record<Language, { short: string; name: string }> = {
   en: { short: 'EN', name: 'English' },
-  fr: { short: 'FR', name: 'Français' }
+  fr: { short: 'FR', name: 'Français' },
 };
 
 /**
@@ -35,7 +35,7 @@ const NATIVE_NAMES: Record<Language, { short: string; name: string }> = {
     </div>
   `,
   styleUrl: './language-switch.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitchComponent {
   readonly value = input.required<Language>();

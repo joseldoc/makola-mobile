@@ -11,7 +11,8 @@ import { ParentFeedPageComponent } from './parent-feed-page';
 describe('ParentFeedPageComponent — class average next to the child’s grade', () => {
   let fixture: ComponentFixture<ParentFeedPageComponent>;
 
-  const rows = () => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-list-row'));
+  const rows = () =>
+    Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-list-row'));
   // Non-breaking spaces keep « Class average 12.4 » on one line; compared as plain spaces.
   const text = (row: Element, part: string) =>
     (row.querySelector(`.${part}`)?.textContent ?? '').replace(/\u00a0/g, ' ').trim();
@@ -38,8 +39,12 @@ describe('ParentFeedPageComponent — class average next to the child’s grade'
     await fixture.whenStable();
 
     const [newGrade, belowPass] = rows();
-    expect(text(newGrade, 'secondary')).toBe('Contrôle n°2 · Maths · coef 2 · Moyenne de la classe 12,4');
-    expect(text(belowPass, 'secondary')).toBe('Interrogation ch. 5 · Maths · Moyenne de la classe 11,8');
+    expect(text(newGrade, 'secondary')).toBe(
+      'Contrôle n°2 · Maths · coef 2 · Moyenne de la classe 12,4',
+    );
+    expect(text(belowPass, 'secondary')).toBe(
+      'Interrogation ch. 5 · Maths · Moyenne de la classe 11,8',
+    );
   });
 
   it('shows nothing about a class average on rows without one (test announced, report card)', () => {
@@ -75,9 +80,16 @@ describe('ParentFeedPageComponent — app-bar actions and the teacher space (ID-
   }
 
   const targets = () =>
-    Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('app-bar-target button'));
+    Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
+        'app-bar-target button',
+      ),
+    );
   const labels = () => targets().map((b) => b.getAttribute('aria-label'));
-  const press = (label: string) => targets().find((b) => b.getAttribute('aria-label') === label)!.click();
+  const press = (label: string) =>
+    targets()
+      .find((b) => b.getAttribute('aria-label') === label)!
+      .click();
 
   afterEach(() => localStorage.clear());
 
@@ -91,7 +103,12 @@ describe('ParentFeedPageComponent — app-bar actions and the teacher space (ID-
   });
 
   it('parent and teacher: a press on the teacher space shows it', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready', teacher: 'ready' } });
+    await open({
+      id: 'a1',
+      identifier,
+      activeRole: 'parent',
+      roles: { parent: 'ready', teacher: 'ready' },
+    });
 
     expect(labels()).toEqual(['Switch child', 'Teacher space', 'Sign out']);
     press('Teacher space');

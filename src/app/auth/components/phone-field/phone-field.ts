@@ -13,13 +13,24 @@ import { IconComponent } from '@shared/foundation/icon/icon';
   selector: 'app-phone-field',
   imports: [IconComponent, TranslocoPipe],
   template: `
-    <div class="field" [class.error]="error()" [class.active]="!error()" role="group" [attr.aria-label]="'auth.phone.label' | transloco">
+    <div
+      class="field"
+      [class.error]="error()"
+      [class.active]="!error()"
+      role="group"
+      [attr.aria-label]="'auth.phone.label' | transloco"
+    >
       <span class="label">{{ 'auth.phone.label' | transloco }}</span>
       <button
         type="button"
         class="calling-code"
         [attr.aria-label]="
-          'auth.phone.changeCountry' | transloco: { code: country().callingCode, country: ('countries.' + country().code | transloco) }
+          'auth.phone.changeCountry'
+            | transloco
+              : {
+                  code: country().callingCode,
+                  country: ('countries.' + country().code | transloco),
+                }
         "
         (click)="changeCountry.emit()"
       >
@@ -32,7 +43,7 @@ import { IconComponent } from '@shared/foundation/icon/icon';
     </div>
   `,
   styleUrl: './phone-field.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhoneFieldComponent {
   readonly country = input.required<Country>();

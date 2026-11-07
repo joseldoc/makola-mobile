@@ -39,7 +39,11 @@
         <fieldset class="group">
           <legend class="group-title">{{ 'auth.profile.subjectsTitle' | transloco }}</legend>
           @for (s of subjects; track s.value) {
-            <app-checkbox [label]="s.labelKey | transloco" [checked]="hasSubject(s.value)" (checkedChange)="toggleSubject(s.value)" />
+            <app-checkbox
+              [label]="s.labelKey | transloco"
+              [checked]="hasSubject(s.value)"
+              (checkedChange)="toggleSubject(s.value)"
+            />
           }
         </fieldset>
 
@@ -61,13 +65,19 @@
           <section class="country" [attr.aria-label]="'auth.profile.country' | transloco">
             <span class="preview-label">{{ 'auth.profile.country' | transloco }}</span>
             <span class="country-name">{{ 'countries.' + deduced.code | transloco }}</span>
-            <span class="country-source">{{ 'auth.profile.countryFromNumber' | transloco: { number: phoneNumber() } }}</span>
+            <span class="country-source">{{
+              'auth.profile.countryFromNumber' | transloco: { number: phoneNumber() }
+            }}</span>
           </section>
         } @else {
           <fieldset class="group">
             <legend class="group-title">{{ 'auth.profile.country' | transloco }}</legend>
             @for (c of countries; track c.code) {
-              <app-radio-button [label]="'countries.' + c.code | transloco" [selected]="c.code === country().code" (select)="chooseCountry(c.code)" />
+              <app-radio-button
+                [label]="'countries.' + c.code | transloco"
+                [selected]="c.code === country().code"
+                (select)="chooseCountry(c.code)"
+              />
             }
           </fieldset>
         }
@@ -81,7 +91,11 @@
           [message]="'auth.profile.cityHint' | transloco"
         />
 
-        <div class="cities" role="group" [attr.aria-label]="'auth.profile.frequentCities' | transloco">
+        <div
+          class="cities"
+          role="group"
+          [attr.aria-label]="'auth.profile.frequentCities' | transloco"
+        >
           @for (c of country().cities; track c) {
             <button
               type="button"

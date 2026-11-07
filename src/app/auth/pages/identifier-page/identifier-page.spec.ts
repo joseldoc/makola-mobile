@@ -88,7 +88,12 @@ describe('IdentifierPageComponent — invitation number, then consents or code (
     vi.spyOn(console, 'info').mockImplementation(() => undefined);
     localStorage.clear();
     TestBed.configureTestingModule({
-      providers: [provideRouter([]), provideI18n(), AuthFlowStore, { provide: AuthApi, useClass: MockAuthApi }],
+      providers: [
+        provideRouter([]),
+        provideI18n(),
+        AuthFlowStore,
+        { provide: AuthApi, useClass: MockAuthApi },
+      ],
     });
     navigateByUrl = vi.fn().mockResolvedValue(true);
     TestBed.inject(Router).navigateByUrl = navigateByUrl as unknown as Router['navigateByUrl'];

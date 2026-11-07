@@ -20,7 +20,7 @@ import {
   cloudDoneOutline,
   personOutline,
   peopleOutline,
-  logOutOutline
+  logOutOutline,
 } from 'ionicons/icons';
 
 export const ICONS = {
@@ -39,7 +39,7 @@ export const ICONS = {
   synced: 'cloud-done-outline',
   student: 'person-outline',
   classroom: 'people-outline',
-  logout: 'log-out-outline'
+  logout: 'log-out-outline',
 } as const;
 
 export type IconName = (typeof ICONS)[keyof typeof ICONS];
@@ -66,6 +66,6 @@ export function registerIcons(): void {
     [ICONS.synced]: cloudDoneOutline,
     [ICONS.student]: personOutline,
     [ICONS.classroom]: peopleOutline,
-    [ICONS.logout]: logOutOutline
+    [ICONS.logout]: logOutOutline,
   });
 }

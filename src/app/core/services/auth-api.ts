@@ -62,7 +62,10 @@ export abstract class AuthApi {
    * from the parent's and the teacher's countries; one already given for this
    * student is not asked again.
    */
-  abstract requiredConsents(contact: Identifier, invitation: Invitation): Promise<ParentalConsent[]>;
+  abstract requiredConsents(
+    contact: Identifier,
+    invitation: Invitation,
+  ): Promise<ParentalConsent[]>;
 
   /** Alert settings offered before the first access to the feed (RM-16). */
   abstract saveAlerts(session: Session, alerts: ParentAlerts): Promise<Session>;

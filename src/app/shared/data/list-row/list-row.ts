@@ -6,7 +6,7 @@ const VALUE_COLOR: Record<ListRowValueTone, string> = {
   neutral: 'var(--mk-text)',
   danger: 'var(--mk-refus)',
   success: 'var(--mk-succes)',
-  pending: 'var(--mk-attente)'
+  pending: 'var(--mk-attente)',
 };
 
 /**
@@ -35,13 +35,15 @@ const VALUE_COLOR: Record<ListRowValueTone, string> = {
         }
       </div>
       @if (hasValue()) {
-        <div class="value" [class.large]="isLarge()" [style.color]="valueColor()">{{ value() }}</div>
+        <div class="value" [class.large]="isLarge()" [style.color]="valueColor()">
+          {{ value() }}
+        </div>
       }
       <ng-content select="[trailing]" />
     </div>
   `,
   styleUrl: './list-row.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListRowComponent {
   /** Student name, assignment title — weight 500. */
@@ -60,7 +62,9 @@ export class ListRowComponent {
   readonly flash = input(false);
   readonly rowClick = output<void>();
 
-  protected readonly hasValue = computed(() => this.value() !== undefined && this.value() !== null && this.value() !== '');
+  protected readonly hasValue = computed(
+    () => this.value() !== undefined && this.value() !== null && this.value() !== '',
+  );
   protected readonly isLarge = computed(() => {
     const v = this.value();
     return v === undefined || v === null || String(v).length <= 5;

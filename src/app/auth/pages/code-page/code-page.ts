@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -17,7 +24,7 @@ const LENGTH = 6;
 const CHANGE_ROUTES: Record<Intent, string> = {
   'sign-up': '/auth/sign-up',
   'sign-in': '/auth/sign-in',
-  invitation: '/auth/invitation/phone'
+  invitation: '/auth/invitation/phone',
 };
 
 /**
@@ -27,11 +34,17 @@ const CHANGE_ROUTES: Record<Intent, string> = {
  */
 @Component({
   selector: 'app-code-page',
-  imports: [AuthBannerComponent, KeypadComponent, FooterActionComponent, CodeSlotsComponent, TranslocoPipe],
+  imports: [
+    AuthBannerComponent,
+    KeypadComponent,
+    FooterActionComponent,
+    CodeSlotsComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './code-page.html',
   styleUrls: ['../auth-page.scss'],
   host: { '(document:keydown)': 'onKey($event)' },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodePageComponent {
   protected readonly store = inject(AuthFlowStore);
@@ -42,7 +55,9 @@ export class CodePageComponent {
   protected readonly code = signal('');
   private readonly now = signal(Date.now());
 
-  protected readonly role = computed(() => (this.store.intent() === 'invitation' ? 'parent' : 'school'));
+  protected readonly role = computed(() =>
+    this.store.intent() === 'invitation' ? 'parent' : 'school',
+  );
   protected readonly byEmail = computed(() => this.store.identifier()?.channel === 'email');
   protected readonly step = computed(() => this.t(`auth.code.step.${this.store.intent()}`));
   protected readonly text = computed(() => {
@@ -54,7 +69,9 @@ export class CodePageComponent {
     return this.store.error() ? 'error' : 'idle';
   });
   /** Seconds before a new code can be requested. */
-  protected readonly wait = computed(() => Math.max(0, Math.ceil((this.store.resendAllowedAt() - this.now()) / 1000)));
+  protected readonly wait = computed(() =>
+    Math.max(0, Math.ceil((this.store.resendAllowedAt() - this.now()) / 1000)),
+  );
   protected readonly missing = computed(() => {
     if (this.store.busy()) return this.t('auth.code.checking');
     const left = LENGTH - this.code().length;

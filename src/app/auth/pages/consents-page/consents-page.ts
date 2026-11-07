@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal, viewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  computed,
+  inject,
+  signal,
+  viewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { form, submit, validate } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -24,10 +32,16 @@ import { AuthFlowStore } from '../../state/auth.store';
  */
 @Component({
   selector: 'app-consents-page',
-  imports: [AppBarComponent, CheckboxComponent, FooterActionComponent, OutlinedButtonComponent, TranslocoPipe],
+  imports: [
+    AppBarComponent,
+    CheckboxComponent,
+    FooterActionComponent,
+    OutlinedButtonComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './consents-page.html',
   styleUrls: ['../auth-page.scss', './consents-page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConsentsPageComponent {
   protected readonly store = inject(AuthFlowStore);
@@ -44,11 +58,14 @@ export class ConsentsPageComponent {
   });
 
   /** Nothing ticked beforehand: a consent is given, never presumed. */
-  private readonly model = signal<Record<ParentalConsent, boolean>>({ CHILD_DATA: false, CROSS_BORDER_TRANSFER: false });
+  private readonly model = signal<Record<ParentalConsent, boolean>>({
+    CHILD_DATA: false,
+    CROSS_BORDER_TRANSFER: false,
+  });
   protected readonly form = form(this.model, (p) => {
     for (const consent of PARENTAL_CONSENTS) {
       validate(p[consent], ({ value }) =>
-        this.consents().includes(consent) && !value() ? { kind: 'consentMissing' } : null
+        this.consents().includes(consent) && !value() ? { kind: 'consentMissing' } : null,
       );
     }
   });
@@ -59,7 +76,9 @@ export class ConsentsPageComponent {
     return name.split(' ').slice(1).join(' ') || name;
   });
 
-  private readonly unticked = computed(() => this.consents().filter((consent) => this.form[consent]().invalid()));
+  private readonly unticked = computed(() =>
+    this.consents().filter((consent) => this.form[consent]().invalid()),
+  );
 
   /** The button says what is left to do — never a greyed-out "Continue". */
   protected readonly action = computed(() => {
@@ -85,7 +104,7 @@ export class ConsentsPageComponent {
         }
         return undefined;
       },
-      onInvalid: () => this.focusFirstUnticked()
+      onInvalid: () => this.focusFirstUnticked(),
     });
   }
 

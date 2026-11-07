@@ -134,7 +134,11 @@ export class IdentifierPageComponent implements OnInit {
   /** The button says what is missing — never a greyed-out "Get the code". */
   protected readonly missing = computed(() => {
     if (this.store.busy()) {
-      return this.t(this.intent() === 'invitation' ? 'auth.identifier.checkingInvitation' : 'auth.identifier.sending');
+      return this.t(
+        this.intent() === 'invitation'
+          ? 'auth.identifier.checkingInvitation'
+          : 'auth.identifier.sending',
+      );
     }
     const error = this.form.value().errors()[0];
     if (!error) return '';

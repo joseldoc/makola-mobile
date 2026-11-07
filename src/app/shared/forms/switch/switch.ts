@@ -8,7 +8,7 @@ export type SwitchTone = 'primary' | 'pending' | 'success';
 const TONE_COLOR: Record<SwitchTone, string> = {
   primary: 'var(--mk-primaire)',
   pending: 'var(--mk-attente)',
-  success: 'var(--mk-succes)'
+  success: 'var(--mk-succes)',
 };
 
 /**
@@ -49,7 +49,7 @@ const TONE_COLOR: Record<SwitchTone, string> = {
     </div>
   `,
   styleUrl: './switch.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SwitchComponent implements FormCheckboxControl {
   readonly checked = model.required<boolean>();

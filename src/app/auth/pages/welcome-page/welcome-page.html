@@ -20,7 +20,12 @@
 
   <div class="welcome-footer">
     <app-footer-action [label]="'auth.welcome.signUp' | transloco" (pressed)="open('sign-up')" />
-    <app-outlined-button [label]="'auth.welcome.signIn' | transloco" tone="school" [full]="true" (clicked)="open('sign-in')" />
+    <app-outlined-button
+      [label]="'auth.welcome.signIn' | transloco"
+      tone="school"
+      [full]="true"
+      (clicked)="open('sign-in')"
+    />
     <button type="button" class="text-action" (click)="open('invitation')">
       {{ 'auth.welcome.parent' | transloco }}
     </button>

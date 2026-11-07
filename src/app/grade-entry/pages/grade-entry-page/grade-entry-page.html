@@ -1,5 +1,11 @@
 <div class="grade-entry-page">
-  <app-bar [title]="store.assignment()" [subtitle]="subtitle()" role="teacher" [showBack]="true" (back)="back()" />
+  <app-bar
+    [title]="store.assignment()"
+    [subtitle]="subtitle()"
+    role="teacher"
+    [showBack]="true"
+    (back)="back()"
+  />
 
   <app-network-banner state="offline" [pending]="store.entered()" />
 

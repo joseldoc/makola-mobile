@@ -19,19 +19,25 @@ import { KeypadKeyComponent } from './keypad-key';
       <app-keypad-key (pressed)="digit.emit('2')">2</app-keypad-key>
       <app-keypad-key (pressed)="digit.emit('3')">3</app-keypad-key>
       @if (columns() === 4) {
-        <app-keypad-key variant="code" (pressed)="absent.emit()">{{ 'keypad.absent' | transloco }}</app-keypad-key>
+        <app-keypad-key variant="code" (pressed)="absent.emit()">{{
+          'keypad.absent' | transloco
+        }}</app-keypad-key>
       }
       <app-keypad-key (pressed)="digit.emit('4')">4</app-keypad-key>
       <app-keypad-key (pressed)="digit.emit('5')">5</app-keypad-key>
       <app-keypad-key (pressed)="digit.emit('6')">6</app-keypad-key>
       @if (columns() === 4) {
-        <app-keypad-key variant="code" (pressed)="ungraded.emit()">{{ 'keypad.ungraded' | transloco }}</app-keypad-key>
+        <app-keypad-key variant="code" (pressed)="ungraded.emit()">{{
+          'keypad.ungraded' | transloco
+        }}</app-keypad-key>
       }
       <app-keypad-key (pressed)="digit.emit('7')">7</app-keypad-key>
       <app-keypad-key (pressed)="digit.emit('8')">8</app-keypad-key>
       <app-keypad-key (pressed)="digit.emit('9')">9</app-keypad-key>
       @if (columns() === 4) {
-        <app-keypad-key variant="action" [span]="2" (pressed)="next.emit()">{{ nextLabel() }}</app-keypad-key>
+        <app-keypad-key variant="action" [span]="2" (pressed)="next.emit()">{{
+          nextLabel()
+        }}</app-keypad-key>
       }
       @if (columns() === 4) {
         <app-keypad-key (pressed)="decimal.emit()">{{ decimalSeparator() }}</app-keypad-key>
@@ -45,7 +51,7 @@ import { KeypadKeyComponent } from './keypad-key';
     </div>
   `,
   styleUrl: './keypad.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeypadComponent {
   /** 4 for grade entry (code column), 3 for a digit code. */

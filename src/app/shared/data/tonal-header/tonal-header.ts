@@ -10,7 +10,12 @@ import { ROLE_TINTS, SurfaceRole } from '../../roles';
 @Component({
   selector: 'app-tonal-header',
   template: `
-    <div class="tonal-header" [class.compact]="compact()" [class.full-bleed]="fullBleed()" [style.background]="tint()[0]">
+    <div
+      class="tonal-header"
+      [class.compact]="compact()"
+      [class.full-bleed]="fullBleed()"
+      [style.background]="tint()[0]"
+    >
       <div class="shape shape-top" [style.background]="tint()[1]"></div>
       <div class="shape shape-bottom" [style.background]="tint()[1]"></div>
       <div class="content">
@@ -19,7 +24,7 @@ import { ROLE_TINTS, SurfaceRole } from '../../roles';
     </div>
   `,
   styleUrl: './tonal-header.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TonalHeaderComponent {
   readonly role = input<SurfaceRole>('teacher');

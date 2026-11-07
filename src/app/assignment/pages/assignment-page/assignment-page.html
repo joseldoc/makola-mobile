@@ -1,6 +1,11 @@
 <div class="overlay">
   <div class="sheet">
-    <button type="button" class="handle-row" [attr.aria-label]="'common.close' | transloco" (click)="close()">
+    <button
+      type="button"
+      class="handle-row"
+      [attr.aria-label]="'common.close' | transloco"
+      (click)="close()"
+    >
       <span class="handle"></span>
     </button>
 
@@ -30,7 +35,9 @@
             [class.active]="store.scale() === s"
             [attr.aria-pressed]="store.scale() === s"
             (click)="store.setScale(s)"
-          >/{{ s }}</button>
+          >
+            /{{ s }}
+          </button>
         }
       </div>
       <div class="coefficient">
@@ -63,7 +70,10 @@
         />
       </div>
       <div class="date-action">
-        <app-outlined-button [label]="'assignment.changeDate' | transloco" (clicked)="store.nextDate()" />
+        <app-outlined-button
+          [label]="'assignment.changeDate' | transloco"
+          (clicked)="store.nextDate()"
+        />
       </div>
     </div>
 

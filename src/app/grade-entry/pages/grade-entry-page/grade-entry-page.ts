@@ -22,10 +22,16 @@ const PASS_MARK = 10;
  */
 @Component({
   selector: 'app-grade-entry-page',
-  imports: [AppBarComponent, ListRowComponent, NetworkBannerComponent, KeypadComponent, TranslocoPipe],
+  imports: [
+    AppBarComponent,
+    ListRowComponent,
+    NetworkBannerComponent,
+    KeypadComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './grade-entry-page.html',
   styleUrl: './grade-entry-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GradeEntryPageComponent {
   protected readonly store = inject(GradeEntryStore);

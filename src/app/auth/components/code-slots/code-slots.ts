@@ -12,9 +12,18 @@ export type CodeSlotsState = 'idle' | 'checking' | 'error';
   selector: 'app-code-slots',
   imports: [TranslocoPipe],
   template: `
-    <div class="slots" [class.error]="state() === 'error'" [class.checking]="state() === 'checking'" aria-hidden="true">
+    <div
+      class="slots"
+      [class.error]="state() === 'error'"
+      [class.checking]="state() === 'checking'"
+      aria-hidden="true"
+    >
       @for (i of boxes(); track i) {
-        <div class="slot" [class.filled]="i < value().length" [class.next]="i === value().length && state() === 'idle'">
+        <div
+          class="slot"
+          [class.filled]="i < value().length"
+          [class.next]="i === value().length && state() === 'idle'"
+        >
           {{ value()[i] ?? '' }}
         </div>
       }
@@ -28,7 +37,7 @@ export type CodeSlotsState = 'idle' | 'checking' | 'error';
     </span>
   `,
   styleUrl: './code-slots.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeSlotsComponent {
   readonly value = input.required<string>();

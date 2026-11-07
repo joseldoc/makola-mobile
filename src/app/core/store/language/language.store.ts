@@ -36,9 +36,9 @@ export const LanguageStore = signalStore(
         } catch {
           // Storage unavailable: the choice holds for this session.
         }
-      }
+      },
     };
-  })
+  }),
 );
 
 function readLanguage(): Language {

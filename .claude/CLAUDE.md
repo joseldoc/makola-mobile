@@ -38,6 +38,7 @@ npm install                 # install dependencies (Node >= 22.12)
 npm start                     # ng serve — dev server at http://localhost:4200 (fastest loop for UI work)
 npm run build                   # ng build --configuration production
 npm test                          # ng test (Vitest) — unit/component tests
+npm run format:check                # Prettier (.prettierrc) — must pass before opening a PR
 npx playwright test                # Playwright — web e2e tests (run `npx playwright install` once)
 npx playwright test --ui              # Playwright's interactive UI mode
  

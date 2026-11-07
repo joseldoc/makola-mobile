@@ -15,7 +15,7 @@ import { AuthFlowStore } from '../../state/auth.store';
 const INTENT_ROUTES: Record<Intent, string> = {
   'sign-up': '/auth/sign-up',
   'sign-in': '/auth/sign-in',
-  invitation: '/auth/invitation'
+  invitation: '/auth/invitation',
 };
 
 /**
@@ -25,10 +25,16 @@ const INTENT_ROUTES: Record<Intent, string> = {
  */
 @Component({
   selector: 'app-welcome-page',
-  imports: [LogoComponent, FooterActionComponent, OutlinedButtonComponent, LanguageSwitchComponent, TranslocoPipe],
+  imports: [
+    LogoComponent,
+    FooterActionComponent,
+    OutlinedButtonComponent,
+    LanguageSwitchComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './welcome-page.html',
   styleUrl: './welcome-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WelcomePageComponent {
   protected readonly language = inject(LanguageStore);

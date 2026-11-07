@@ -8,7 +8,7 @@ const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: st
   color: ['var(--mk-bleu)', 'var(--mk-ambre)', 'var(--mk-encre)'],
   ink: ['var(--mk-encre)', 'var(--mk-ambre)', 'var(--mk-encre)'],
   white: ['#FFFFFF', 'var(--mk-role-parent)', '#FFFFFF'],
-  mono: ['currentColor', null, 'currentColor']
+  mono: ['currentColor', null, 'currentColor'],
 };
 
 /**
@@ -21,7 +21,13 @@ const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: st
   selector: 'app-logo',
   template: `
     <ng-template #mark let-size="size" let-stroke="stroke" let-bookmark="bookmark">
-      <svg [attr.width]="size" [attr.height]="size" viewBox="0.25 8.25 100 100" aria-hidden="true" class="mark">
+      <svg
+        [attr.width]="size"
+        [attr.height]="size"
+        viewBox="0.25 8.25 100 100"
+        aria-hidden="true"
+        class="mark"
+      >
         <path
           d="M13.75 75.75V44a18.25 18.25 0 0 1 36.5 0v31.75M50.25 44a18.25 18.25 0 0 1 36.5 0v31.75M10 75.75h80.5"
           fill="none"
@@ -45,19 +51,47 @@ const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: st
           [style.border-radius.px]="size() * 0.22"
         >
           <ng-container
-            *ngTemplateOutlet="mark; context: { size: size() * 0.7, stroke: '#FFFFFF', bookmark: tone() === 'mono' ? null : 'var(--mk-role-parent)' }"
+            *ngTemplateOutlet="
+              mark;
+              context: {
+                size: size() * 0.7,
+                stroke: '#FFFFFF',
+                bookmark: tone() === 'mono' ? null : 'var(--mk-role-parent)',
+              }
+            "
           />
         </div>
       }
       @case ('mark') {
         <div class="inline" role="img" [attr.aria-label]="title()">
-          <ng-container *ngTemplateOutlet="mark; context: { size: size(), stroke: palette()[0], bookmark: palette()[1] }" />
+          <ng-container
+            *ngTemplateOutlet="
+              mark;
+              context: { size: size(), stroke: palette()[0], bookmark: palette()[1] }
+            "
+          />
         </div>
       }
       @default {
-        <div class="inline lockup" role="img" [attr.aria-label]="title()" [style.gap.px]="size() * 0.22">
-          <ng-container *ngTemplateOutlet="mark; context: { size: size(), stroke: palette()[0], bookmark: palette()[1] }" />
-          <span aria-hidden="true" class="name" [style.font-size.px]="size() * 0.7" [style.color]="palette()[2]">makola</span>
+        <div
+          class="inline lockup"
+          role="img"
+          [attr.aria-label]="title()"
+          [style.gap.px]="size() * 0.22"
+        >
+          <ng-container
+            *ngTemplateOutlet="
+              mark;
+              context: { size: size(), stroke: palette()[0], bookmark: palette()[1] }
+            "
+          />
+          <span
+            aria-hidden="true"
+            class="name"
+            [style.font-size.px]="size() * 0.7"
+            [style.color]="palette()[2]"
+            >makola</span
+          >
         </div>
       }
     }
@@ -90,7 +124,7 @@ const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: st
     }
   `,
   imports: [NgTemplateOutlet],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogoComponent {
   /** `lockup` (mark + name), `mark` (mark alone), `icon` (app tile). */

@@ -55,8 +55,10 @@ describe('ConsentsPageComponent — Kenyan parental consents (RI-20)', () => {
 
   const element = () => fixture.nativeElement as HTMLElement;
   const boxes = () => Array.from(element().querySelectorAll<HTMLElement>('[role="checkbox"]'));
-  const footerButton = () => element().querySelector<HTMLButtonElement>('app-footer-action button')!;
-  const declineButton = () => element().querySelector<HTMLButtonElement>('app-outlined-button button')!;
+  const footerButton = () =>
+    element().querySelector<HTMLButtonElement>('app-footer-action button')!;
+  const declineButton = () =>
+    element().querySelector<HTMLButtonElement>('app-outlined-button button')!;
   const tick = async (box: HTMLElement) => {
     box.click();
     await fixture.whenStable();
