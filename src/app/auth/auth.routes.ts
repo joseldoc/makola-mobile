@@ -14,6 +14,18 @@ const codeRequested: CanActivateFn = () =>
 const invitationRecognised: CanActivateFn = () =>
   inject(AuthFlowStore).invitation() ? true : inject(Router).parseUrl('/auth/invitation');
 
+/**
+ * Parental consents (RI-20): only once the server has said, for this invitation
+ * and this contact, that the acceptance asks for some. When it asks for none,
+ * the flow never comes here — and a link that does is sent back to the number.
+ */
+export const consentsRequired: CanActivateFn = () => {
+  const store = inject(AuthFlowStore);
+  return store.identifier() && store.requiredConsents()?.length
+    ? true
+    : inject(Router).parseUrl('/auth/invitation/phone');
+};
+
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
@@ -57,6 +69,13 @@ export const AUTH_ROUTES: Routes = [
         data: { intent: 'invitation' },
         loadComponent: () =>
           import('./pages/identifier-page/identifier-page').then((m) => m.IdentifierPageComponent),
+      },
+      {
+        // After the number (its country counts, RI-20), before the code and the acceptance.
+        path: 'invitation/consents',
+        canActivate: [guestOnly, invitationRecognised, consentsRequired],
+        loadComponent: () =>
+          import('./pages/consents-page/consents-page').then((m) => m.ConsentsPageComponent),
       },
       {
         path: 'code',

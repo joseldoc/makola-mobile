@@ -1,0 +1,36 @@
+<div class="page">
+  <app-bar
+    [title]="'auth.consents.title' | transloco"
+    [subtitle]="'auth.consents.subtitle' | transloco"
+    role="parent"
+    [showBack]="true"
+    [scrolled]="scrolled()"
+    (back)="goBack()"
+  />
+
+  <div class="content" (scroll)="onScroll($event)">
+    <p class="intro">{{ 'auth.consents.intro' | transloco: { name: firstName() } }}</p>
+
+    <div class="consents" role="group" [attr.aria-label]="'auth.consents.group' | transloco">
+      @for (consent of consents(); track consent) {
+        <app-checkbox
+          [label]="'auth.consents.documents.' + consent + '.title' | transloco: { name: firstName() }"
+          [sublabel]="'auth.consents.documents.' + consent + '.text' | transloco: { name: firstName() }"
+          [checked]="form[consent]().value()"
+          (checkedChange)="tick(consent, $event)"
+        />
+      }
+    </div>
+
+    <p class="intro">{{ 'auth.consents.withdrawal' | transloco: { name: firstName() } }}</p>
+
+    @if (store.errorMessage(); as error) {
+      <p class="error-text" role="alert">{{ error.key | transloco: error.params }}</p>
+    }
+  </div>
+
+  <div class="footer">
+    <app-footer-action [label]="action()" tone="pending" (pressed)="send()" />
+    <app-outlined-button [label]="'auth.consents.decline' | transloco" tone="parent" [full]="true" (clicked)="decline()" />
+  </div>
+</div>
