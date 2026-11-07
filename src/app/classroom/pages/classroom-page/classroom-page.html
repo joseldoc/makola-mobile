@@ -32,8 +32,8 @@
           [index]="i"
           [primary]="assignment.name"
           [secondary]="assignmentMeta(assignment)"
-          [value]="decimal(assignment.average)"
-          [tertiary]="'classroom.noClassAverage' | transloco"
+          [value]="decimal(assignment.classAverage)"
+          [tertiary]="'classroom.classAverage' | transloco"
           (rowClick)="enterGrades()"
         />
       }

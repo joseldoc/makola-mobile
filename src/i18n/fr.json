@@ -6,10 +6,14 @@
     "continue": "Continuer",
     "search": "Rechercher",
     "signOut": "Se déconnecter",
-    "term": "Trimestre {{n}}"
+    "term": "Trimestre {{n}}"
   },
   "language": {
     "label": "Langue"
+  },
+  "spaces": {
+    "teacher": "Espace professeur",
+    "parent": "Espace parent"
   },
   "network": {
     "offline": "Hors ligne · la saisie fonctionne, l'envoi partira au retour du réseau.",
@@ -83,6 +87,8 @@
       "unknown-invitation": "Ce code ne correspond à aucune invitation en cours. Vérifiez le SMS reçu, ou demandez un nouveau code au professeur.",
       "offline": "Hors ligne · l'envoi et la vérification du code demandent le réseau. Réessayez à son retour.",
       "invitation-declined": "Aucun rattachement n'a été fait. Demandez au professeur de vérifier l'élève concerné, puis saisissez le nouveau code.",
+      "parental-consent-required": "Il manque un consentement demandé pour cette invitation. Revenez en arrière, continuez de nouveau et cochez chaque case affichée.",
+      "consents-declined": "Aucun rattachement n'a été fait : sans les consentements demandés, votre enfant ne peut pas être suivi dans @makola. Si vous changez d'avis, saisissez de nouveau le code avant son échéance.",
       "unexpected": "Le serveur n'a pas répondu. Réessayez dans un instant."
     },
     "phone": {
@@ -147,6 +153,7 @@
       "emailHint": "Le code partira par email.",
       "emailPlaceholder": "prenom.nom@exemple.cg",
       "sending": "Envoi du code…",
+      "checkingInvitation": "Vérification de l'invitation…",
       "missingPhone": "Saisissez votre numéro",
       "digitsLeft": "Chiffres restants : {{count}}",
       "fixPhone": "Corrigez le numéro",
@@ -193,6 +200,25 @@
       "neverOthers": "Jamais les notes des autres élèves.",
       "confirm": "Oui, c'est {{name}}",
       "decline": "Ce n'est pas mon enfant"
+    },
+    "consents": {
+      "title": "Votre consentement",
+      "subtitle": "Étape 2 sur 3 · Consentement",
+      "intro": "Avant l'envoi du code, @makola vous demande votre consentement sur chaque point ci-dessous. Chaque case doit être cochée pour suivre {{name}}.",
+      "group": "Consentements demandés",
+      "documents": {
+        "CHILD_DATA": {
+          "title": "Données scolaires de {{name}}",
+          "text": "Vous acceptez que @makola traite les données scolaires de {{name}} : nom, classe, notes, contrôles annoncés et bulletins."
+        },
+        "CROSS_BORDER_TRANSFER": {
+          "title": "Hébergement hors du Kenya",
+          "text": "Vous acceptez que le lien qui vous rattache à {{name}}, et ses données scolaires, soient hébergés en Europe, hors du Kenya."
+        }
+      },
+      "withdrawal": "Vous pourrez retirer chaque consentement plus tard : le rattachement à {{name}} prend alors fin, et ses notes ne vous sont plus montrées.",
+      "left": "Cases restantes à cocher : {{count}}",
+      "decline": "Je ne consens pas"
     },
     "alerts": {
       "title": "Vos alertes",
@@ -279,7 +305,7 @@
       "reportCard": "Bulletin"
     },
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
-    "noClassAverage": "Moyenne de la classe non calculée — voir RM-11",
+    "classAverage": "Moyenne de la classe",
     "termAverage": "Moyenne du trimestre",
     "noMatch": "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche.",
     "reportCardNotice": "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Aucun rang ni moyenne de classe n'y figurera.",
@@ -331,6 +357,7 @@
     "allGrades": "Toutes les notes",
     "reportCards": "Bulletins",
     "reportCardMeta": "Trimestre {{term}} · {{subject}}",
+    "classAverage": "Moyenne de la classe {{value}}",
     "types": {
       "newGrade": "Nouvelle note",
       "gradeBelowPass": "Note en dessous de 10",

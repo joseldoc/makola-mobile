@@ -35,6 +35,12 @@ export const ALERT_OPTIONS: AlertOption[] = [
   { key: 'weeklySummary', smsPerMonth: 4 }
 ];
 
+/**
+ * Where the flow goes once the contact is entered: the parental consents first
+ * when the server asks for some (RI-20), else straight to the code.
+ */
+export type ContactNext = 'consents' | 'code';
+
 export const DEFAULT_ALERTS: ParentAlerts = {
   newGrade: true,
   gradeBelowPass: false,

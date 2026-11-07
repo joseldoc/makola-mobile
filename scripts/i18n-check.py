@@ -29,8 +29,11 @@ for intent in ('sign-up', 'sign-in', 'invitation'):
     for ch in ('phone', 'email'):
         dynamic |= {f'auth.identifier.{intent}.{ch}.{p}' for p in ('step', 'title', 'text')}
     dynamic.add(f'auth.code.step.{intent}')
-for c in ('unknown-account', 'existing-account', 'wrong-code', 'unknown-invitation', 'offline', 'invitation-declined', 'unexpected'):
+for c in ('unknown-account', 'existing-account', 'wrong-code', 'unknown-invitation', 'parental-consent-required',
+          'offline', 'invitation-declined', 'consents-declined', 'unexpected'):
     dynamic.add(f'auth.errors.{c}')
+for d in ('CHILD_DATA', 'CROSS_BORDER_TRANSFER'):
+    dynamic |= {f'auth.consents.documents.{d}.title', f'auth.consents.documents.{d}.text'}
 for c in ('CG', 'KE'):
     dynamic.add(f'countries.{c}')
 for s in ('identity', 'subjects', 'city'):

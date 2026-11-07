@@ -13,9 +13,16 @@ T = {
     "continue": ("Continue", "Continuer"),
     "search": ("Search", "Rechercher"),
     "signOut": ("Sign out", "Se déconnecter"),
-    "term": ("Term {{n}}", "Trimestre {{n}}"),
+    # Non-breaking space: the number never wraps away from its word ("Term / 2"),
+    # e.g. in an app-bar subtitle narrowed by a third action (ID-02).
+    "term": ("Term {{n}}", "Trimestre {{n}}"),
   },
   "language": {"label": ("Language", "Langue")},
+  # App-bar action towards the account's other space (ID-02), shown only when it holds both roles.
+  "spaces": {
+    "teacher": ("Teacher space", "Espace professeur"),
+    "parent": ("Parent space", "Espace parent"),
+  },
   "network": {
     "offline": ("Offline · entry works, sending will go out when the network is back.",
                 "Hors ligne · la saisie fonctionne, l'envoi partira au retour du réseau."),
@@ -98,6 +105,11 @@ T = {
                   "Hors ligne · l'envoi et la vérification du code demandent le réseau. Réessayez à son retour."),
       "invitation-declined": ("No link was made. Ask the teacher to check the student concerned, then enter the new code.",
                               "Aucun rattachement n'a été fait. Demandez au professeur de vérifier l'élève concerné, puis saisissez le nouveau code."),
+      # Kenyan parental consents (RI-20) — see the warning above `auth.consents`.
+      "parental-consent-required": ("A consent asked for this invitation is missing. Go back, continue again, and tick each box shown.",
+                                    "Il manque un consentement demandé pour cette invitation. Revenez en arrière, continuez de nouveau et cochez chaque case affichée."),
+      "consents-declined": ("No link was made: without the consents asked, your child cannot be followed in @makola. If you change your mind, enter the code again before it expires.",
+                            "Aucun rattachement n'a été fait : sans les consentements demandés, votre enfant ne peut pas être suivi dans @makola. Si vous changez d'avis, saisissez de nouveau le code avant son échéance."),
       "unexpected": ("The server did not answer. Try again in a moment.", "Le serveur n'a pas répondu. Réessayez dans un instant."),
     },
     "phone": {
@@ -172,6 +184,7 @@ T = {
       "emailHint": ("The code will be sent by email.", "Le code partira par email."),
       "emailPlaceholder": ("firstname.lastname@example.com", "prenom.nom@exemple.cg"),
       "sending": ("Sending the code…", "Envoi du code…"),
+      "checkingInvitation": ("Checking the invitation…", "Vérification de l'invitation…"),
       "missingPhone": ("Type your number", "Saisissez votre numéro"),
       "digitsLeft": ("Digits left: {{count}}", "Chiffres restants : {{count}}"),
       "fixPhone": ("Correct the number", "Corrigez le numéro"),
@@ -220,6 +233,37 @@ T = {
       "neverOthers": ("Never the grades of other students.", "Jamais les notes des autres élèves."),
       "confirm": ("Yes, it's {{name}}", "Oui, c'est {{name}}"),
       "decline": ("This is not my child", "Ce n'est pas mon enfant"),
+    },
+    # Kenyan parental consents (RI-20, DPA Kenya). NOT VALIDATED LEGAL TEXTS:
+    # ID-10 (hosting in the EU) and ID-13 (pseudonymised grades until consent) are
+    # acted "subject to a formal legal opinion". Plain wording on purpose — no
+    # article number, no document version, nothing presented as the official
+    # text. To be reviewed by counsel before opening in Kenya. Kenya is named
+    # because it is the only country whose `country_config` asks for these
+    # consents: a new country asking for them means revisiting these sentences.
+    # English and French only at the MVP (ID-11): no Kiswahili.
+    "consents": {
+      "title": ("Your consent", "Votre consentement"),
+      "subtitle": ("Step 2 of 3 · Consent", "Étape 2 sur 3 · Consentement"),
+      "intro": ("Before the code is sent, @makola asks for your consent on each point below. Every box must be ticked to follow {{name}}.",
+                "Avant l'envoi du code, @makola vous demande votre consentement sur chaque point ci-dessous. Chaque case doit être cochée pour suivre {{name}}."),
+      "group": ("Consents asked", "Consentements demandés"),
+      "documents": {
+        "CHILD_DATA": {
+          "title": ("{{name}}'s school data", "Données scolaires de {{name}}"),
+          "text": ("You agree that @makola processes {{name}}'s school data: name, class, grades, announced tests and report cards.",
+                   "Vous acceptez que @makola traite les données scolaires de {{name}} : nom, classe, notes, contrôles annoncés et bulletins."),
+        },
+        "CROSS_BORDER_TRANSFER": {
+          "title": ("Storage outside Kenya", "Hébergement hors du Kenya"),
+          "text": ("You agree that your link with {{name}}, and {{name}}'s school data, are stored in Europe, outside Kenya.",
+                   "Vous acceptez que le lien qui vous rattache à {{name}}, et ses données scolaires, soient hébergés en Europe, hors du Kenya."),
+        },
+      },
+      "withdrawal": ("You can withdraw each consent later: the link with {{name}} then ends, and you no longer see their grades.",
+                     "Vous pourrez retirer chaque consentement plus tard : le rattachement à {{name}} prend alors fin, et ses notes ne vous sont plus montrées."),
+      "left": ("Boxes left to tick: {{count}}", "Cases restantes à cocher : {{count}}"),
+      "decline": ("I do not consent", "Je ne consens pas"),
     },
     "alerts": {
       "title": ("Your alerts", "Vos alertes"),
@@ -293,7 +337,7 @@ T = {
       "reportCard": ("Report card", "Bulletin"),
     },
     "assignmentMeta": ("coef {{coefficient}} · /{{scale}} · {{date}}", "coef {{coefficient}} · /{{scale}} · {{date}}"),
-    "noClassAverage": ("Class average not calculated — see RM-11", "Moyenne de la classe non calculée — voir RM-11"),
+    "classAverage": ("Class average", "Moyenne de la classe"),
     "termAverage": ("Term average", "Moyenne du trimestre"),
     "noMatch": ("No student is named « {{query}} ». Try a family name alone, or clear the search.",
                 "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche."),
@@ -351,6 +395,8 @@ T = {
     "allGrades": ("All grades", "Toutes les notes"),
     "reportCards": ("Report cards", "Bulletins"),
     "reportCardMeta": ("Term {{term}} · {{subject}}", "Trimestre {{term}} · {{subject}}"),
+    # Non-breaking spaces: the label and its value wrap as one block, never "Class / average 12.4".
+    "classAverage": ("Class\u00a0average\u00a0{{value}}", "Moyenne\u00a0de\u00a0la\u00a0classe\u00a0{{value}}"),
     "types": {
       "newGrade": ("New grade", "Nouvelle note"),
       "gradeBelowPass": ("Grade below 10", "Note en dessous de 10"),

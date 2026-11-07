@@ -6,10 +6,14 @@
     "continue": "Continue",
     "search": "Search",
     "signOut": "Sign out",
-    "term": "Term {{n}}"
+    "term": "Term {{n}}"
   },
   "language": {
     "label": "Language"
+  },
+  "spaces": {
+    "teacher": "Teacher space",
+    "parent": "Parent space"
   },
   "network": {
     "offline": "Offline · entry works, sending will go out when the network is back.",
@@ -83,6 +87,8 @@
       "unknown-invitation": "This code matches no current invitation. Check the SMS you received, or ask the teacher for a new code.",
       "offline": "Offline · sending and checking the code need the network. Try again when it is back.",
       "invitation-declined": "No link was made. Ask the teacher to check the student concerned, then enter the new code.",
+      "parental-consent-required": "A consent asked for this invitation is missing. Go back, continue again, and tick each box shown.",
+      "consents-declined": "No link was made: without the consents asked, your child cannot be followed in @makola. If you change your mind, enter the code again before it expires.",
       "unexpected": "The server did not answer. Try again in a moment."
     },
     "phone": {
@@ -147,6 +153,7 @@
       "emailHint": "The code will be sent by email.",
       "emailPlaceholder": "firstname.lastname@example.com",
       "sending": "Sending the code…",
+      "checkingInvitation": "Checking the invitation…",
       "missingPhone": "Type your number",
       "digitsLeft": "Digits left: {{count}}",
       "fixPhone": "Correct the number",
@@ -193,6 +200,25 @@
       "neverOthers": "Never the grades of other students.",
       "confirm": "Yes, it's {{name}}",
       "decline": "This is not my child"
+    },
+    "consents": {
+      "title": "Your consent",
+      "subtitle": "Step 2 of 3 · Consent",
+      "intro": "Before the code is sent, @makola asks for your consent on each point below. Every box must be ticked to follow {{name}}.",
+      "group": "Consents asked",
+      "documents": {
+        "CHILD_DATA": {
+          "title": "{{name}}'s school data",
+          "text": "You agree that @makola processes {{name}}'s school data: name, class, grades, announced tests and report cards."
+        },
+        "CROSS_BORDER_TRANSFER": {
+          "title": "Storage outside Kenya",
+          "text": "You agree that your link with {{name}}, and {{name}}'s school data, are stored in Europe, outside Kenya."
+        }
+      },
+      "withdrawal": "You can withdraw each consent later: the link with {{name}} then ends, and you no longer see their grades.",
+      "left": "Boxes left to tick: {{count}}",
+      "decline": "I do not consent"
     },
     "alerts": {
       "title": "Your alerts",
@@ -279,7 +305,7 @@
       "reportCard": "Report card"
     },
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
-    "noClassAverage": "Class average not calculated — see RM-11",
+    "classAverage": "Class average",
     "termAverage": "Term average",
     "noMatch": "No student is named « {{query}} ». Try a family name alone, or clear the search.",
     "reportCardNotice": "The term 2 report card will be available after closing, on 27 March. It will show no ranking and no class average.",
@@ -331,6 +357,7 @@
     "allGrades": "All grades",
     "reportCards": "Report cards",
     "reportCardMeta": "Term {{term}} · {{subject}}",
+    "classAverage": "Class average {{value}}",
     "types": {
       "newGrade": "New grade",
       "gradeBelowPass": "Grade below 10",
