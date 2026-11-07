@@ -6,10 +6,14 @@
     "continue": "Continuer",
     "search": "Rechercher",
     "signOut": "Se déconnecter",
-    "term": "Trimestre {{n}}"
+    "term": "Trimestre {{n}}"
   },
   "language": {
     "label": "Langue"
+  },
+  "spaces": {
+    "teacher": "Espace professeur",
+    "parent": "Espace parent"
   },
   "network": {
     "offline": "Hors ligne · la saisie fonctionne, l'envoi partira au retour du réseau.",

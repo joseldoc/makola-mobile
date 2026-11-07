@@ -6,10 +6,14 @@
     "continue": "Continue",
     "search": "Search",
     "signOut": "Sign out",
-    "term": "Term {{n}}"
+    "term": "Term {{n}}"
   },
   "language": {
     "label": "Language"
+  },
+  "spaces": {
+    "teacher": "Teacher space",
+    "parent": "Parent space"
   },
   "network": {
     "offline": "Offline · entry works, sending will go out when the network is back.",
