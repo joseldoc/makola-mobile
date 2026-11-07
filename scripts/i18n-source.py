@@ -85,9 +85,11 @@ T = {
       },
       "reportCards": {
         "kicker": ("Report cards", "Les bulletins"),
-        "title": ("No ranking, no class average", "Aucun rang, aucune moyenne de classe"),
-        "text": ("Report cards show the student's averages, not their position. Sending them to the school stays your decision.",
-                 "Les bulletins portent les moyennes de l'élève, pas sa place. Leur transmission à la direction reste votre décision."),
+        # RM-11 / US-P09 as amended on 7 November 2026: the class average per subject
+        # appears on the report card; the rank never does — the slide states that limit.
+        "title": ("Averages, never a ranking", "Des moyennes, jamais de rang"),
+        "text": ("Report cards show the student's averages and, for each subject, the class average — never their position. Sending them to the school stays your decision.",
+                 "Les bulletins portent les moyennes de l'élève et, par matière, la moyenne de la classe — jamais sa place. Leur transmission à la direction reste votre décision."),
       },
     },
   },
@@ -341,8 +343,9 @@ T = {
     "termAverage": ("Term average", "Moyenne du trimestre"),
     "noMatch": ("No student is named « {{query}} ». Try a family name alone, or clear the search.",
                 "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche."),
-    "reportCardNotice": ("The term 2 report card will be available after closing, on 27 March. It will show no ranking and no class average.",
-                         "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Aucun rang ni moyenne de classe n'y figurera."),
+    # RM-11 / US-P09 as amended on 7 November 2026: what the report card shows, and the limit (no rank).
+    "reportCardNotice": ("The term 2 report card will be available after closing, on 27 March. It will show the class average for each subject beside the student's, and no ranking.",
+                         "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang."),
     "searchPlaceholder": ("Student name", "Nom d'élève"),
     "newAssignment": ("+ Assignment", "+ Devoir"),
   },
@@ -397,6 +400,10 @@ T = {
     "reportCardMeta": ("Term {{term}} · {{subject}}", "Trimestre {{term}} · {{subject}}"),
     # Non-breaking spaces: the label and its value wrap as one block, never "Class / average 12.4".
     "classAverage": ("Class\u00a0average\u00a0{{value}}", "Moyenne\u00a0de\u00a0la\u00a0classe\u00a0{{value}}"),
+    # Subject card (RM-11, 7 November 2026): ordinary spaces on purpose. The card is half
+    # the width at 360 dp; unbreakable, the French line (159 px) would widen it and squeeze
+    # the term card beside it. Here it wraps before the number, which never splits.
+    "classSubjectAverage": ("Class average {{value}}", "Moyenne de la classe {{value}}"),
     "types": {
       "newGrade": ("New grade", "Nouvelle note"),
       "gradeBelowPass": ("Grade below 10", "Note en dessous de 10"),

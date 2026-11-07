@@ -79,6 +79,15 @@ export class ParentFeedPageComponent {
     formatDecimal(this.store.subjectAverage(), this.language.language()),
   );
 
+  /**
+   * Class average in the subject, beside the child's — `null` without a value
+   * (neither zero nor dash). Never compared: same ink whatever the two numbers.
+   */
+  protected readonly classAverage = computed(() => {
+    const value = this.store.classSubjectAverage();
+    return value === undefined ? null : formatDecimal(value, this.language.language());
+  });
+
   /** Feed items as sentences, numbers and dates in the interface language. */
   protected readonly rows = computed<FeedRow[]>(() => {
     const language = this.language.language();

@@ -42,7 +42,15 @@ interface ParentFeedState {
   initials: string;
   classroom: string;
   subject: string;
+  /** The child's own average in the subject, this term: the card's main value. */
   subjectAverage: number;
+  /**
+   * Average of the class in the same subject and term (RM-11 as amended on
+   * 7 November 2026), shown beside the child's average, never compared to it.
+   * `undefined` until the server sends it: the card then shows nothing more.
+   * A key always present (not `?:`), so that the store exposes its signal.
+   */
+  classSubjectAverage: number | undefined;
   term: number;
   feed: FeedItem[];
   weeklySummary: boolean;
@@ -55,6 +63,10 @@ const initialState: ParentFeedState = {
   classroom: '4ème B · Lycée Chaminade',
   subject: 'Maths',
   subjectAverage: 16.75,
+  // Same class, subject and term as the teacher's classroom screen: the
+  // coefficient-weighted mean of its three assignments' class averages —
+  // (12.4 × 2 + 11.8 × 1 + 14.1 × 1) / 4 = 12.675, shown to two decimals.
+  classSubjectAverage: 12.68,
   term: 2,
   feed: FEED,
   weeklySummary: true,

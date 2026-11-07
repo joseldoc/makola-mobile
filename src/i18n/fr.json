@@ -74,8 +74,8 @@
       },
       "reportCards": {
         "kicker": "Les bulletins",
-        "title": "Aucun rang, aucune moyenne de classe",
-        "text": "Les bulletins portent les moyennes de l'élève, pas sa place. Leur transmission à la direction reste votre décision."
+        "title": "Des moyennes, jamais de rang",
+        "text": "Les bulletins portent les moyennes de l'élève et, par matière, la moyenne de la classe — jamais sa place. Leur transmission à la direction reste votre décision."
       }
     }
   },
@@ -308,7 +308,7 @@
     "classAverage": "Moyenne de la classe",
     "termAverage": "Moyenne du trimestre",
     "noMatch": "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul, ou effacez la recherche.",
-    "reportCardNotice": "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Aucun rang ni moyenne de classe n'y figurera.",
+    "reportCardNotice": "Le bulletin du trimestre 2 sera disponible après la clôture, le 27 mars. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang.",
     "searchPlaceholder": "Nom d'élève",
     "newAssignment": "+ Devoir"
   },
@@ -358,6 +358,7 @@
     "reportCards": "Bulletins",
     "reportCardMeta": "Trimestre {{term}} · {{subject}}",
     "classAverage": "Moyenne de la classe {{value}}",
+    "classSubjectAverage": "Moyenne de la classe {{value}}",
     "types": {
       "newGrade": "Nouvelle note",
       "gradeBelowPass": "Note en dessous de 10",

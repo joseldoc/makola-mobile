@@ -53,6 +53,15 @@
   margin-top: 3px;
 }
 
+// Class average in the subject: secondary ink (4.5:1, no reduced opacity),
+// tabular figures, the same in every case — it is never compared to the value.
+.card-secondary {
+  font: var(--mk-secondaire);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text-secondaire);
+  margin-top: var(--mk-esp-1);
+}
+
 .card-progress {
   font: 500 15px/1.35 var(--mk-font);
   margin-top: 5px;

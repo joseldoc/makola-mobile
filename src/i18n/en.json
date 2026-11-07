@@ -74,8 +74,8 @@
       },
       "reportCards": {
         "kicker": "Report cards",
-        "title": "No ranking, no class average",
-        "text": "Report cards show the student's averages, not their position. Sending them to the school stays your decision."
+        "title": "Averages, never a ranking",
+        "text": "Report cards show the student's averages and, for each subject, the class average — never their position. Sending them to the school stays your decision."
       }
     }
   },
@@ -308,7 +308,7 @@
     "classAverage": "Class average",
     "termAverage": "Term average",
     "noMatch": "No student is named « {{query}} ». Try a family name alone, or clear the search.",
-    "reportCardNotice": "The term 2 report card will be available after closing, on 27 March. It will show no ranking and no class average.",
+    "reportCardNotice": "The term 2 report card will be available after closing, on 27 March. It will show the class average for each subject beside the student's, and no ranking.",
     "searchPlaceholder": "Student name",
     "newAssignment": "+ Assignment"
   },
@@ -358,6 +358,7 @@
     "reportCards": "Report cards",
     "reportCardMeta": "Term {{term}} · {{subject}}",
     "classAverage": "Class average {{value}}",
+    "classSubjectAverage": "Class average {{value}}",
     "types": {
       "newGrade": "New grade",
       "gradeBelowPass": "Grade below 10",
