@@ -79,7 +79,7 @@ L'arborescence suit CLAUDE.md depuis le 6 novembre 2026 : features à la racine 
 Elles viennent du cahier des charges v1.2 et des arbitrages actés. Elles valent pour l'affichage, les calculs, les exports et les textes.
 
 **Ce qu'on ne montre jamais**
-- **RM-11** — ni moyenne de classe, ni rang, ni quartile, ni position relative, pour aucun acteur, professeur compris. La courbe d'un élève ne porte que ses notes et les bornes de période ; un bulletin porte les moyennes pondérées de l'élève, pas sa place. L'écran **énonce** la limite (« Aucun rang, aucune moyenne de classe »).
+- **RM-11 (amendée le 6 novembre 2026, décision de l'utilisateur, amende RM-11 du cahier v1.2)** — **ni rang, ni quartile, ni position relative**, pour aucun acteur, professeur compris : rien qui situe un élève par rapport aux autres, pas même « au-dessus / en dessous de la moyenne de la classe ». **La moyenne de la classe d'un devoir se montre** : au professeur, sur l'écran de classe, à côté de chaque devoir ; au parent, dans son fil, à côté de la note de son enfant pour ce devoir (dans la seule matière du professeur qui l'a invité, A-19). Elle s'affiche **sans comparaison** : aucune couleur, icône, flèche ni phrase ne rapproche la note de l'enfant de cette moyenne ; le ton `danger` reste celui de la moyenne de passage. **Le bulletin ne change pas** : il porte les moyennes pondérées de l'élève, ni rang ni moyenne de classe (US-P09). La courbe d'un élève ne porte que ses notes et les bornes de période (A-11 à relire, voir plus bas).
 - La direction (promoteur) ne voit **jamais une note** : elle constate un dépôt, relance (ton courtois ou ferme), atteste (RM-01 étendu).
 - Le parent ne voit que **son enfant**, et seulement **la matière du professeur qui l'a invité** (A-19).
 
@@ -114,7 +114,7 @@ Elles viennent du cahier des charges v1.2 et des arbitrages actés. Elles valent
 **Périmètre du MVP**
 - Dedans : parcours professeur (de l'ouverture au dépôt du bulletin), parcours parent (de l'invitation au fil), boucle des bulletins côté établissement (dépôt, relance).
 - **Dehors, à ne pas inventer** : carte, encadrement à domicile, marché de l'emploi, tips, commission et paiements, rôles élève et étudiant, promoteur complet, université.
-- **Arbitrages encore ouverts** — ne pas les trancher dans le code, les remonter : A-11 (moyenne de classe superposable sur la courbe, au professeur seul ?), A-13 (rôle élève), A-14 (correction d'une note après publication : dépublication complète ou correctif de ligne ?).
+- **Arbitrages encore ouverts** — ne pas les trancher dans le code, les remonter : A-11 (moyenne de classe superposable sur la courbe, au professeur seul ? — à relire à la lumière de l'amendement de RM-11 du 6 novembre 2026, qui montre la moyenne de la classe d'un devoir au professeur et au parent ; non tranchée), A-13 (rôle élève), A-14 (correction d'une note après publication : dépublication complète ou correctif de ligne ?).
 
 **Comptes et marchés**
 - Marchés : République du Congo (+242, Brazzaville, marché de lancement) et Kenya (+254). Le pays se déduit de l'indicatif et ne se redemande pas ; un pays = une entrée de `COUNTRIES`.
@@ -161,7 +161,6 @@ Lire `docs/design-system.md` avant tout écran. Ce qui se casse le plus facileme
 
 Ils ne sont **pas** à corriger au passage : chacun appelle une décision de l'utilisateur.
 
-- **RM-11 et l'écran de classe** : `ClassroomStore` porte pour chaque devoir un champ `average` commenté « Average of this assignment for the class », que `classroom-page.html` affiche à côté de « Class average not calculated — see RM-11 ». Le kit (`ClasseScreen.jsx`) affiche une valeur « 12,4 » au même endroit, avec une note ambiguë. Une moyenne de classe par devoir contredit RM-11 telle qu'écrite : à faire trancher (supprimer la valeur, ou la redéfinir) avant de construire dessus.
 - **Consentements kenyans** : aucun écran ; nécessaires avant l'ouverture au Kenya.
 - **Plusieurs rôles par compte (ID-02)** : `Session` n'en porte qu'un.
 - **Serveur** : `MockAuthApi` partout ; ni `HttpClient`, ni intercepteur, ni adresse d'API, ni file hors ligne ; `ClassroomStore.offline` vaut `true` en dur, aucun suivi réel du réseau.
