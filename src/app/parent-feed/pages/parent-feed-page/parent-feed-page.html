@@ -13,7 +13,9 @@
 
   <div class="cards">
     <div class="card highlight">
-      <div class="card-label">{{ 'parentFeed.subjectAverage' | transloco: { subject: store.subject() } }}</div>
+      <div class="card-label">
+        {{ 'parentFeed.subjectAverage' | transloco: { subject: store.subject() } }}
+      </div>
       <div class="card-value">{{ average() }}</div>
     </div>
     <div class="card">
@@ -37,7 +39,10 @@
       <div class="summary-text">
         <div class="summary-title">{{ 'parentFeed.weeklySummary' | transloco }}</div>
         <div class="summary-sub">
-          {{ (store.weeklySummary() ? 'parentFeed.weeklySummaryOn' : 'parentFeed.weeklySummaryOff') | transloco }}
+          {{
+            (store.weeklySummary() ? 'parentFeed.weeklySummaryOn' : 'parentFeed.weeklySummaryOff')
+              | transloco
+          }}
         </div>
       </div>
       <app-switch
@@ -51,6 +56,10 @@
 
   <div class="footer">
     <app-outlined-button [label]="'parentFeed.allGrades' | transloco" tone="parent" [full]="true" />
-    <app-outlined-button [label]="'parentFeed.reportCards' | transloco" tone="parent" [full]="true" />
+    <app-outlined-button
+      [label]="'parentFeed.reportCards' | transloco"
+      tone="parent"
+      [full]="true"
+    />
   </div>
 </div>

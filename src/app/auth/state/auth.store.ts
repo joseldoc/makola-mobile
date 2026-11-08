@@ -50,7 +50,7 @@ const initialState: AuthState = {
   invitation: null,
   ...NO_CONSENTS,
   busy: false,
-  error: null
+  error: null,
 };
 
 /**
@@ -68,9 +68,9 @@ export const AuthFlowStore = signalStore(
       const id = identifier();
       return {
         key: `auth.errors.${code}`,
-        params: { identifier: id ? formatIdentifier(id) : '', channel: id?.channel ?? 'phone' }
+        params: { identifier: id ? formatIdentifier(id) : '', channel: id?.channel ?? 'phone' },
       };
-    })
+    }),
   })),
   withMethods((store, api = inject(AuthApi), session = inject(SessionStore)) => {
     /** Runs a server call: one at a time, refusal stored in `error`. */
@@ -99,7 +99,12 @@ export const AuthFlowStore = signalStore(
     return {
       /** A screen that takes the contact opens: consents asked for an earlier one no longer hold. */
       start(intent: Intent): void {
-        patchState(store, { intent, error: null, ...NO_CONSENTS, ...(intent === 'invitation' ? {} : { invitation: null }) });
+        patchState(store, {
+          intent,
+          error: null,
+          ...NO_CONSENTS,
+          ...(intent === 'invitation' ? {} : { invitation: null }),
+        });
       },
 
       clearError(): void {
@@ -148,7 +153,9 @@ export const AuthFlowStore = signalStore(
         if (!identifier) return null;
         const invitation = store.invitation();
         const acceptance = invitation ? { invitation, consents: store.givenConsents() } : undefined;
-        const opened = await call(() => api.verifyCode(identifier, code, store.intent(), acceptance));
+        const opened = await call(() =>
+          api.verifyCode(identifier, code, store.intent(), acceptance),
+        );
         if (opened) session.open(opened);
         return opened;
       },
@@ -179,7 +186,7 @@ export const AuthFlowStore = signalStore(
         const active = await call(() => api.saveAlerts(current, alerts));
         if (active) session.open(active);
         return active !== null;
-      }
+      },
     };
-  })
+  }),
 );

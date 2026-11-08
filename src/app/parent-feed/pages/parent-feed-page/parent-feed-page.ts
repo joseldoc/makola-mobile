@@ -38,10 +38,16 @@ interface FeedRow {
  */
 @Component({
   selector: 'app-parent-feed-page',
-  imports: [AppBarComponent, ListRowComponent, SwitchComponent, OutlinedButtonComponent, TranslocoPipe],
+  imports: [
+    AppBarComponent,
+    ListRowComponent,
+    SwitchComponent,
+    OutlinedButtonComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './parent-feed-page.html',
   styleUrl: './parent-feed-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ParentFeedPageComponent {
   protected readonly store = inject(ParentFeedStore);
@@ -52,14 +58,26 @@ export class ParentFeedPageComponent {
 
   /** The teacher space appears only when the account also holds that role (ID-02). */
   protected readonly barActions = computed<ParentFeedBarAction[]>(() => [
-    { action: ParentFeedBarActions.SwitchChild, icon: ICONS.expand, label: this.t('parentFeed.switchChild') },
+    {
+      action: ParentFeedBarActions.SwitchChild,
+      icon: ICONS.expand,
+      label: this.t('parentFeed.switchChild'),
+    },
     ...(this.session.hasRole('teacher')
-      ? [{ action: ParentFeedBarActions.TeacherSpace, icon: ICONS.classroom, label: this.t('spaces.teacher') }]
+      ? [
+          {
+            action: ParentFeedBarActions.TeacherSpace,
+            icon: ICONS.classroom,
+            label: this.t('spaces.teacher'),
+          },
+        ]
       : []),
-    { action: ParentFeedBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') }
+    { action: ParentFeedBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') },
   ]);
 
-  protected readonly average = computed(() => formatDecimal(this.store.subjectAverage(), this.language.language()));
+  protected readonly average = computed(() =>
+    formatDecimal(this.store.subjectAverage(), this.language.language()),
+  );
 
   /** Feed items as sentences, numbers and dates in the interface language. */
   protected readonly rows = computed<FeedRow[]>(() => {
@@ -68,8 +86,11 @@ export class ParentFeedPageComponent {
       title: this.t(`parentFeed.types.${item.type}`),
       meta: this.formatMeta(item, language),
       value: this.formatValue(item, language),
-      when: item.when.kind === 'date' ? formatDate(item.when.date, language) : this.t(item.when.message.key, item.when.message.params),
-      belowPass: item.type === 'gradeBelowPass'
+      when:
+        item.when.kind === 'date'
+          ? formatDate(item.when.date, language)
+          : this.t(item.when.message.key, item.when.message.params),
+      belowPass: item.type === 'gradeBelowPass',
     }));
   });
 
@@ -105,7 +126,8 @@ export class ParentFeedPageComponent {
    * line does not). The child's grade stays the row's value; nothing compares them.
    */
   private formatMeta(item: FeedItem, language: Language): string {
-    const meta = typeof item.meta === 'string' ? item.meta : this.t(item.meta.key, item.meta.params);
+    const meta =
+      typeof item.meta === 'string' ? item.meta : this.t(item.meta.key, item.meta.params);
     const v = item.value;
     if (v.kind !== 'grade' || v.classAverage === undefined) return meta;
     return `${meta} · ${this.t('parentFeed.classAverage', { value: formatDecimal(v.classAverage, language) })}`;

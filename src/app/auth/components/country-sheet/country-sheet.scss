@@ -22,8 +22,8 @@
   color: var(--mk-text);
   border-top-left-radius: var(--mk-rayon-touche);
   border-top-right-radius: var(--mk-rayon-touche);
-  padding: 0 calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
-    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  padding: 0 calc(var(--mk-esp-4) + var(--mk-safe-right))
+    calc(var(--mk-esp-3) + var(--mk-safe-bottom)) calc(var(--mk-esp-4) + var(--mk-safe-left));
 }
 
 .handle {

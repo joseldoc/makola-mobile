@@ -12,19 +12,19 @@ const SLIDES: OnboardingSlide[] = [
   { role: 'teacher', icon: ICONS.classroom, key: 'onboarding.slides.classrooms' },
   { role: 'teacher', icon: ICONS.offline, key: 'onboarding.slides.offline' },
   { role: 'parent', icon: ICONS.progress, key: 'onboarding.slides.parents' },
-  { role: 'school', icon: ICONS.document, key: 'onboarding.slides.reportCards' }
+  { role: 'school', icon: ICONS.document, key: 'onboarding.slides.reportCards' },
 ];
 
 export const OnboardingStore = signalStore(
   withState({ slides: SLIDES, index: 0 }),
   withComputed(({ slides, index }) => ({
     last: computed(() => index() === slides().length - 1),
-    current: computed(() => slides()[index()])
+    current: computed(() => slides()[index()]),
   })),
   withMethods((store) => ({
     setIndex(index: number): void {
       const bounded = Math.max(0, Math.min(index, store.slides().length - 1));
       if (bounded !== store.index()) patchState(store, { index: bounded });
-    }
-  }))
+    },
+  })),
 );

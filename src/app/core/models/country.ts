@@ -29,7 +29,7 @@ export const COUNTRIES: Country[] = [
     mobile: /^0[456]\d{7}$/,
     prefixes: '04, 05, 06',
     groups: [2, 3, 2, 2],
-    cities: ['Brazzaville', 'Pointe-Noire', 'Dolisie', 'Nkayi', 'Ouesso']
+    cities: ['Brazzaville', 'Pointe-Noire', 'Dolisie', 'Nkayi', 'Ouesso'],
   },
   {
     code: 'KE',
@@ -38,8 +38,8 @@ export const COUNTRIES: Country[] = [
     mobile: /^[17]\d{8}$/,
     prefixes: '7, 1',
     groups: [3, 3, 3],
-    cities: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret']
-  }
+    cities: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret'],
+  },
 ];
 
 /** The launch market (Brazzaville): the calling code offered first. */
@@ -52,7 +52,9 @@ export function countryByCode(code: CountryCode): Country {
 /** « +242066123456 » → Republic of the Congo. */
 export function countryOfNumber(international: string): Country | undefined {
   const digits = international.replace(/^\+/, '');
-  return COUNTRIES.find((c) => digits.startsWith(c.callingCode) && digits.length === c.callingCode.length + c.length);
+  return COUNTRIES.find(
+    (c) => digits.startsWith(c.callingCode) && digits.length === c.callingCode.length + c.length,
+  );
 }
 
 /** Grouping while typing, with non-breaking spaces: a number never wraps. */

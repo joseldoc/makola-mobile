@@ -25,7 +25,12 @@ export type AuthBannerRole = 'school' | 'parent';
       <div class="content">
         <div class="head">
           @if (showBack()) {
-            <app-bar-target icon="chevron-back-outline" [label]="'common.back' | transloco" [tone]="tint()[1]" (clicked)="back.emit()" />
+            <app-bar-target
+              icon="chevron-back-outline"
+              [label]="'common.back' | transloco"
+              [tone]="tint()[1]"
+              (clicked)="back.emit()"
+            />
           }
           <div class="brand">
             <app-logo variant="icon" [size]="40" />
@@ -41,7 +46,7 @@ export type AuthBannerRole = 'school' | 'parent';
     </header>
   `,
   styleUrl: './auth-banner.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthBannerComponent {
   /** Already translated. */

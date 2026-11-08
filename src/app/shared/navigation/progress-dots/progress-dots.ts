@@ -6,7 +6,7 @@ export type ProgressDotsTone = 'primary' | 'pending' | 'success';
 const TONE_COLOR: Record<ProgressDotsTone, string> = {
   primary: 'var(--mk-primaire)',
   pending: 'var(--mk-attente)',
-  success: 'var(--mk-succes)'
+  success: 'var(--mk-succes)',
 };
 
 /**
@@ -25,7 +25,9 @@ const TONE_COLOR: Record<ProgressDotsTone, string> = {
           class="dot"
           role="tab"
           [attr.aria-selected]="i === index()"
-          [attr.aria-label]="'progressDots.position' | transloco: { current: i + 1, total: count() }"
+          [attr.aria-label]="
+            'progressDots.position' | transloco: { current: i + 1, total: count() }
+          "
           [style.width.px]="i === index() ? 26 : 6"
           [style.background]="dotColor(i)"
           (click)="indexChange.emit(i)"
@@ -34,7 +36,7 @@ const TONE_COLOR: Record<ProgressDotsTone, string> = {
     </div>
   `,
   styleUrl: './progress-dots.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressDotsComponent {
   readonly count = input.required<number>();

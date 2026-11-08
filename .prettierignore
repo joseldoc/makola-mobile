@@ -1,0 +1,11 @@
+# Jetons du système de conception : copies verbatim de claude.ai/design
+# (« @makola Design System », tokens/*.css), recopiées telles quelles à chaque
+# évolution de la source. Les formater changerait leur texte (casse des
+# hexadécimaux, espaces) et casserait la comparaison avec la source.
+# fonts.scss n'en fait pas partie : il s'écarte déjà de sa source (Roboto embarquée).
+src/theme/tokens/colors.scss
+src/theme/tokens/dark.scss
+src/theme/tokens/motion.scss
+src/theme/tokens/radius.scss
+src/theme/tokens/spacing.scss
+src/theme/tokens/typography.scss

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input, model, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  model,
+  output,
+  signal,
+} from '@angular/core';
 import { FormValueControl, ValidationError } from '@angular/forms/signals';
 
 export type TextFieldState = 'idle' | 'focus' | 'error' | 'warning' | 'valid';
@@ -8,7 +16,7 @@ const TINT: Record<TextFieldState, string> = {
   focus: 'var(--mk-primaire)',
   error: 'var(--mk-refus)',
   warning: 'var(--mk-attente)',
-  valid: 'var(--mk-succes)'
+  valid: 'var(--mk-succes)',
 };
 
 let nextId = 0;
@@ -67,7 +75,9 @@ let nextId = 0;
             class="message"
             [id]="id + '-help'"
             [attr.role]="state_() === 'error' ? 'alert' : null"
-            [style.color]="state_() === 'idle' || state_() === 'focus' ? 'var(--mk-text-secondaire)' : tint()"
+            [style.color]="
+              state_() === 'idle' || state_() === 'focus' ? 'var(--mk-text-secondaire)' : tint()
+            "
           >
             {{ helpText() }}
           </div>
@@ -79,7 +89,7 @@ let nextId = 0;
     </div>
   `,
   styleUrl: './text-field.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextFieldComponent implements FormValueControl<string> {
   /** Shown in the outline notch, never as a placeholder alone. Already translated. */

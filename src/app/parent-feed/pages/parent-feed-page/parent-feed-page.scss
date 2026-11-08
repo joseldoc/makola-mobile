@@ -27,7 +27,8 @@
 .cards {
   display: flex;
   gap: var(--mk-esp-2);
-  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-left));
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-3)
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
 }
 
 .card {
@@ -70,7 +71,8 @@
   display: flex;
   align-items: center;
   gap: var(--mk-esp-3);
-  padding: 14px calc(var(--mk-esp-4) + var(--mk-safe-right)) 14px calc(var(--mk-esp-4) + var(--mk-safe-left));
+  padding: 14px calc(var(--mk-esp-4) + var(--mk-safe-right)) 14px
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
   border-bottom: 1px solid var(--mk-separateur);
 }
 
@@ -91,8 +93,8 @@
 
 .footer {
   border-top: 1px solid var(--mk-separateur);
-  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
-    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right))
+    calc(var(--mk-esp-3) + var(--mk-safe-bottom)) calc(var(--mk-esp-4) + var(--mk-safe-left));
   display: flex;
   gap: var(--mk-esp-2);
 }

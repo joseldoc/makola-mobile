@@ -10,5 +10,5 @@ export const ROLE_TINTS: Record<SurfaceRole, [surface: string, shape: string]> =
   teacher: ['var(--mk-role-prof)', 'var(--mk-role-prof-forme)'],
   parent: ['var(--mk-role-parent)', 'var(--mk-role-parent-forme)'],
   school: ['var(--mk-role-etab)', 'var(--mk-role-etab-forme)'],
-  neutral: ['var(--mk-role-neutre)', 'var(--mk-role-neutre-forme)']
+  neutral: ['var(--mk-role-neutre)', 'var(--mk-role-neutre-forme)'],
 };

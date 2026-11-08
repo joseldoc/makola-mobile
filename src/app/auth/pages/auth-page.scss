@@ -43,8 +43,8 @@
   flex-direction: column;
   gap: var(--mk-esp-3);
   border-top: 1px solid var(--mk-separateur);
-  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) calc(var(--mk-esp-3) + var(--mk-safe-bottom))
-    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right))
+    calc(var(--mk-esp-3) + var(--mk-safe-bottom)) calc(var(--mk-esp-4) + var(--mk-safe-left));
 }
 
 // ── Entry screens (mock-up 24c) ─────────────────────────────────────────────
@@ -54,7 +54,8 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  padding: var(--mk-esp-5) calc(var(--mk-esp-6) + var(--mk-safe-right)) 0 calc(var(--mk-esp-6) + var(--mk-safe-left));
+  padding: var(--mk-esp-5) calc(var(--mk-esp-6) + var(--mk-safe-right)) 0
+    calc(var(--mk-esp-6) + var(--mk-safe-left));
   display: flex;
   flex-direction: column;
   gap: var(--mk-esp-3);

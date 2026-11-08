@@ -17,7 +17,10 @@
           <p class="student-name">{{ invitation.student }}</p>
           <p class="student-meta">{{ invitation.classroom }} · {{ invitation.school }}</p>
           <p class="student-meta">
-            {{ 'auth.child.invitedBy' | transloco: { teacher: invitation.teacher, subject: invitation.subject } }}
+            {{
+              'auth.child.invitedBy'
+                | transloco: { teacher: invitation.teacher, subject: invitation.subject }
+            }}
           </p>
         </div>
       </section>
@@ -30,7 +33,16 @@
   }
 
   <div class="footer">
-    <app-footer-action [label]="'auth.child.confirm' | transloco: { name: firstName() }" tone="pending" (pressed)="confirm()" />
-    <app-outlined-button [label]="'auth.child.decline' | transloco" tone="parent" [full]="true" (clicked)="decline()" />
+    <app-footer-action
+      [label]="'auth.child.confirm' | transloco: { name: firstName() }"
+      tone="pending"
+      (pressed)="confirm()"
+    />
+    <app-outlined-button
+      [label]="'auth.child.decline' | transloco"
+      tone="parent"
+      [full]="true"
+      (clicked)="decline()"
+    />
   </div>
 </div>

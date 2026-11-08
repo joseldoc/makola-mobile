@@ -14,8 +14,12 @@
     <div class="consents" role="group" [attr.aria-label]="'auth.consents.group' | transloco">
       @for (consent of consents(); track consent) {
         <app-checkbox
-          [label]="'auth.consents.documents.' + consent + '.title' | transloco: { name: firstName() }"
-          [sublabel]="'auth.consents.documents.' + consent + '.text' | transloco: { name: firstName() }"
+          [label]="
+            'auth.consents.documents.' + consent + '.title' | transloco: { name: firstName() }
+          "
+          [sublabel]="
+            'auth.consents.documents.' + consent + '.text' | transloco: { name: firstName() }
+          "
           [checked]="form[consent]().value()"
           (checkedChange)="tick(consent, $event)"
         />
@@ -31,6 +35,11 @@
 
   <div class="footer">
     <app-footer-action [label]="action()" tone="pending" (pressed)="send()" />
-    <app-outlined-button [label]="'auth.consents.decline' | transloco" tone="parent" [full]="true" (clicked)="decline()" />
+    <app-outlined-button
+      [label]="'auth.consents.decline' | transloco"
+      tone="parent"
+      [full]="true"
+      (clicked)="decline()"
+    />
   </div>
 </div>

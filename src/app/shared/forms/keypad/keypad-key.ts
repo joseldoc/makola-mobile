@@ -25,7 +25,7 @@ export type KeypadKeyVariant = 'digit' | 'code' | 'action';
     </div>
   `,
   styleUrl: './keypad-key.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeypadKeyComponent {
   readonly variant = input<KeypadKeyVariant>('digit');

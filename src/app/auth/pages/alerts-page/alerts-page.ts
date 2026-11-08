@@ -22,7 +22,7 @@ import { ALERT_OPTIONS, AlertOption, DEFAULT_ALERTS } from '../../models/auth.mo
   imports: [AppBarComponent, SwitchComponent, FooterActionComponent, FormField, TranslocoPipe],
   templateUrl: './alerts-page.html',
   styleUrls: ['../auth-page.scss', './alerts-page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertsPageComponent {
   protected readonly store = inject(AuthFlowStore);
@@ -42,8 +42,12 @@ export class AlertsPageComponent {
 
   protected readonly estimate = computed(() => {
     const settings = this.model();
-    const sms = Math.round(ALERT_OPTIONS.reduce((total, a) => total + (settings[a.key] ? a.smsPerMonth : 0), 0));
-    return sms === 0 ? this.t('auth.alerts.noSms') : this.t('auth.alerts.smsPerMonth', { count: sms });
+    const sms = Math.round(
+      ALERT_OPTIONS.reduce((total, a) => total + (settings[a.key] ? a.smsPerMonth : 0), 0),
+    );
+    return sms === 0
+      ? this.t('auth.alerts.noSms')
+      : this.t('auth.alerts.smsPerMonth', { count: sms });
   });
 
   protected toggle(option: AlertOption): void {

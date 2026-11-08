@@ -10,7 +10,8 @@ import { ClassroomPageComponent } from './classroom-page';
 describe('ClassroomPageComponent — assignment rows', () => {
   let fixture: ComponentFixture<ClassroomPageComponent>;
 
-  const rows = () => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-list-row'));
+  const rows = () =>
+    Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-list-row'));
 
   beforeEach(async () => {
     localStorage.clear();
@@ -52,9 +53,16 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
   }
 
   const targets = () =>
-    Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('app-bar-target button'));
+    Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
+        'app-bar-target button',
+      ),
+    );
   const labels = () => targets().map((b) => b.getAttribute('aria-label'));
-  const press = (label: string) => targets().find((b) => b.getAttribute('aria-label') === label)!.click();
+  const press = (label: string) =>
+    targets()
+      .find((b) => b.getAttribute('aria-label') === label)!
+      .click();
   const session = () => TestBed.inject(SessionStore);
 
   afterEach(() => localStorage.clear());
@@ -75,13 +83,23 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
   });
 
   it('teacher and parent: the parent space action sits between search and sign out', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready', parent: 'ready' } });
+    await open({
+      id: 'a1',
+      identifier,
+      activeRole: 'teacher',
+      roles: { teacher: 'ready', parent: 'ready' },
+    });
 
     expect(labels()).toEqual(['Search', 'Parent space', 'Sign out']);
   });
 
   it('a press shows the parent space, kept for the next launch', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready', parent: 'ready' } });
+    await open({
+      id: 'a1',
+      identifier,
+      activeRole: 'teacher',
+      roles: { teacher: 'ready', parent: 'ready' },
+    });
 
     press('Parent space');
 
@@ -91,7 +109,12 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
   });
 
   it('a press opens the parent alerts first when they are still to set', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready', parent: 'setup' } });
+    await open({
+      id: 'a1',
+      identifier,
+      activeRole: 'teacher',
+      roles: { teacher: 'ready', parent: 'setup' },
+    });
 
     press('Parent space');
 
@@ -99,7 +122,12 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
   });
 
   it('with two roles, sign out still signs out — every role at once', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready', parent: 'ready' } });
+    await open({
+      id: 'a1',
+      identifier,
+      activeRole: 'teacher',
+      roles: { teacher: 'ready', parent: 'ready' },
+    });
 
     press('Sign out');
 
@@ -108,7 +136,12 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
   });
 
   it('search still opens the students view', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready', parent: 'ready' } });
+    await open({
+      id: 'a1',
+      identifier,
+      activeRole: 'teacher',
+      roles: { teacher: 'ready', parent: 'ready' },
+    });
 
     press('Search');
     await fixture.whenStable();

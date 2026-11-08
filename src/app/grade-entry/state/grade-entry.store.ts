@@ -4,7 +4,14 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { ABSENT, GradeCell, isCode, UNGRADED } from '../models/grade-entry.model';
 
 /** Sample students from ui_kits/app/SaisieScreen.jsx (the classroom screen shares the same class). */
-const NAMES = ['ILUNGA Marie', 'MOUKALA Chris', 'NGOMA Divine', 'OBAMBI Junior', 'SAMBA Rose', 'TATI Gloire'];
+const NAMES = [
+  'ILUNGA Marie',
+  'MOUKALA Chris',
+  'NGOMA Divine',
+  'OBAMBI Junior',
+  'SAMBA Rose',
+  'TATI Gloire',
+];
 
 const FLASH_MS = 420;
 
@@ -27,14 +34,14 @@ const initialState: GradeEntryState = {
   names: NAMES,
   grades: ['18', '9.5', '', '', '', ''],
   activeIndex: 2,
-  flashIndex: null
+  flashIndex: null,
 };
 
 export const GradeEntryStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed(({ grades }) => ({
-    entered: computed(() => grades().filter(Boolean).length)
+    entered: computed(() => grades().filter(Boolean).length),
   })),
   withMethods((store) => {
     const activeGrade = () => store.grades()[store.activeIndex()] ?? '';
@@ -72,7 +79,7 @@ export const GradeEntryStore = signalStore(
         patchState(store, { flashIndex: i });
         setTimeout(() => patchState(store, { flashIndex: null }), FLASH_MS);
         patchState(store, { activeIndex: Math.min(store.names().length - 1, i + 1) });
-      }
+      },
     };
-  })
+  }),
 );

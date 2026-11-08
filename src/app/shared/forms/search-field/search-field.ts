@@ -27,14 +27,19 @@ import { IconComponent } from '../../foundation/icon/icon';
       @if (loading()) {
         <span class="spinner"></span>
       } @else if (value()) {
-        <button type="button" class="clear" [attr.aria-label]="'common.clear' | transloco" (click)="cleared.emit()">
+        <button
+          type="button"
+          class="clear"
+          [attr.aria-label]="'common.clear' | transloco"
+          (click)="cleared.emit()"
+        >
           <app-icon name="close-outline" [size]="18" />
         </button>
       }
     </div>
   `,
   styleUrl: './search-field.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchFieldComponent {
   readonly value = input.required<string>();

@@ -20,10 +20,12 @@ import { ROLE_TINTS, SurfaceRole } from '../../roles';
       (pointerleave)="held.set(false)"
       (pointercancel)="held.set(false)"
       [style.background]="held() ? toneBackground() : 'transparent'"
-    ><span class="label">{{ label() }}</span></button>
+    >
+      <span class="label">{{ label() }}</span>
+    </button>
   `,
   styleUrl: './outlined-button.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OutlinedButtonComponent {
   /** Short: it is uppercased and must fit on one line. */

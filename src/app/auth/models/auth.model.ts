@@ -8,16 +8,23 @@ export interface Option<T extends string = string> {
 }
 
 /** Subjects offered at sign-up — the admin reference data (US-AD04) will replace them. */
-export const SUBJECTS: Option[] = ['maths', 'physics', 'biology', 'french', 'english', 'history', 'philosophy', 'sport'].map(
-  (value) => ({ value, labelKey: `subjects.${value}` })
-);
+export const SUBJECTS: Option[] = [
+  'maths',
+  'physics',
+  'biology',
+  'french',
+  'english',
+  'history',
+  'philosophy',
+  'sport',
+].map((value) => ({ value, labelKey: `subjects.${value}` }));
 
 /** The period split follows the level (RM-02). */
 export const LEVELS: Option<Level>[] = [
   { value: 'primary', labelKey: 'levels.primary', detailKey: 'levels.terms' },
   { value: 'middle', labelKey: 'levels.middle', detailKey: 'levels.terms' },
   { value: 'high', labelKey: 'levels.high', detailKey: 'levels.terms' },
-  { value: 'university', labelKey: 'levels.university', detailKey: 'levels.semesters' }
+  { value: 'university', labelKey: 'levels.university', detailKey: 'levels.semesters' },
 ];
 
 export interface AlertOption {
@@ -32,7 +39,7 @@ export const ALERT_OPTIONS: AlertOption[] = [
   { key: 'gradeBelowPass', smsPerMonth: 2 },
   { key: 'testAnnounced', smsPerMonth: 3 },
   { key: 'reportCardAvailable', smsPerMonth: 0.34 },
-  { key: 'weeklySummary', smsPerMonth: 4 }
+  { key: 'weeklySummary', smsPerMonth: 4 },
 ];
 
 /**
@@ -46,5 +53,5 @@ export const DEFAULT_ALERTS: ParentAlerts = {
   gradeBelowPass: false,
   testAnnounced: true,
   reportCardAvailable: true,
-  weeklySummary: false
+  weeklySummary: false,
 };

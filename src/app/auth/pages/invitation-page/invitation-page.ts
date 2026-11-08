@@ -18,11 +18,17 @@ const LENGTH = 6;
  */
 @Component({
   selector: 'app-invitation-page',
-  imports: [AuthBannerComponent, KeypadComponent, FooterActionComponent, CodeSlotsComponent, TranslocoPipe],
+  imports: [
+    AuthBannerComponent,
+    KeypadComponent,
+    FooterActionComponent,
+    CodeSlotsComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './invitation-page.html',
   styleUrls: ['../auth-page.scss'],
   host: { '(document:keydown)': 'onKey($event)' },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvitationPageComponent {
   protected readonly store = inject(AuthFlowStore);

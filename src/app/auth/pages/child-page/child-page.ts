@@ -15,10 +15,16 @@ import { AuthFlowStore } from '../../state/auth.store';
  */
 @Component({
   selector: 'app-child-page',
-  imports: [AppBarComponent, FooterActionComponent, OutlinedButtonComponent, IconComponent, TranslocoPipe],
+  imports: [
+    AppBarComponent,
+    FooterActionComponent,
+    OutlinedButtonComponent,
+    IconComponent,
+    TranslocoPipe,
+  ],
   templateUrl: './child-page.html',
   styleUrls: ['../auth-page.scss', './child-page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChildPageComponent {
   protected readonly store = inject(AuthFlowStore);

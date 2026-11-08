@@ -12,18 +12,18 @@ const DATES: AssignmentDate[] = [
     date: '2026-03-19',
     today: true,
     state: 'idle',
-    message: { key: 'assignment.date.inTerm', params: { term: 2, end: '2026-03-27' } }
+    message: { key: 'assignment.date.inTerm', params: { term: 2, end: '2026-03-27' } },
   },
   {
     date: '2026-04-02',
     state: 'warning',
-    message: { key: 'assignment.date.afterClose', params: { term: 2, next: 3 } }
+    message: { key: 'assignment.date.afterClose', params: { term: 2, next: 3 } },
   },
   {
     date: '2026-01-04',
     state: 'error',
-    message: { key: 'assignment.date.closed', params: { term: 1, after: '2026-01-06' } }
-  }
+    message: { key: 'assignment.date.closed', params: { term: 1, after: '2026-01-06' } },
+  },
 ];
 
 /** Titles already used in this class this term (data, compared case-insensitively). */
@@ -49,7 +49,7 @@ const initialState: AssignmentState = {
   title: 'Contrôle n°2',
   scale: 20,
   coefficient: 2,
-  dateIndex: 0
+  dateIndex: 0,
 };
 
 export const AssignmentStore = signalStore(
@@ -68,8 +68,10 @@ export const AssignmentStore = signalStore(
       const t = raw.trim();
       if (t === '') return { key: 'assignment.titleErrors.empty' };
       if (t.length < 3) return { key: 'assignment.titleErrors.tooShort' };
-      if (EXISTING.includes(t.toLowerCase())) return { key: 'assignment.titleErrors.duplicate', params: { title: t } };
-      if (raw.length > TITLE_MAX) return { key: 'assignment.titleErrors.tooLong', params: { max: TITLE_MAX } };
+      if (EXISTING.includes(t.toLowerCase()))
+        return { key: 'assignment.titleErrors.duplicate', params: { title: t } };
+      if (raw.length > TITLE_MAX)
+        return { key: 'assignment.titleErrors.tooLong', params: { max: TITLE_MAX } };
       if (raw.length > TITLE_WARN) return { key: 'assignment.titleErrors.long' };
       return null;
     }),
@@ -81,10 +83,12 @@ export const AssignmentStore = signalStore(
     }),
     atMinCoefficient: computed(() => coefficient() <= MIN_COEFFICIENT),
     atMaxCoefficient: computed(() => coefficient() >= MAX_COEFFICIENT),
-    titleCounter: computed(() => `${title().length} / ${TITLE_MAX}`)
+    titleCounter: computed(() => `${title().length} / ${TITLE_MAX}`),
   })),
   withComputed((store) => ({
-    blocked: computed(() => store.titleState() === 'error' || store.currentDate().state === 'error')
+    blocked: computed(
+      () => store.titleState() === 'error' || store.currentDate().state === 'error',
+    ),
   })),
   withMethods((store) => ({
     setTitle(value: string): void {
@@ -104,6 +108,6 @@ export const AssignmentStore = signalStore(
     },
     reset(): void {
       patchState(store, initialState);
-    }
-  }))
+    },
+  })),
 );

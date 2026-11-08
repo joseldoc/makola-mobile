@@ -11,7 +11,7 @@ import { DEFAULT_LANGUAGE, Language, LANGUAGES } from './language';
  */
 const TRANSLATIONS: Record<Language, () => Promise<{ default: Translation }>> = {
   en: () => import('../../../i18n/en.json'),
-  fr: () => import('../../../i18n/fr.json')
+  fr: () => import('../../../i18n/fr.json'),
 };
 
 @Injectable({ providedIn: 'root' })
@@ -30,12 +30,16 @@ export function provideI18n() {
         defaultLang: DEFAULT_LANGUAGE,
         fallbackLang: DEFAULT_LANGUAGE,
         reRenderOnLangChange: true,
-        missingHandler: { useFallbackTranslation: true, logMissingKey: isDevMode(), allowEmpty: true },
-        prodMode: !isDevMode()
+        missingHandler: {
+          useFallbackTranslation: true,
+          logMissingKey: isDevMode(),
+          allowEmpty: true,
+        },
+        prodMode: !isDevMode(),
       },
-      loader: BundledTranslationLoader
+      loader: BundledTranslationLoader,
     }),
     // The saved language is loaded before the first screen renders: no flash of keys.
-    provideAppInitializer(() => inject(LanguageStore).init())
+    provideAppInitializer(() => inject(LanguageStore).init()),
   ];
 }

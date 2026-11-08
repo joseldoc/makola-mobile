@@ -10,7 +10,7 @@ const ONBOARDING_KEY = 'mk.onboarding-seen';
 /** Each space: its step 2, then its home. A new space is an entry here. */
 const SPACE_ROUTES: Record<Role, { setup: string; home: string }> = {
   teacher: { setup: '/auth/profile', home: '/classroom' },
-  parent: { setup: '/auth/alerts', home: '/parent-feed' }
+  parent: { setup: '/auth/alerts', home: '/parent-feed' },
 };
 
 interface SessionState {
@@ -32,7 +32,7 @@ export const SessionStore = signalStore(
   { providedIn: 'root' },
   withState<SessionState>(() => ({
     session: readSession(),
-    onboardingSeen: read<boolean>(ONBOARDING_KEY) ?? false
+    onboardingSeen: read<boolean>(ONBOARDING_KEY) ?? false,
   })),
   withComputed(({ session, onboardingSeen }) => {
     /** The active space has its step 2 done. */
@@ -61,7 +61,7 @@ export const SessionStore = signalStore(
         if (!s) return onboardingSeen() ? '/auth' : '/onboarding';
         const routes = SPACE_ROUTES[s.activeRole];
         return ready() ? routes.home : routes.setup;
-      })
+      }),
     };
   }),
   withMethods((store) => ({
@@ -97,8 +97,8 @@ export const SessionStore = signalStore(
       if (!switched) return;
       patchState(store, { session: switched });
       write(SESSION_KEY, switched);
-    }
-  }))
+    },
+  })),
 );
 
 /**

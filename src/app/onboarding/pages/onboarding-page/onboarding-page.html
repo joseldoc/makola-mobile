@@ -4,7 +4,9 @@
       <app-onboarding-slide
         class="page"
         [slide]="slide"
-        [position]="'progressDots.position' | transloco: { current: $index + 1, total: store.slides().length }"
+        [position]="
+          'progressDots.position' | transloco: { current: $index + 1, total: store.slides().length }
+        "
         [attr.aria-hidden]="$index !== store.index()"
       />
     }
@@ -13,7 +15,11 @@
   <div class="top">
     <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
     @if (!store.last()) {
-      <app-outlined-button [label]="'onboarding.skip' | transloco" [tone]="store.current().role" (clicked)="finish()" />
+      <app-outlined-button
+        [label]="'onboarding.skip' | transloco"
+        [tone]="store.current().role"
+        (clicked)="finish()"
+      />
     }
   </div>
 
@@ -26,6 +32,9 @@
         (indexChange)="goTo($event)"
       />
     </div>
-    <app-footer-action [label]="(store.last() ? 'onboarding.start' : 'onboarding.next') | transloco" (pressed)="next()" />
+    <app-footer-action
+      [label]="(store.last() ? 'onboarding.start' : 'onboarding.next') | transloco"
+      (pressed)="next()"
+    />
   </div>
 </div>

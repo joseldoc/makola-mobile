@@ -17,6 +17,6 @@ export const appConfig: ApplicationConfig = {
     // swap for the HTTP implementation, no screen changes.
     { provide: AuthApi, useClass: MockAuthApi },
     // 'md' mode: the @makola system follows Material (M2/M3), not Ionic's iOS style.
-    provideIonicAngular({ mode: 'md' })
-  ]
+    provideIonicAngular({ mode: 'md' }),
+  ],
 };

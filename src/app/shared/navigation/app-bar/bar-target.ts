@@ -25,7 +25,7 @@ import { IconComponent } from '../../foundation/icon/icon';
     </button>
   `,
   styleUrl: './bar-target.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BarTargetComponent {
   readonly icon = input.required<string>();

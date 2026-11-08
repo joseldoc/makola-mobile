@@ -154,7 +154,7 @@ Lire `docs/design-system.md` avant tout écran. Ce qui se casse le plus facileme
 3. **Formulaires** : Signal Forms seulement (`form()`, schéma de validation, directive `FormField` liée par `[formField]` — le nom `[field]` des premières versions n'existe pas en 22.1) ; jamais `FormsModule` ni `ReactiveFormsModule`.
 4. **Natif** : un service par capacité, garde `Capacitor.isNativePlatform()` et repli web, permissions demandées au moment de l'usage.
 5. **Tests** : Vitest pour les stores (dépendances simulées par `TestBed`, assertions sur les signaux), les composants présentationnels par l'événement émis, la page par sa décision ; Playwright pour les parcours web une fois installé (l'installer est une décision à annoncer).
-6. **Vérifier avant de rendre** : `npm run build` et `npm test` passent ; l'écran est regardé à **360 dp**, en clair et en sombre (écrans du soir), en mode `md` ; contrastes contrôlés.
+6. **Vérifier avant de rendre** : `npm run format:check`, `npm run build` et `npm test` passent (les trois avant une PR) ; l'écran est regardé à **360 dp**, en clair et en sombre (écrans du soir), en mode `md` ; contrastes contrôlés.
 7. **Rendre compte** : revue SOLID, revue des règles, points de doute, ce qui reste, écarts rencontrés.
 
 ## Écarts déjà relevés, à remonter avant d'en dépendre (6 novembre 2026)

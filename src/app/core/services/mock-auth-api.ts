@@ -115,7 +115,15 @@ export class MockAuthApi extends AuthApi {
     const existing = this.accounts()[this.key(identifier)];
     if (intent !== 'invitation') {
       // Sign-in: the account as it stands. Sign-up: a teacher account, profile to fill (ID-01).
-      return existing ?? this.update({ id: crypto.randomUUID(), identifier, activeRole: 'teacher', roles: { teacher: 'setup' } });
+      return (
+        existing ??
+        this.update({
+          id: crypto.randomUUID(),
+          identifier,
+          activeRole: 'teacher',
+          roles: { teacher: 'setup' },
+        })
+      );
     }
 
     // RI-20: every consent asked must be given — otherwise refused before anything is written.
@@ -125,28 +133,49 @@ export class MockAuthApi extends AuthApi {
       throw new AuthError('parental-consent-required');
     }
 
-    if (invitation) console.info(`[MockAuthApi] ${this.key(identifier)} linked to ${invitation.student}.`);
+    if (invitation)
+      console.info(`[MockAuthApi] ${this.key(identifier)} linked to ${invitation.student}.`);
     // Identity contract (invitation preview, `registrationRequired`): an account
     // is created for an unknown contact; an existing account receives the role —
     // a teacher keeps their role and profile (ID-02). Either way the parent space
     // goes to its step 2 and is shown: a parent joining a new invitation sets
     // their alerts for this child (US-PA01).
-    const account: Session = existing ?? { id: crypto.randomUUID(), identifier, activeRole: 'parent', roles: { parent: 'setup' } };
-    const opened = this.update({ ...account, activeRole: 'parent', roles: { ...account.roles, parent: 'setup' } });
+    const account: Session = existing ?? {
+      id: crypto.randomUUID(),
+      identifier,
+      activeRole: 'parent',
+      roles: { parent: 'setup' },
+    };
+    const opened = this.update({
+      ...account,
+      activeRole: 'parent',
+      roles: { ...account.roles, parent: 'setup' },
+    });
     // Only what was asked is recorded: a document given beyond it has no effect.
-    if (invitation && required.length) this.recordConsents(opened.id, invitation.studentId, required);
+    if (invitation && required.length)
+      this.recordConsents(opened.id, invitation.studentId, required);
     return opened;
   }
 
   async completeProfile(session: Session, profile: TeacherProfile): Promise<Session> {
     await this.network();
-    return this.update(withRole({ ...session, name: `${profile.lastName.toUpperCase()} ${profile.firstName}` }, 'teacher', 'ready'));
+    return this.update(
+      withRole(
+        { ...session, name: `${profile.lastName.toUpperCase()} ${profile.firstName}` },
+        'teacher',
+        'ready',
+      ),
+    );
   }
 
   async checkInvitation(code: string): Promise<Invitation> {
     await this.network();
     // The mock's own data (student id, teacher's country) stays here.
-    const { studentId: _studentId, teacherCountry: _teacherCountry, ...shown } = this.invitation(code);
+    const {
+      studentId: _studentId,
+      teacherCountry: _teacherCountry,
+      ...shown
+    } = this.invitation(code);
     return { code, ...shown };
   }
 
@@ -172,7 +201,8 @@ export class MockAuthApi extends AuthApi {
    * their number's; invited by email, they take the teacher's (RI-18).
    */
   private required(contact: Identifier, invitation: MockInvitation): ParentalConsent[] {
-    const parentCountry = contact.channel === 'phone' ? countryOfNumber(contact.value)?.code : undefined;
+    const parentCountry =
+      contact.channel === 'phone' ? countryOfNumber(contact.value)?.code : undefined;
     const asked = new Set([
       ...PARENTAL_CONSENTS_BY_COUNTRY[invitation.teacherCountry],
       ...(parentCountry ? PARENTAL_CONSENTS_BY_COUNTRY[parentCountry] : []),
@@ -195,7 +225,9 @@ export class MockAuthApi extends AuthApi {
   private recordConsents(accountId: string, studentId: string, consents: ParentalConsent[]): void {
     const all = this.consents();
     const given = all[accountId]?.[studentId] ?? [];
-    const merged = PARENTAL_CONSENTS.filter((consent) => given.includes(consent) || consents.includes(consent));
+    const merged = PARENTAL_CONSENTS.filter(
+      (consent) => given.includes(consent) || consents.includes(consent),
+    );
     this.save(CONSENTS_KEY, { ...all, [accountId]: { ...all[accountId], [studentId]: merged } });
   }
 

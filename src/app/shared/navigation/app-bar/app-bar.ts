@@ -27,7 +27,12 @@ export interface AppBarAction {
       [style.gap]="showBack() ? 'var(--mk-esp-1)' : 'var(--mk-esp-3)'"
     >
       @if (showBack()) {
-        <app-bar-target icon="chevron-back-outline" [tone]="tint()[1]" [label]="'common.back' | transloco" (clicked)="back.emit()" />
+        <app-bar-target
+          icon="chevron-back-outline"
+          [tone]="tint()[1]"
+          [label]="'common.back' | transloco"
+          (clicked)="back.emit()"
+        />
       }
       <ng-content select="[leading]" />
       <div class="titles">
@@ -37,12 +42,17 @@ export interface AppBarAction {
         }
       </div>
       @for (action of actions(); track $index) {
-        <app-bar-target [icon]="action.icon" [tone]="tint()[1]" [label]="action.label" (clicked)="actionSelected.emit($index)" />
+        <app-bar-target
+          [icon]="action.icon"
+          [tone]="tint()[1]"
+          [label]="action.label"
+          (clicked)="actionSelected.emit($index)"
+        />
       }
     </div>
   `,
   styleUrl: './app-bar.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppBarComponent {
   /** 22 sp, weight 400 — never bold. */

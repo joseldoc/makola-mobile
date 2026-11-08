@@ -9,26 +9,32 @@ const FEED: FeedItem[] = [
     meta: 'Contrôle n°2 · Maths · coef 2',
     // Same assignment, same class as the teacher's classroom screen: same class average.
     value: { kind: 'grade', value: 18, classAverage: 12.4 },
-    when: { kind: 'relative', message: { key: 'parentFeed.when.minutesAgo', params: { count: 2 } } }
+    when: {
+      kind: 'relative',
+      message: { key: 'parentFeed.when.minutesAgo', params: { count: 2 } },
+    },
   },
   {
     type: 'gradeBelowPass',
     meta: 'Interrogation ch. 5 · Maths',
     value: { kind: 'grade', value: 9, classAverage: 11.8 },
-    when: { kind: 'date', date: '2026-03-11' }
+    when: { kind: 'date', date: '2026-03-11' },
   },
   {
     type: 'testAnnounced',
     meta: 'Maths · ch. 6 Angles inscrits',
     value: { kind: 'date', date: '2026-03-26' },
-    when: { kind: 'relative', message: { key: 'parentFeed.when.yesterdayAt', params: { time: '17:41' } } }
+    when: {
+      kind: 'relative',
+      message: { key: 'parentFeed.when.yesterdayAt', params: { time: '17:41' } },
+    },
   },
   {
     type: 'reportCard',
     meta: { key: 'parentFeed.reportCardMeta', params: { term: 1, subject: 'Mathématiques' } },
     value: { kind: 'text', text: 'PDF' },
-    when: { kind: 'date', date: '2025-12-12' }
-  }
+    when: { kind: 'date', date: '2025-12-12' },
+  },
 ];
 
 interface ParentFeedState {
@@ -52,7 +58,7 @@ const initialState: ParentFeedState = {
   term: 2,
   feed: FEED,
   weeklySummary: true,
-  scrolled: false
+  scrolled: false,
 };
 
 export const ParentFeedStore = signalStore(
@@ -64,6 +70,6 @@ export const ParentFeedStore = signalStore(
     },
     setScrolled(scrolled: boolean): void {
       patchState(store, { scrolled });
-    }
-  }))
+    },
+  })),
 );

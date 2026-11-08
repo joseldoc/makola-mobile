@@ -20,12 +20,19 @@ import { OnboardingStore } from '../../state/onboarding.store';
  */
 @Component({
   selector: 'app-onboarding-page',
-  imports: [OnboardingSlideComponent, FooterActionComponent, OutlinedButtonComponent, ProgressDotsComponent, LanguageSwitchComponent, TranslocoPipe],
+  imports: [
+    OnboardingSlideComponent,
+    FooterActionComponent,
+    OutlinedButtonComponent,
+    ProgressDotsComponent,
+    LanguageSwitchComponent,
+    TranslocoPipe,
+  ],
   providers: [OnboardingStore],
   templateUrl: './onboarding-page.html',
   styleUrl: './onboarding-page.scss',
   host: { '(window:resize)': 'realign()' },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OnboardingPageComponent {
   protected readonly store = inject(OnboardingStore);
