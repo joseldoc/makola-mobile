@@ -4,7 +4,10 @@ import { FormField, form, submit } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { ParentAlerts } from '@core/models/auth.model';
+import { passMark, Scale } from '@core/models/grading';
+import { formatDecimal } from '@core/i18n/format';
 import { injectTranslate } from '@core/i18n/translate';
+import { LanguageStore } from '@core/store/language/language.store';
 import { AppBarComponent } from '@shared/navigation/app-bar/app-bar';
 import { SwitchComponent } from '@shared/forms/switch/switch';
 import { FooterActionComponent } from '@shared/actions/footer-action/footer-action';
@@ -27,6 +30,7 @@ import { ALERT_OPTIONS, AlertOption, DEFAULT_ALERTS } from '../../models/auth.mo
 export class AlertsPageComponent {
   protected readonly store = inject(AuthFlowStore);
   private readonly router = inject(Router);
+  private readonly language = inject(LanguageStore);
   private readonly t = injectTranslate();
 
   protected readonly options = ALERT_OPTIONS;
@@ -38,6 +42,16 @@ export class AlertsPageComponent {
   protected readonly firstName = computed(() => {
     const name = this.store.invitation()?.student ?? '';
     return name.split(' ').slice(1).join(' ') || this.t('auth.alerts.yourChild');
+  });
+
+  /**
+   * The pass mark of each scale, for the « below the pass mark » alert: read in
+   * `passMark`, never written in the text — 2.5 in English, 2,5 in French.
+   */
+  protected readonly detailParams = computed(() => {
+    const language = this.language.language();
+    const mark = (scale: Scale) => formatDecimal(passMark(scale), language);
+    return { mark20: mark(20), mark10: mark(10), mark5: mark(5) };
   });
 
   protected readonly estimate = computed(() => {

@@ -22,7 +22,9 @@
 #   assignment / devoir · test / contrôle (an announced test) · grade / note
 #   scale / barème · coefficient, "coef 2" / coefficient, « coef 2 »
 #   average / moyenne · class average / moyenne de la classe · rank / rang
-#   pass mark / moyenne de passage · term / trimestre · closing / clôture
+#   pass mark / moyenne de passage (half the scale) · closing / clôture
+#   term / trimestre (primary to upper secondary) · semester / semestre (university, RM-02)
+#   period / période — the word of the code, never shown: the screens name a term or a semester
 #   report card / bulletin · grade entry, enter / saisie, saisir · feed / fil
 #   alert / alerte · link / rattachement · invitation code / code d'invitation
 #   consent / consentement · space / espace · calling code / indicatif
@@ -37,9 +39,14 @@ T = {
     "continue": ("Continue", "Continuer"),
     "search": ("Search", "Rechercher"),
     "signOut": ("Sign out", "Se déconnecter"),
-    # Non-breaking space: the number never wraps away from its word ("Term / 2"),
-    # e.g. in an app-bar subtitle narrowed by a third action (ID-02).
+  },
+  # The period of a class follows its level (RM-02, `periodSplit`): every text that
+  # names it has one sentence per kind, `<key>.term` and `<key>.semester`.
+  # Non-breaking space: the number never wraps away from its word ("Term / 2"),
+  # e.g. in an app-bar subtitle narrowed by a third action (ID-02).
+  "period": {
     "term": ("Term\u00a0{{n}}", "Trimestre\u00a0{{n}}"),
+    "semester": ("Semester\u00a0{{n}}", "Semestre\u00a0{{n}}"),
   },
   "language": {"label": ("Language", "Langue")},
   # App-bar action towards the account's other space (ID-02), shown only when it holds both roles.
@@ -315,14 +322,19 @@ T = {
       "options": {
         "newGrade": {"label": ("New grade", "Nouvelle note"),
                      "detail": ("As soon as the teacher publishes a graded assignment.", "Dès que le professeur publie un devoir noté.")},
-        "gradeBelowPass": {"label": ("Grade below 10", "Note en dessous de 10"),
-                           # « moyenne de passage »: since RM-11 as amended, « la moyenne » alone
-                           # could be read as the class average — never a comparison (RM-11).
-                           "detail": ("Only when a grade falls below the pass mark.", "Seulement quand une note passe sous la moyenne de passage.")},
+        # « moyenne de passage »: since RM-11 as amended, « la moyenne » alone could be
+        # read as the class average — never a comparison (RM-11). The pass mark is half
+        # the scale (8 November 2026; 2.5 out of 5 deduced): the numbers come from
+        # `passMark`, never written here.
+        "gradeBelowPass": {"label": ("Grade below the pass mark", "Note sous la moyenne de passage"),
+                           "detail": ("Half the scale: {{mark20}} out of 20, {{mark10}} out of 10, {{mark5}} out of 5.",
+                                      "La moitié du barème : {{mark20}} sur 20, {{mark10}} sur 10, {{mark5}} sur 5.")},
         "testAnnounced": {"label": ("Test announced", "Contrôle annoncé"),
                           "detail": ("With the chapters to revise.", "Avec les chapitres à réviser.")},
         "reportCardAvailable": {"label": ("Report card available", "Bulletin disponible"),
-                                "detail": ("Once a term.", "Une fois par trimestre.")},
+                                # The alerts are set before the feed, whatever the child's level.
+                                "detail": ("Once a term, or once a semester at university.",
+                                           "Une fois par trimestre, ou par semestre à l'université.")},
         "weeklySummary": {"label": ("Weekly summary", "Résumé hebdomadaire"),
                           "detail": ("One SMS every Sunday at 19:00.", "Un SMS chaque dimanche à 19:00.")},
       },
@@ -376,13 +388,21 @@ T = {
     },
     "assignmentMeta": ("coef {{coefficient}} · /{{scale}} · {{date}}", "coef {{coefficient}} · /{{scale}} · {{date}}"),
     "classAverage": ("Class average", "Moyenne de la classe"),
-    "termAverage": ("Term average", "Moyenne du trimestre"),
+    "switchClassroom": ("Change class", "Changer de classe"),
+    "periodAverage": {
+      "term": ("Term average", "Moyenne du trimestre"),
+      "semester": ("Semester average", "Moyenne du semestre"),
+    },
     "noMatch": ("No student is named “{{query}}”. Try a last name alone or clear the search.",
                 "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul ou effacez la recherche."),
     # RM-11 / US-P09 as amended on 7 November 2026: what the report card shows, and the limit (no rank).
-    # Term and closing date are data of the class (RM-14, A-20), formatted by the page.
-    "reportCardNotice": ("The term {{term}} report card will be available once the term closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank.",
-                         "Le bulletin du trimestre {{term}} sera disponible après sa clôture, le {{date}}. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang."),
+    # Period and closing date are data of the class (RM-14, A-20), formatted by the page.
+    "reportCardNotice": {
+      "term": ("The term {{n}} report card will be available once the term closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank.",
+               "Le bulletin du trimestre {{n}} sera disponible après sa clôture, le {{date}}. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang."),
+      "semester": ("The semester {{n}} report card will be available once the semester closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank.",
+                   "Le bulletin du semestre {{n}} sera disponible après sa clôture, le {{date}}. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang."),
+    },
     "searchPlaceholder": ("Student name", "Nom d'élève"),
     "newAssignment": ("+ Assignment", "+ Devoir"),
   },
@@ -395,8 +415,12 @@ T = {
       # A refusal says what to do: the minimum (RM-13, 3 to 60 characters).
       "tooShort": ("Too short to be recognised in the list of assignments: 3\u00a0characters minimum.",
                    "Trop court pour être reconnaissable dans la liste des devoirs : 3\u00a0caractères minimum."),
-      "duplicate": ("“{{title}}” already exists in this class this term. Change the number or the date.",
-                    "« {{title}} » existe déjà dans cette classe ce trimestre. Changez le numéro ou la date."),
+      "duplicate": {
+        "term": ("“{{title}}” already exists in this class this term. Change the number or the date.",
+                 "« {{title}} » existe déjà dans cette classe ce trimestre. Changez le numéro ou la date."),
+        "semester": ("“{{title}}” already exists in this class this semester. Change the number or the date.",
+                     "« {{title}} » existe déjà dans cette classe ce semestre. Changez le numéro ou la date."),
+      },
       "tooLong": ("{{max}}\u00a0characters maximum: beyond that, the title is cut off on the report card.",
                   "{{max}}\u00a0caractères maximum : au-delà, l'intitulé est coupé sur le bulletin."),
       "long": ("Long for a report card: readable, but tight.", "Long pour un bulletin : il sera lisible, mais serré."),
@@ -416,10 +440,29 @@ T = {
     "fixField": ("Correct the flagged field", "Corrigez le champ signalé"),
     "date": {
       "today": ("Today · {{date}}", "Aujourd'hui · {{date}}"),
-      "inTerm": ("In term {{term}}, which runs until {{end}}.", "Dans le trimestre {{term}}, en cours jusqu'au {{end}}."),
-      "afterClose": ("After term {{term}} closes: this assignment will count for term {{next}}.",
-                     "Après la clôture du trimestre {{term}} : ce devoir comptera pour le trimestre {{next}}."),
-      "closed": ("Term {{term}} is closed. Choose a date after {{after}}.", "Le trimestre {{term}} est clôturé. Choisissez une date après le {{after}}."),
+      # RM-14, checked against the calendar of the class (`checkAssignmentDate`).
+      "inPeriod": {
+        "term": ("In term {{n}}, which runs until {{end}}.", "Dans le trimestre {{n}}, en cours jusqu'au {{end}}."),
+        "semester": ("In semester {{n}}, which runs until {{end}}.", "Dans le semestre {{n}}, en cours jusqu'au {{end}}."),
+      },
+      "afterClose": {
+        "term": ("After term {{n}} closes: this assignment will count for term {{next}}.",
+                 "Après la clôture du trimestre {{n}} : ce devoir comptera pour le trimestre {{next}}."),
+        "semester": ("After semester {{n}} closes: this assignment will count for semester {{next}}.",
+                     "Après la clôture du semestre {{n}} : ce devoir comptera pour le semestre {{next}}."),
+      },
+      # After the last period of the year (term 3, semester 2) no period of the class
+      # follows: the alert names none rather than a term 4 or a semester 3.
+      "afterLastClose": {
+        "term": ("After term {{n}} closes, the last of the school year: no term of this class follows. Check the date.",
+                 "Après la clôture du trimestre {{n}}, le dernier de l'année scolaire : aucun trimestre de cette classe ne suit. Vérifiez la date."),
+        "semester": ("After semester {{n}} closes, the last of the academic year: no semester of this class follows. Check the date.",
+                     "Après la clôture du semestre {{n}}, le dernier de l'année universitaire : aucun semestre de cette classe ne suit. Vérifiez la date."),
+      },
+      "closed": {
+        "term": ("Term {{n}} is closed. Choose a date after {{after}}.", "Le trimestre {{n}} est clôturé. Choisissez une date après le {{after}}."),
+        "semester": ("Semester {{n}} is closed. Choose a date after {{after}}.", "Le semestre {{n}} est clôturé. Choisissez une date après le {{after}}."),
+      },
     },
   },
   "gradeEntry": {
@@ -433,25 +476,29 @@ T = {
   "parentFeed": {
     "switchChild": ("Switch child", "Changer d'enfant"),
     "subjectAverage": ("Average · {{subject}}", "Moyenne · {{subject}}"),
-    # Term card: a fact of the term (its closing, RM-14), never a judgement of the child —
+    # Period card: a fact of the period (its closing, RM-14), never a judgement of the child —
     # « en progression » in green, with an arrow, rewarded the student (removed on 7 November 2026).
-    "termCloses": ("Closes on {{date}}", "Clôture le {{date}}"),
+    "periodCloses": ("Closes on {{date}}", "Clôture le {{date}}"),
     "weeklySummary": ("Weekly summary", "Résumé hebdomadaire"),
     "weeklySummaryOn": ("One SMS every Sunday at 19:00.", "Un SMS chaque dimanche à 19:00."),
     "weeklySummaryOff": ("Off — the feed stays available.", "Désactivé — le fil reste consultable."),
     # Twin buttons of the footer: « Toutes les notes » was cut at 360 dp (126 px for 134).
     "allGrades": ("Grades", "Notes"),
     "reportCards": ("Report cards", "Bulletins"),
-    "reportCardMeta": ("Term {{term}} · {{subject}}", "Trimestre {{term}} · {{subject}}"),
+    "reportCardMeta": {
+      "term": ("Term {{n}} · {{subject}}", "Trimestre {{n}} · {{subject}}"),
+      "semester": ("Semester {{n}} · {{subject}}", "Semestre {{n}} · {{subject}}"),
+    },
     # Non-breaking spaces: the label and its value wrap as one block, never "Class / average 12.4".
     "classAverage": ("Class\u00a0average\u00a0{{value}}", "Moyenne\u00a0de\u00a0la\u00a0classe\u00a0{{value}}"),
     # Subject card (RM-11, 7 November 2026): ordinary spaces on purpose. The card is half
     # the width at 360 dp; unbreakable, the French line (159 px) would widen it and squeeze
-    # the term card beside it. Here it wraps before the number, which never splits.
+    # the period card beside it. Here it wraps before the number, which never splits.
     "classSubjectAverage": ("Class average {{value}}", "Moyenne de la classe {{value}}"),
     "types": {
       "newGrade": ("New grade", "Nouvelle note"),
-      "gradeBelowPass": ("Grade below 10", "Note en dessous de 10"),
+      # The pass mark of the grade's own scale (`passMark`): 10 on /20, 5 on /10.
+      "gradeBelowPass": ("Grade below {{mark}}", "Note en dessous de {{mark}}"),
       "testAnnounced": ("Test announced", "Contrôle annoncé"),
       "reportCard": ("Report card available", "Bulletin disponible"),
     },

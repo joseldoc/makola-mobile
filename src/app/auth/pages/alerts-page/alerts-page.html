@@ -16,7 +16,7 @@
             {{ 'auth.alerts.options.' + option.key + '.label' | transloco }}
           </div>
           <div class="row-detail">
-            {{ 'auth.alerts.options.' + option.key + '.detail' | transloco }}
+            {{ 'auth.alerts.options.' + option.key + '.detail' | transloco: detailParams() }}
           </div>
         </div>
         <app-switch

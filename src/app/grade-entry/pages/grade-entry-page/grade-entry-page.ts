@@ -4,6 +4,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import { decimalSeparator } from '@core/i18n/format';
 import { injectTranslate } from '@core/i18n/translate';
+import { isBelowPassMark } from '@core/models/grading';
 import { LanguageStore } from '@core/store/language/language.store';
 import { AppBarComponent } from '@shared/navigation/app-bar/app-bar';
 import { ListRowComponent, ListRowValueTone } from '@shared/data/list-row/list-row';
@@ -12,8 +13,6 @@ import { KeypadComponent } from '@shared/forms/keypad/keypad';
 
 import { GradeCell, isCode } from '../../models/grade-entry.model';
 import { GradeEntryStore } from '../../state/grade-entry.store';
-
-const PASS_MARK = 10;
 
 /**
  * Grade entry screen container — dedicated keypad, active row, confirmation
@@ -59,10 +58,11 @@ export class GradeEntryPageComponent {
     return cell.replace('.', this.separator());
   }
 
+  /** Under the pass mark of the assignment's scale (half of it): `danger`. Codes are never a grade. */
   protected valueTone(cell: GradeCell): ListRowValueTone {
     if (!cell || isCode(cell)) return 'neutral';
     const n = parseFloat(cell);
-    return !Number.isNaN(n) && n < PASS_MARK ? 'danger' : 'neutral';
+    return !Number.isNaN(n) && isBelowPassMark(n, this.store.scale()) ? 'danger' : 'neutral';
   }
 
   protected back(): void {

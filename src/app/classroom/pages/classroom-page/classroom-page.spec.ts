@@ -6,6 +6,8 @@ import { Session } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
 
+import { AssignmentStore } from '../../../assignment/state/assignment.store';
+import { GradeEntryStore } from '../../../grade-entry/state/grade-entry.store';
 import { ClassroomStore } from '../../state/classroom.store';
 
 import { ClassroomPageComponent } from './classroom-page';
@@ -110,7 +112,7 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
   it('teacher only: no parent space action', async () => {
     await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready' } });
 
-    expect(labels()).toEqual(['Search', 'Sign out']);
+    expect(labels()).toEqual(['Change class', 'Search', 'Sign out']);
   });
 
   it('teacher only: sign out still signs out, the index no longer points elsewhere', async () => {
@@ -130,7 +132,7 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
       roles: { teacher: 'ready', parent: 'ready' },
     });
 
-    expect(labels()).toEqual(['Search', 'Parent space', 'Sign out']);
+    expect(labels()).toEqual(['Change class', 'Search', 'Parent space', 'Sign out']);
   });
 
   it('a press shows the parent space, kept for the next launch', async () => {
@@ -188,5 +190,121 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
 
     expect((fixture.nativeElement as HTMLElement).querySelector('app-search-field')).toBeTruthy();
     expect(navigateByUrl).not.toHaveBeenCalled();
+  });
+});
+
+describe('ClassroomPageComponent — a university class has semesters (RM-02, A-12)', () => {
+  let fixture: ComponentFixture<ClassroomPageComponent>;
+
+  const root = () => fixture.nativeElement as HTMLElement;
+  const clean = (text: string | null | undefined) => (text ?? '').replace(/\u00a0/g, ' ').trim();
+  const bar = (part: string) => clean(root().querySelector(`app-bar .${part}`)?.textContent);
+  const press = (label: string) =>
+    Array.from(root().querySelectorAll<HTMLButtonElement>('app-bar-target button'))
+      .find((b) => b.getAttribute('aria-label') === label)!
+      .click();
+  const store = () => TestBed.inject(ClassroomStore);
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    TestBed.inject(Router).navigate = vi.fn().mockResolvedValue(true);
+    fixture = TestBed.createComponent(ClassroomPageComponent);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('4ème B shows its term; « Change class » shows the university class and its semester', async () => {
+    expect(bar('title')).toBe('4ème B · Maths');
+    expect(bar('subtitle')).toBe('Lycée Chaminade · Term 2');
+
+    press('Change class');
+    await fixture.whenStable();
+
+    expect(bar('title')).toBe('L1 Mathématiques · Analyse');
+    expect(bar('subtitle')).toBe('Université du Djoué · Semester 2');
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(bar('subtitle')).toBe('Université du Djoué · Semestre 2');
+
+    press('Changer de classe');
+    await fixture.whenStable();
+    expect(bar('subtitle')).toBe('Lycée Chaminade · Trimestre 2');
+  });
+
+  it('students: a semester average, in danger under the pass mark of 20 only', async () => {
+    store().nextClassroom();
+    store().setView(1);
+    await fixture.whenStable();
+
+    const rows = Array.from(root().querySelectorAll('app-list-row'));
+    expect(clean(rows[0].querySelector('.secondary')?.textContent)).toBe('Semester average');
+    const tones = rows.map((r) => r.querySelector<HTMLElement>('.value')!.style.color);
+    // ELENGA 9.6 and MAKAYA 7.85 are under 10 out of 20.
+    expect(tones).toEqual([
+      'var(--mk-text)',
+      'var(--mk-refus)',
+      'var(--mk-text)',
+      'var(--mk-refus)',
+      'var(--mk-text)',
+    ]);
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(clean(root().querySelector('app-list-row .secondary')?.textContent)).toBe(
+      'Moyenne du semestre',
+    );
+  });
+
+  it('report card: the semester and its closing date, in both languages', async () => {
+    store().nextClassroom();
+    store().setView(2);
+    await fixture.whenStable();
+    const notice = () => clean(root().querySelector('.report-card')?.textContent);
+
+    expect(notice()).toContain(
+      'The semester 2 report card will be available once the semester closes, on 12 June 2026.',
+    );
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(notice()).toContain(
+      'Le bulletin du semestre 2 sera disponible après sa clôture, le 12 juin 2026.',
+    );
+  });
+
+  it('the new assignment sheet opens on the calendar of the class shown', async () => {
+    store().nextClassroom();
+    await fixture.whenStable();
+
+    press('Change class');
+    press('Change class');
+    // Back on L1 Mathématiques after a full turn.
+    expect(store().current().name).toBe('L1 Mathématiques');
+
+    root().querySelector<HTMLButtonElement>('app-footer-action button')!.click();
+    const sheet = TestBed.inject(AssignmentStore);
+    expect(sheet.classroom()).toBe('L1 Mathématiques');
+    expect(sheet.currentDate().message.key).toBe('assignment.date.inPeriod.semester');
+    sheet.nextDate();
+    expect(sheet.currentDate().message.key).toBe('assignment.date.afterLastClose.semester');
+    sheet.nextDate();
+    expect(sheet.currentDate().state).toBe('error');
+    sheet.setTitle('Partiel n°1');
+    expect(sheet.titleMessage()?.key).toBe('assignment.titleErrors.duplicate.semester');
+  });
+
+  it('a row opens the grade entry of that assignment, on its scale', async () => {
+    store().nextClassroom();
+    await fixture.whenStable();
+
+    root().querySelectorAll<HTMLElement>('app-list-row .list-row')[1].click();
+    const entry = TestBed.inject(GradeEntryStore);
+    expect(entry.assignment()).toBe('TD n°4');
+    expect(entry.classroom()).toBe('L1 Mathématiques');
+    expect(entry.scale()).toBe(10);
+    expect(entry.names()).toHaveLength(5);
+    expect(entry.entered()).toBe(0);
   });
 });

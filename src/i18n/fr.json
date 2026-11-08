@@ -5,8 +5,11 @@
     "clear": "Effacer",
     "continue": "Continuer",
     "search": "Rechercher",
-    "signOut": "Se déconnecter",
-    "term": "Trimestre {{n}}"
+    "signOut": "Se déconnecter"
+  },
+  "period": {
+    "term": "Trimestre {{n}}",
+    "semester": "Semestre {{n}}"
   },
   "language": {
     "label": "Langue"
@@ -236,8 +239,8 @@
           "detail": "Dès que le professeur publie un devoir noté."
         },
         "gradeBelowPass": {
-          "label": "Note en dessous de 10",
-          "detail": "Seulement quand une note passe sous la moyenne de passage."
+          "label": "Note sous la moyenne de passage",
+          "detail": "La moitié du barème : {{mark20}} sur 20, {{mark10}} sur 10, {{mark5}} sur 5."
         },
         "testAnnounced": {
           "label": "Contrôle annoncé",
@@ -245,7 +248,7 @@
         },
         "reportCardAvailable": {
           "label": "Bulletin disponible",
-          "detail": "Une fois par trimestre."
+          "detail": "Une fois par trimestre, ou par semestre à l'université."
         },
         "weeklySummary": {
           "label": "Résumé hebdomadaire",
@@ -306,9 +309,16 @@
     },
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
     "classAverage": "Moyenne de la classe",
-    "termAverage": "Moyenne du trimestre",
+    "switchClassroom": "Changer de classe",
+    "periodAverage": {
+      "term": "Moyenne du trimestre",
+      "semester": "Moyenne du semestre"
+    },
     "noMatch": "Aucun élève ne porte « {{query}} ». Essayez un nom de famille seul ou effacez la recherche.",
-    "reportCardNotice": "Le bulletin du trimestre {{term}} sera disponible après sa clôture, le {{date}}. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang.",
+    "reportCardNotice": {
+      "term": "Le bulletin du trimestre {{n}} sera disponible après sa clôture, le {{date}}. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang.",
+      "semester": "Le bulletin du semestre {{n}} sera disponible après sa clôture, le {{date}}. Il portera, par matière, la moyenne de la classe à côté de celle de l'élève, et aucun rang."
+    },
     "searchPlaceholder": "Nom d'élève",
     "newAssignment": "+ Devoir"
   },
@@ -319,7 +329,10 @@
     "titleErrors": {
       "empty": "Donnez un intitulé : c'est ce que verront les élèves et les parents.",
       "tooShort": "Trop court pour être reconnaissable dans la liste des devoirs : 3 caractères minimum.",
-      "duplicate": "« {{title}} » existe déjà dans cette classe ce trimestre. Changez le numéro ou la date.",
+      "duplicate": {
+        "term": "« {{title}} » existe déjà dans cette classe ce trimestre. Changez le numéro ou la date.",
+        "semester": "« {{title}} » existe déjà dans cette classe ce semestre. Changez le numéro ou la date."
+      },
       "tooLong": "{{max}} caractères maximum : au-delà, l'intitulé est coupé sur le bulletin.",
       "long": "Long pour un bulletin : il sera lisible, mais serré."
     },
@@ -337,9 +350,22 @@
     "fixField": "Corrigez le champ signalé",
     "date": {
       "today": "Aujourd'hui · {{date}}",
-      "inTerm": "Dans le trimestre {{term}}, en cours jusqu'au {{end}}.",
-      "afterClose": "Après la clôture du trimestre {{term}} : ce devoir comptera pour le trimestre {{next}}.",
-      "closed": "Le trimestre {{term}} est clôturé. Choisissez une date après le {{after}}."
+      "inPeriod": {
+        "term": "Dans le trimestre {{n}}, en cours jusqu'au {{end}}.",
+        "semester": "Dans le semestre {{n}}, en cours jusqu'au {{end}}."
+      },
+      "afterClose": {
+        "term": "Après la clôture du trimestre {{n}} : ce devoir comptera pour le trimestre {{next}}.",
+        "semester": "Après la clôture du semestre {{n}} : ce devoir comptera pour le semestre {{next}}."
+      },
+      "afterLastClose": {
+        "term": "Après la clôture du trimestre {{n}}, le dernier de l'année scolaire : aucun trimestre de cette classe ne suit. Vérifiez la date.",
+        "semester": "Après la clôture du semestre {{n}}, le dernier de l'année universitaire : aucun semestre de cette classe ne suit. Vérifiez la date."
+      },
+      "closed": {
+        "term": "Le trimestre {{n}} est clôturé. Choisissez une date après le {{after}}.",
+        "semester": "Le semestre {{n}} est clôturé. Choisissez une date après le {{after}}."
+      }
     }
   },
   "gradeEntry": {
@@ -351,18 +377,21 @@
   "parentFeed": {
     "switchChild": "Changer d'enfant",
     "subjectAverage": "Moyenne · {{subject}}",
-    "termCloses": "Clôture le {{date}}",
+    "periodCloses": "Clôture le {{date}}",
     "weeklySummary": "Résumé hebdomadaire",
     "weeklySummaryOn": "Un SMS chaque dimanche à 19:00.",
     "weeklySummaryOff": "Désactivé — le fil reste consultable.",
     "allGrades": "Notes",
     "reportCards": "Bulletins",
-    "reportCardMeta": "Trimestre {{term}} · {{subject}}",
+    "reportCardMeta": {
+      "term": "Trimestre {{n}} · {{subject}}",
+      "semester": "Semestre {{n}} · {{subject}}"
+    },
     "classAverage": "Moyenne de la classe {{value}}",
     "classSubjectAverage": "Moyenne de la classe {{value}}",
     "types": {
       "newGrade": "Nouvelle note",
-      "gradeBelowPass": "Note en dessous de 10",
+      "gradeBelowPass": "Note en dessous de {{mark}}",
       "testAnnounced": "Contrôle annoncé",
       "reportCard": "Bulletin disponible"
     },

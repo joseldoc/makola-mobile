@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'makola-mobile',
+  appId: 'com.makola.app',
+  appName: 'Makola',
   webDir: 'dist/makola-mobile/browser',
   plugins: {
     SplashScreen: {

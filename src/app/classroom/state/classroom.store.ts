@@ -1,43 +1,84 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
-import { Assignment, Student } from '../models/classroom.model';
+import { periodOf } from '@core/models/period';
+
+import { Classroom } from '../models/classroom.model';
 
 /**
- * Sample data taken from the @makola UI kit (ui_kits/app/ClasseScreen.jsx),
- * waiting for a real API — this repository has no backend yet. Names and class
- * labels are Congolese school data: they stay as entered, whatever the language.
+ * Sample data waiting for a real API — this repository has no backend yet.
+ * Names and class labels are school data: they stay as entered, whatever the
+ * language.
+ *
+ * - 4ème B is the class of the @makola UI kit (ui_kits/app/ClasseScreen.jsx),
+ *   upper secondary, term 2.
+ * - L1 Mathématiques is a university class (RM-02, A-12 decided on 8 November
+ *   2026), in semester 2: on 19 March, the date of the samples, the first
+ *   semester of an October-to-June year is closed. The university is fictional.
  */
-const ASSIGNMENTS: Assignment[] = [
-  { name: 'Contrôle n°2', coefficient: 2, scale: 20, date: '2026-03-12', classAverage: 12.4 },
+const CLASSROOMS: Classroom[] = [
   {
-    name: 'Interrogation ch. 5',
-    coefficient: 1,
-    scale: 20,
-    date: '2026-03-06',
-    classAverage: 11.8,
+    id: '4b-maths',
+    name: '4ème B',
+    subject: 'Maths',
+    school: 'Lycée Chaminade',
+    level: 'high',
+    period: periodOf('high', 2),
+    periodCloses: '2026-03-27',
+    previousPeriodCloses: '2026-01-06',
+    assignments: [
+      { name: 'Contrôle n°2', coefficient: 2, scale: 20, date: '2026-03-12', classAverage: 12.4 },
+      {
+        name: 'Interrogation ch. 5',
+        coefficient: 1,
+        scale: 20,
+        date: '2026-03-06',
+        classAverage: 11.8,
+      },
+      {
+        name: 'Devoir maison n°1',
+        coefficient: 1,
+        scale: 20,
+        date: '2026-02-28',
+        classAverage: 14.1,
+      },
+    ],
+    students: [
+      { name: 'ILUNGA Marie', average: 16.75 },
+      { name: 'MOUKALA Chris', average: 9.2 },
+      { name: 'NGOMA Divine', average: 13.5 },
+      { name: 'OBAMBI Junior', average: 11.05 },
+      { name: 'SAMBA Rose', average: 15.4 },
+      { name: 'TATI Gloire', average: 8.75 },
+    ],
   },
-  { name: 'Devoir maison n°1', coefficient: 1, scale: 20, date: '2026-02-28', classAverage: 14.1 },
-];
-
-const STUDENTS: Student[] = [
-  { name: 'ILUNGA Marie', average: 16.75 },
-  { name: 'MOUKALA Chris', average: 9.2, belowPass: true },
-  { name: 'NGOMA Divine', average: 13.5 },
-  { name: 'OBAMBI Junior', average: 11.05 },
-  { name: 'SAMBA Rose', average: 15.4 },
-  { name: 'TATI Gloire', average: 8.75, belowPass: true },
+  {
+    id: 'l1-maths',
+    name: 'L1 Mathématiques',
+    subject: 'Analyse',
+    school: 'Université du Djoué',
+    level: 'university',
+    period: periodOf('university', 2),
+    periodCloses: '2026-06-12',
+    previousPeriodCloses: '2026-02-06',
+    assignments: [
+      { name: 'Partiel n°1', coefficient: 3, scale: 20, date: '2026-03-10', classAverage: 10.9 },
+      { name: 'TD n°4', coefficient: 1, scale: 10, date: '2026-03-04', classAverage: 6.2 },
+    ],
+    students: [
+      { name: 'BANZOUZI Grâce', average: 13.2 },
+      { name: 'ELENGA Fortuné', average: 9.6 },
+      { name: 'KIMBEMBE Sarah', average: 11.4 },
+      { name: 'MAKAYA Prince', average: 7.85 },
+      { name: 'NKOUKA Ornella', average: 14.9 },
+    ],
+  },
 ];
 
 interface ClassroomState {
-  classroom: string;
-  subject: string;
-  school: string;
-  term: number;
-  /** Closing date of the term in this subject (RM-14, A-20), ISO 8601. */
-  termCloses: string;
-  assignments: Assignment[];
-  students: Student[];
+  classrooms: Classroom[];
+  /** Id of the class shown. */
+  selected: string;
   view: number;
   search: string;
   scrolled: boolean;
@@ -45,13 +86,8 @@ interface ClassroomState {
 }
 
 const initialState: ClassroomState = {
-  classroom: '4ème B',
-  subject: 'Maths',
-  school: 'Lycée Chaminade',
-  term: 2,
-  termCloses: '2026-03-27',
-  assignments: ASSIGNMENTS,
-  students: STUDENTS,
+  classrooms: CLASSROOMS,
+  selected: CLASSROOMS[0].id,
   view: 0,
   search: '',
   scrolled: false,
@@ -61,13 +97,25 @@ const initialState: ClassroomState = {
 export const ClassroomStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ students, search }) => ({
+  withComputed(({ classrooms, selected }) => ({
+    /** The class shown — its period, calendar, assignments and students. */
+    current: computed(() => classrooms().find((c) => c.id === selected()) ?? classrooms()[0]),
+    /** « Change class » is offered only when there is another one to show. */
+    hasOtherClassrooms: computed(() => classrooms().length > 1),
+  })),
+  withComputed(({ current, search }) => ({
     filteredStudents: computed(() => {
       const q = search().toLowerCase();
-      return students().filter((s) => s.name.toLowerCase().includes(q));
+      return current().students.filter((s) => s.name.toLowerCase().includes(q));
     }),
   })),
   withMethods((store) => ({
+    /** Shows the teacher's next class, in list order; the search belonged to the previous one. */
+    nextClassroom(): void {
+      const list = store.classrooms();
+      const index = list.findIndex((c) => c.id === store.selected());
+      patchState(store, { selected: list[(index + 1) % list.length].id, search: '' });
+    },
     setView(view: number): void {
       patchState(store, { view });
     },

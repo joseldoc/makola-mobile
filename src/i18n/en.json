@@ -5,8 +5,11 @@
     "clear": "Clear",
     "continue": "Continue",
     "search": "Search",
-    "signOut": "Sign out",
-    "term": "Term {{n}}"
+    "signOut": "Sign out"
+  },
+  "period": {
+    "term": "Term {{n}}",
+    "semester": "Semester {{n}}"
   },
   "language": {
     "label": "Language"
@@ -236,8 +239,8 @@
           "detail": "As soon as the teacher publishes a graded assignment."
         },
         "gradeBelowPass": {
-          "label": "Grade below 10",
-          "detail": "Only when a grade falls below the pass mark."
+          "label": "Grade below the pass mark",
+          "detail": "Half the scale: {{mark20}} out of 20, {{mark10}} out of 10, {{mark5}} out of 5."
         },
         "testAnnounced": {
           "label": "Test announced",
@@ -245,7 +248,7 @@
         },
         "reportCardAvailable": {
           "label": "Report card available",
-          "detail": "Once a term."
+          "detail": "Once a term, or once a semester at university."
         },
         "weeklySummary": {
           "label": "Weekly summary",
@@ -306,9 +309,16 @@
     },
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
     "classAverage": "Class average",
-    "termAverage": "Term average",
+    "switchClassroom": "Change class",
+    "periodAverage": {
+      "term": "Term average",
+      "semester": "Semester average"
+    },
     "noMatch": "No student is named “{{query}}”. Try a last name alone or clear the search.",
-    "reportCardNotice": "The term {{term}} report card will be available once the term closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank.",
+    "reportCardNotice": {
+      "term": "The term {{n}} report card will be available once the term closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank.",
+      "semester": "The semester {{n}} report card will be available once the semester closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank."
+    },
     "searchPlaceholder": "Student name",
     "newAssignment": "+ Assignment"
   },
@@ -319,7 +329,10 @@
     "titleErrors": {
       "empty": "Give it a title: it is what students and parents will see.",
       "tooShort": "Too short to be recognised in the list of assignments: 3 characters minimum.",
-      "duplicate": "“{{title}}” already exists in this class this term. Change the number or the date.",
+      "duplicate": {
+        "term": "“{{title}}” already exists in this class this term. Change the number or the date.",
+        "semester": "“{{title}}” already exists in this class this semester. Change the number or the date."
+      },
       "tooLong": "{{max}} characters maximum: beyond that, the title is cut off on the report card.",
       "long": "Long for a report card: readable, but tight."
     },
@@ -337,9 +350,22 @@
     "fixField": "Correct the flagged field",
     "date": {
       "today": "Today · {{date}}",
-      "inTerm": "In term {{term}}, which runs until {{end}}.",
-      "afterClose": "After term {{term}} closes: this assignment will count for term {{next}}.",
-      "closed": "Term {{term}} is closed. Choose a date after {{after}}."
+      "inPeriod": {
+        "term": "In term {{n}}, which runs until {{end}}.",
+        "semester": "In semester {{n}}, which runs until {{end}}."
+      },
+      "afterClose": {
+        "term": "After term {{n}} closes: this assignment will count for term {{next}}.",
+        "semester": "After semester {{n}} closes: this assignment will count for semester {{next}}."
+      },
+      "afterLastClose": {
+        "term": "After term {{n}} closes, the last of the school year: no term of this class follows. Check the date.",
+        "semester": "After semester {{n}} closes, the last of the academic year: no semester of this class follows. Check the date."
+      },
+      "closed": {
+        "term": "Term {{n}} is closed. Choose a date after {{after}}.",
+        "semester": "Semester {{n}} is closed. Choose a date after {{after}}."
+      }
     }
   },
   "gradeEntry": {
@@ -351,18 +377,21 @@
   "parentFeed": {
     "switchChild": "Switch child",
     "subjectAverage": "Average · {{subject}}",
-    "termCloses": "Closes on {{date}}",
+    "periodCloses": "Closes on {{date}}",
     "weeklySummary": "Weekly summary",
     "weeklySummaryOn": "One SMS every Sunday at 19:00.",
     "weeklySummaryOff": "Off — the feed stays available.",
     "allGrades": "Grades",
     "reportCards": "Report cards",
-    "reportCardMeta": "Term {{term}} · {{subject}}",
+    "reportCardMeta": {
+      "term": "Term {{n}} · {{subject}}",
+      "semester": "Semester {{n}} · {{subject}}"
+    },
     "classAverage": "Class average {{value}}",
     "classSubjectAverage": "Class average {{value}}",
     "types": {
       "newGrade": "New grade",
-      "gradeBelowPass": "Grade below 10",
+      "gradeBelowPass": "Grade below {{mark}}",
       "testAnnounced": "Test announced",
       "reportCard": "Report card available"
     },

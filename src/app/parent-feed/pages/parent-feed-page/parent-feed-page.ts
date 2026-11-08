@@ -6,6 +6,8 @@ import { formatDate, formatDecimal } from '@core/i18n/format';
 import { Language } from '@core/i18n/language';
 import { injectTranslate } from '@core/i18n/translate';
 import { Role } from '@core/models/auth.model';
+import { isBelowPassMark, passMark } from '@core/models/grading';
+import { periodKey } from '@core/models/period';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
 import { AppBarAction, AppBarComponent } from '@shared/navigation/app-bar/app-bar';
@@ -88,13 +90,19 @@ export class ParentFeedPageComponent {
     return value === undefined ? null : formatDecimal(value, this.language.language());
   });
 
+  /** « Term 2 » or « Semester 2 »: the period of the child's class (RM-02). */
+  protected readonly periodLabel = computed(() => {
+    const { kind, n } = this.store.period();
+    return this.t(periodKey('period', kind), { n });
+  });
+
   /**
-   * The term card states when the term closes — no trend, no arrow, no colour:
+   * The period card states when the period closes — no trend, no arrow, no colour:
    * a colour never rewards a student (design system).
    */
-  protected readonly termCloses = computed(() =>
-    this.t('parentFeed.termCloses', {
-      date: formatDate(this.store.termCloses(), this.language.language()),
+  protected readonly periodCloses = computed(() =>
+    this.t('parentFeed.periodCloses', {
+      date: formatDate(this.store.periodCloses(), this.language.language()),
     }),
   );
 
@@ -102,14 +110,15 @@ export class ParentFeedPageComponent {
   protected readonly rows = computed<FeedRow[]>(() => {
     const language = this.language.language();
     return this.store.feed().map((item) => ({
-      title: this.t(`parentFeed.types.${item.type}`),
+      title: this.formatTitle(item, language),
       meta: this.formatMeta(item, language),
       value: this.formatValue(item, language),
       when:
         item.when.kind === 'date'
           ? formatDate(item.when.date, language)
           : this.t(item.when.message.key, item.when.message.params),
-      belowPass: item.type === 'gradeBelowPass',
+      // The pass mark of the grade's own scale, never the class average (RM-11).
+      belowPass: item.value.kind === 'grade' && isBelowPassMark(item.value.value, item.value.scale),
     }));
   });
 
@@ -137,6 +146,13 @@ export class ParentFeedPageComponent {
 
   protected switchChild(): void {
     // Will navigate to the child picker once that entry point is built.
+  }
+
+  /** « Grade below 10 » on /20, « Grade below 5 » on /10: the pass mark of its scale. */
+  private formatTitle(item: FeedItem, language: Language): string {
+    const v = item.value;
+    const mark = v.kind === 'grade' ? formatDecimal(passMark(v.scale), language) : '';
+    return this.t(`parentFeed.types.${item.type}`, { mark });
   }
 
   /**

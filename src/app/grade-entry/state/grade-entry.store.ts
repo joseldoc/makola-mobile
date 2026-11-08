@@ -1,7 +1,15 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
-import { ABSENT, GradeCell, isCode, UNGRADED } from '../models/grade-entry.model';
+import { Scale } from '@core/models/grading';
+
+import {
+  ABSENT,
+  GradeCell,
+  GradeEntryContext,
+  isCode,
+  UNGRADED,
+} from '../models/grade-entry.model';
 
 /** Sample students from ui_kits/app/SaisieScreen.jsx (the classroom screen shares the same class). */
 const NAMES = [
@@ -18,7 +26,7 @@ const FLASH_MS = 420;
 interface GradeEntryState {
   assignment: string;
   classroom: string;
-  scale: number;
+  scale: Scale;
   coefficient: number;
   names: string[];
   grades: GradeCell[];
@@ -54,6 +62,20 @@ export const GradeEntryStore = signalStore(
     const numericGrade = () => (isCode(activeGrade()) ? '' : activeGrade());
 
     return {
+      /**
+       * Opens the entry of an assignment. The same assignment of the same class
+       * keeps what was typed; another one starts empty, on its first student.
+       */
+      open(context: GradeEntryContext): void {
+        if (context.classroom === store.classroom() && context.assignment === store.assignment())
+          return;
+        patchState(store, {
+          ...context,
+          grades: context.names.map(() => ''),
+          activeIndex: 0,
+          flashIndex: null,
+        });
+      },
       setActive(index: number): void {
         patchState(store, { activeIndex: index });
       },

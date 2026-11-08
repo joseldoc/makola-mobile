@@ -1,3 +1,5 @@
+import { Scale } from '@core/models/grading';
+
 /**
  * A grade cell holds one of three states (RM-15): a value, "absent" or
  * "not graded" — the last two are codes, never a zero. Values are stored with a
@@ -12,4 +14,14 @@ export const UNGRADED: GradeCode = 'ungraded';
 
 export function isCode(cell: GradeCell): cell is GradeCode {
   return cell === ABSENT || cell === UNGRADED;
+}
+
+/** The assignment whose grades are entered, and its class — given by the screen that opens entry. */
+export interface GradeEntryContext {
+  /** Class and assignment labels, student names: school data, never translated. */
+  classroom: string;
+  assignment: string;
+  scale: Scale;
+  coefficient: number;
+  names: string[];
 }
