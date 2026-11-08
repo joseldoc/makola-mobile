@@ -18,6 +18,16 @@
     "teacher": "Teacher space",
     "parent": "Parent space"
   },
+  "account": {
+    "open": "Your account",
+    "spaceDetail": {
+      "teacher": "Your classes and grade entry.",
+      "parent": "The grades of the children you follow."
+    },
+    "join": "Join with an invitation code",
+    "joinDetail": "The code a teacher sent you, to follow a child in their subject.",
+    "signOutAll": "Closes both spaces on this phone."
+  },
   "network": {
     "offline": "Offline · you can keep entering grades; they will be sent when the network is back.",
     "offlinePending": "Offline · entries waiting to be sent: {{count}}. You can keep entering grades.",
@@ -92,6 +102,7 @@
       "invitation-declined": "No link was made. Ask the teacher to check the student concerned, then enter the new code.",
       "parental-consent-required": "A consent required for this invitation is missing. Go back, continue again and tick each box shown.",
       "consents-declined": "No link was made: without the consents requested, your child cannot be followed in @makola. If you change your mind, enter the code again before it expires.",
+      "other-account": "This phone is signed in with {{account}}: the invitation is accepted for that contact. If it was sent to {{identifier}}, sign out, then enter the code again from the welcome screen.",
       "unexpected": "The server did not answer. Try again in a moment."
     },
     "phone": {
@@ -274,6 +285,7 @@
           "intro": "Your city is enough: you will never be asked for your exact address."
         }
       },
+      "keepsParentSpace": "Your account already has a parent space: it stays as it is. Once your profile is done, you will go from one space to the other from your account, at the top of the screen.",
       "lastName": "Last name",
       "firstName": "First name",
       "previewLabel": "On class lists",

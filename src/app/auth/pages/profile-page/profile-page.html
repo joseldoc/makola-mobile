@@ -13,6 +13,9 @@
 
     @switch (step()) {
       @case (0) {
+        @if (keepsParentSpace()) {
+          <p class="intro">{{ 'auth.profile.keepsParentSpace' | transloco }}</p>
+        }
         <app-text-field
           [formField]="form.lastName"
           [label]="'auth.profile.lastName' | transloco"

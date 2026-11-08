@@ -39,6 +39,9 @@ const STEPS = ['identity', 'subjects', 'city'] as const;
  * identity, subjects, city. The country comes from the phone number's calling
  * code and is never asked again — except for an email sign-up.
  * A single signal form; each step only validates its own fields.
+ *
+ * A parent who signs up as a teacher with their number keeps their account
+ * (A-21): the first step says, once, that the parent space stays.
  */
 @Component({
   selector: 'app-profile-page',
@@ -69,6 +72,8 @@ export class ProfilePageComponent {
   protected readonly stepKey = computed(() => `auth.profile.steps.${STEPS[this.step()]}`);
   protected readonly last = computed(() => this.step() === STEPS.length - 1);
   protected readonly scrolled = signal(false);
+  /** The account already holds the parent role: the teacher role is added to it (A-21). */
+  protected readonly keepsParentSpace = computed(() => this.session.hasRole('parent'));
 
   /** Account phone number → country. Absent for an email sign-up. */
   private readonly identifier = computed(() => this.session.session()?.identifier);

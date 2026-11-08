@@ -138,12 +138,69 @@ describe('MockAuthApi — several roles on one account (ID-02)', () => {
     expect(again.roles).toEqual({ parent: 'setup' });
   });
 
-  it('a parent cannot sign up as a teacher with the same number: refused, as the contract does', async () => {
-    await call(api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }));
+  it('A-21: a parent who signs up as a teacher keeps the account and receives the teacher role, profile to fill', async () => {
+    const parent = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', { invitation, consents: [] }),
+    );
+    const ready = await call(
+      api.saveAlerts(parent, {
+        newGrade: true,
+        gradeBelowPass: false,
+        testAnnounced: true,
+        reportCardAvailable: true,
+        weeklySummary: false,
+      }),
+    );
+
+    await expect(call(api.requestCode(number, 'sign-up'))).resolves.toEqual({ resendIn: 45 });
+    const signedUp = await call(api.verifyCode(number, DEMO_CODE, 'sign-up'));
+
+    expect(signedUp.id).toBe(ready.id);
+    expect(signedUp.roles).toEqual({ parent: 'ready', teacher: 'setup' });
+    expect(signedUp.activeRole).toBe('teacher');
+    expect(accounts()[`phone:${number.value}`]).toEqual(signedUp);
+
+    // The profile then makes both spaces ready.
+    const active = await call(
+      api.completeProfile(signedUp, {
+        lastName: 'Mbemba',
+        firstName: 'Aline',
+        subjects: ['maths'],
+        levels: ['primary'],
+        city: 'Brazzaville',
+        country: 'CG',
+      }),
+    );
+    expect(active.roles).toEqual({ parent: 'ready', teacher: 'ready' });
+    expect(active.name).toBe('MBEMBA Aline');
+  });
+
+  it('A-21: a teacher who signs up again is refused — sign in instead; nothing is written', async () => {
+    await teacherAccount();
+    const before = accounts();
 
     await expect(call(api.requestCode(number, 'sign-up'))).rejects.toEqual(
       new AuthError('existing-account'),
     );
+    await expect(call(api.verifyCode(number, DEMO_CODE, 'sign-up'))).rejects.toEqual(
+      new AuthError('existing-account'),
+    );
+    expect(accounts()).toEqual(before);
+  });
+
+  it('A-23: accepting while signed in is the same call — the account is the contact’s, its id kept', async () => {
+    const teacher = await teacherAccount();
+    const kenya = await call(api.checkInvitation('730615'));
+
+    const opened = await call(
+      api.verifyCode(number, DEMO_CODE, 'invitation', {
+        invitation: kenya,
+        consents: ['CHILD_DATA', 'CROSS_BORDER_TRANSFER'],
+      }),
+    );
+
+    expect(opened.id).toBe(teacher.id);
+    expect(opened.roles).toEqual({ teacher: 'ready', parent: 'setup' });
   });
 
   it('converts the accounts saved before ID-02 (one role)', async () => {

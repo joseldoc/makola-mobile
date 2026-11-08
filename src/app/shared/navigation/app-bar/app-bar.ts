@@ -14,6 +14,11 @@ export interface AppBarAction {
  * M3 app bar, 64 dp, on the role tint. `scrolled` is required as soon as the
  * content scrolls: without it the bar blends into the list.
  * Source: @makola Design System, components/navigation/AppBar.jsx.
+ *
+ * Deviation from the React source (8 November 2026): a `[trailing]` slot after
+ * the actions, for the account button of each space's home (`app-account-button`).
+ * It sits where the account sits in Android apps, apart from the `[leading]`
+ * avatar, which names what the screen is about (the child, on the parent feed).
  */
 @Component({
   selector: 'app-bar',
@@ -49,6 +54,7 @@ export interface AppBarAction {
           (clicked)="actionSelected.emit($index)"
         />
       }
+      <ng-content select="[trailing]" />
     </div>
   `,
   styleUrl: './app-bar.scss',

@@ -1,3 +1,5 @@
+// Moved from auth/components/country-sheet (8 November 2026): same values, but
+// for the handle's target, 48 dp (§7.6) instead of the design system's 44.
 :host {
   position: fixed;
   inset: 0;
@@ -7,6 +9,7 @@
   justify-content: flex-end;
 }
 
+// The only transparency of the system: the scrim of a modal sheet.
 .scrim {
   position: absolute;
   inset: 0;
@@ -24,12 +27,17 @@
   border-top-right-radius: var(--mk-rayon-touche);
   padding: 0 calc(var(--mk-esp-4) + var(--mk-safe-right))
     calc(var(--mk-esp-3) + var(--mk-safe-bottom)) calc(var(--mk-esp-4) + var(--mk-safe-left));
+
+  // Focused on opening for screen readers: the sheet itself carries no ring.
+  &:focus {
+    outline: none;
+  }
 }
 
 .handle {
   align-self: center;
   width: 96px;
-  height: var(--mk-cible);
+  height: var(--mk-cible-barre);
   border: 0;
   background: transparent;
   display: flex;
@@ -51,12 +59,14 @@
 }
 
 .text {
-  margin: var(--mk-esp-1) 0 var(--mk-esp-2);
+  margin: var(--mk-esp-1) 0 0;
   font: var(--mk-secondaire);
   color: var(--mk-text-secondaire);
 }
 
-.list {
+.body {
+  margin-top: var(--mk-esp-2);
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior-y: contain;
 }

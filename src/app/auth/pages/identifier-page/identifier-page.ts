@@ -13,9 +13,15 @@ import { Router } from '@angular/router';
 import { FormField, form, submit, validate } from '@angular/forms/signals';
 import { TranslocoPipe } from '@jsverse/transloco';
 
-import { Channel, Intent } from '@core/models/auth.model';
+import { Channel, Identifier, Intent } from '@core/models/auth.model';
 import { emailIdentifier, phoneIdentifier } from '@core/models/identifier';
-import { COUNTRIES, CountryCode, DEFAULT_COUNTRY, countryByCode } from '@core/models/country';
+import {
+  COUNTRIES,
+  CountryCode,
+  DEFAULT_COUNTRY,
+  countryByCode,
+  countryOfNumber,
+} from '@core/models/country';
 import { injectTranslate } from '@core/i18n/translate';
 import { TextFieldComponent } from '@shared/forms/text-field/text-field';
 import { KeypadComponent } from '@shared/forms/keypad/keypad';
@@ -43,6 +49,9 @@ const NEXT_ROUTES: Record<ContactNext, string> = {
  * "Identifier" step container (@makola mock-up 24c). Phone by default, typed on
  * the dedicated keypad; email stays possible (US-P01) with the system keyboard.
  * Signal form; the server's refusal shows under the field.
+ *
+ * A signed-in account joining an invitation (A-23) finds its own contact
+ * already entered: the acceptance is made for the account of that contact.
  */
 @Component({
   selector: 'app-identifier-page',
@@ -153,16 +162,40 @@ export class IdentifierPageComponent implements OnInit {
     );
   });
 
+  /**
+   * The value last sent. A refusal decided on the spot (another contact while
+   * signed in, A-23) comes before the effect of the last keystroke: that effect
+   * must not wipe it — only a new input does.
+   */
+  private submitted: string | null = null;
+
   constructor() {
-    // Any new input clears the server's previous refusal.
+    // Any new input clears the previous refusal.
     effect(() => {
-      this.model();
-      untracked(() => this.store.clearError());
+      const { value } = this.model();
+      untracked(() => {
+        if (value !== this.submitted) this.store.clearError();
+      });
     });
   }
 
   ngOnInit(): void {
     this.store.start(this.intent());
+    const own = this.intent() === 'invitation' ? this.store.joiningContact() : null;
+    if (own) this.prefill(own);
+  }
+
+  /** The account's own contact, as if typed: the parent only confirms it. */
+  private prefill(identifier: Identifier): void {
+    if (identifier.channel === 'email') {
+      this.channel.set('email');
+      this.model.set({ value: identifier.value });
+      return;
+    }
+    const country = countryOfNumber(identifier.value);
+    if (!country) return;
+    this.countryCode.set(country.code);
+    this.model.set({ value: identifier.value.slice(1 + country.callingCode.length) });
   }
 
   protected digit(d: string): void {
@@ -213,6 +246,7 @@ export class IdentifierPageComponent implements OnInit {
     event?.preventDefault();
     void submit(this.form, async () => {
       const value = this.model().value;
+      this.submitted = value;
       const identifier =
         this.channel() === 'phone'
           ? phoneIdentifier(this.country(), value)

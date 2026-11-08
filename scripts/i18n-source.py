@@ -49,10 +49,27 @@ T = {
     "semester": ("Semester\u00a0{{n}}", "Semestre\u00a0{{n}}"),
   },
   "language": {"label": ("Language", "Langue")},
-  # App-bar action towards the account's other space (ID-02), shown only when it holds both roles.
+  # Row of the account sheet towards the account's other space (RM-19, ID-02), shown
+  # only when it holds both roles — an app-bar action until 8 November 2026.
   "spaces": {
     "teacher": ("Teacher space", "Espace professeur"),
     "parent": ("Parent space", "Espace parent"),
+  },
+  # Account sheet (8 November 2026), opened by the account button of each space's home:
+  # what concerns the account, not the space shown.
+  "account": {
+    "open": ("Your account", "Votre compte"),
+    "spaceDetail": {
+      "teacher": ("Your classes and grade entry.", "Vos classes et la saisie des notes."),
+      "parent": ("The grades of the children you follow.", "Les notes des enfants que vous suivez."),
+    },
+    # A-23: in both spaces — a parent invited for a second child, or by a second
+    # teacher, needs it as much as a teacher. States the limit (A-19: one subject).
+    "join": ("Join with an invitation code", "Rejoindre avec un code d'invitation"),
+    "joinDetail": ("The code a teacher sent you, to follow a child in their subject.",
+                   "Le code envoyé par un professeur, pour suivre un enfant dans sa matière."),
+    # Shown only with two roles: signing out closes both spaces at once.
+    "signOutAll": ("Closes both spaces on this phone.", "Ferme les deux espaces sur ce téléphone."),
   },
   "network": {
     "offline": ("Offline · you can keep entering grades; they will be sent when the network is back.",
@@ -147,6 +164,10 @@ T = {
                                     "Il manque un consentement demandé pour cette invitation. Revenez en arrière, continuez de nouveau et cochez chaque case affichée."),
       "consents-declined": ("No link was made: without the consents requested, your child cannot be followed in @makola. If you change your mind, enter the code again before it expires.",
                             "Aucun rattachement n'a été fait : sans les consentements demandés, votre enfant ne peut pas être suivi dans @makola. Si vous changez d'avis, saisissez de nouveau le code avant son échéance."),
+      # A-23: signed in, the invitation is accepted for the account's own contact —
+      # another one would open another account. Refused before any SMS.
+      "other-account": ("This phone is signed in with {{account}}: the invitation is accepted for that contact. If it was sent to {{identifier}}, sign out, then enter the code again from the welcome screen.",
+                        "Ce téléphone est connecté avec {{account}} : l'invitation s'accepte pour ce contact. Si elle a été envoyée à {{identifier}}, déconnectez-vous, puis saisissez de nouveau le code depuis l'écran d'accueil."),
       "unexpected": ("The server did not answer. Try again in a moment.", "Le serveur n'a pas répondu. Réessayez dans un instant."),
     },
     "phone": {
@@ -353,6 +374,9 @@ T = {
                  "intro": ("Your city is enough: you will never be asked for your exact address.",
                            "Votre ville suffit : votre adresse exacte ne vous sera jamais demandée.")},
       },
+      # A-21: a parent who signs up as a teacher keeps their account — said once, soberly.
+      "keepsParentSpace": ("Your account already has a parent space: it stays as it is. Once your profile is done, you will go from one space to the other from your account, at the top of the screen.",
+                           "Votre compte a déjà un espace parent : il reste tel quel. Une fois votre profil rempli, vous passerez d'un espace à l'autre depuis votre compte, en haut de l'écran."),
       "lastName": ("Last name", "Nom de famille"),
       "firstName": ("First name", "Prénom"),
       "previewLabel": ("On class lists", "Sur les listes de classe"),

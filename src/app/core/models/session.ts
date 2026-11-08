@@ -1,8 +1,45 @@
-import { Identifier, ROLES, ROLE_STATUSES, Role, RoleStatus, Session } from './auth.model';
+import {
+  DEFAULT_SPACE,
+  Identifier,
+  ROLES,
+  ROLE_STATUSES,
+  Role,
+  RoleStatus,
+  Session,
+} from './auth.model';
 
 /** The roles of the account, in `ROLES` order. */
 export function heldRoles(session: Session): Role[] {
   return ROLES.filter((role) => session.roles[role] !== undefined);
+}
+
+/**
+ * The space a sign-in opens (A-22, decided on 8 November 2026). The server knows
+ * no active space: the app decides, in this order —
+ * 1. the last space this account used on this device, if the account still holds it;
+ * 2. else a space whose step 2 is still to do (`ROLES` order);
+ * 3. else the teacher space (`DEFAULT_SPACE`), or the only role held.
+ */
+export function spaceAtSignIn(session: Session, lastUsed: Role | null): Role {
+  const held = heldRoles(session);
+  if (lastUsed && held.includes(lastUsed)) return lastUsed;
+  const pending = held.find((role) => session.roles[role] === 'setup');
+  if (pending) return pending;
+  return held.includes(DEFAULT_SPACE) ? DEFAULT_SPACE : held[0];
+}
+
+/**
+ * « NKOUKA Joseph » → « NJ »: the first letter of the first two words, for the
+ * account button. Empty without a name — the button then shows an icon.
+ */
+export function initialsOf(name: string | undefined): string {
+  return (name ?? '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toLocaleUpperCase())
+    .join('');
 }
 
 /**

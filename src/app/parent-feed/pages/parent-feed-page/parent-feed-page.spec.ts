@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
 import { patchState } from '@ngrx/signals';
 import { unprotected } from '@ngrx/signals/testing';
@@ -7,6 +8,11 @@ import { provideI18n } from '@core/i18n';
 import { Session } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
+import {
+  AccountSheetComponent,
+  AccountSheetEvent,
+} from '@shared/account/account-sheet/account-sheet';
+import { AccountSheetActions } from '@shared/account/enums/account-sheet-actions.enum';
 
 import { ParentFeedStore } from '../../state/parent-feed.store';
 import { ParentFeedPageComponent } from './parent-feed-page';
@@ -165,7 +171,7 @@ describe('ParentFeedPageComponent — term card: a date, never a judgement of th
   });
 });
 
-describe('ParentFeedPageComponent — app-bar actions and the teacher space (ID-02)', () => {
+describe('ParentFeedPageComponent — the bar keeps the feature, the account sheet the account (8 November 2026)', () => {
   const identifier = { channel: 'phone', value: '+242066123456' } as const;
   let fixture: ComponentFixture<ParentFeedPageComponent>;
   let navigateByUrl: ReturnType<typeof vi.fn>;
@@ -180,41 +186,96 @@ describe('ParentFeedPageComponent — app-bar actions and the teacher space (ID-
     await fixture.whenStable();
   }
 
-  const targets = () =>
-    Array.from(
-      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
-        'app-bar-target button',
-      ),
+  const root = () => fixture.nativeElement as HTMLElement;
+  const barLabels = () =>
+    Array.from(root().querySelectorAll<HTMLButtonElement>('app-bar-target button')).map((b) =>
+      b.getAttribute('aria-label'),
     );
-  const labels = () => targets().map((b) => b.getAttribute('aria-label'));
-  const press = (label: string) =>
-    targets()
-      .find((b) => b.getAttribute('aria-label') === label)!
-      .click();
+  const accountButton = () =>
+    root().querySelector<HTMLButtonElement>('app-bar app-account-button button')!;
+  const sheet = () => fixture.debugElement.query(By.directive(AccountSheetComponent));
+  const rowLabels = () =>
+    Array.from(root().querySelectorAll('app-account-sheet .row .label')).map((l) =>
+      l.textContent!.trim(),
+    );
+  const emit = (event: AccountSheetEvent) =>
+    (sheet().componentInstance as AccountSheetComponent).sheetAction.emit(event);
+
+  async function openSheet(): Promise<void> {
+    accountButton().click();
+    await fixture.whenStable();
+  }
 
   afterEach(() => localStorage.clear());
 
-  it('parent only: no teacher space action; sign out still signs out', async () => {
+  it('parent only: the bar carries the child switch only; the sheet offers no other space', async () => {
     await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } });
 
-    expect(labels()).toEqual(['Switch child', 'Sign out']);
-    press('Sign out');
-    expect(TestBed.inject(SessionStore).signedIn()).toBe(false);
-    expect(navigateByUrl).toHaveBeenCalledWith('/auth', { replaceUrl: true });
+    expect(barLabels()).toEqual(['Switch child']);
+    await openSheet();
+    expect(rowLabels()).toEqual(['Join with an invitation code', 'Language', 'Sign out']);
   });
 
-  it('parent and teacher: a press on the teacher space shows it', async () => {
+  it('the child keeps the start of the bar, the account its end — two forms, never confused', async () => {
+    await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } });
+
+    const bar = root().querySelector('app-bar .app-bar')!;
+    const child = bar.querySelector('.avatar')!;
+    expect(child.textContent!.trim()).toBe('IM');
+    expect(child.closest('button')).toBeNull();
+    expect(bar.firstElementChild).toBe(child);
+    expect(bar.lastElementChild!.tagName.toLowerCase()).toBe('app-account-button');
+    // No name yet on a parent account: an icon, never the child's initials.
+    expect(accountButton().textContent!.trim()).toBe('');
+    expect(accountButton().querySelector('app-icon')).toBeTruthy();
+  });
+
+  it('parent and teacher: the sheet’s teacher space shows it', async () => {
     await open({
       id: 'a1',
       identifier,
+      name: 'NKOUKA Joseph',
       activeRole: 'parent',
       roles: { parent: 'ready', teacher: 'ready' },
     });
 
-    expect(labels()).toEqual(['Switch child', 'Teacher space', 'Sign out']);
-    press('Teacher space');
+    expect(barLabels()).toEqual(['Switch child']);
+    await openSheet();
+    expect(rowLabels()).toEqual([
+      'Teacher space',
+      'Join with an invitation code',
+      'Language',
+      'Sign out',
+    ]);
+
+    emit({ action: AccountSheetActions.SwitchSpace, role: 'teacher' });
     expect(TestBed.inject(SessionStore).activeRole()).toBe('teacher');
     expect(navigateByUrl).toHaveBeenCalledWith('/classroom', { replaceUrl: true });
+  });
+
+  it('JoinInvitation: a parent joins another child or subject without signing out (A-23)', async () => {
+    await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } });
+    await openSheet();
+
+    emit({ action: AccountSheetActions.JoinInvitation });
+
+    expect(navigateByUrl).toHaveBeenCalledWith('/auth/join');
+    expect(TestBed.inject(SessionStore).signedIn()).toBe(true);
+  });
+
+  it('SignOut signs out; Close only closes', async () => {
+    await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } });
+    await openSheet();
+
+    emit({ action: AccountSheetActions.Close });
+    await fixture.whenStable();
+    expect(sheet()).toBeNull();
+    expect(TestBed.inject(SessionStore).signedIn()).toBe(true);
+
+    await openSheet();
+    emit({ action: AccountSheetActions.SignOut });
+    expect(TestBed.inject(SessionStore).signedIn()).toBe(false);
+    expect(navigateByUrl).toHaveBeenCalledWith('/auth', { replaceUrl: true });
   });
 });
 

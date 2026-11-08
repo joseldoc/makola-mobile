@@ -3,6 +3,7 @@ import { CanActivateFn, Router, Routes } from '@angular/router';
 
 import { guestOnly } from '@core/guards/guest-only.guard';
 import { profileStep } from '@core/guards/profile-step.guard';
+import { SessionStore } from '@core/store/session/session.store';
 
 import { AuthFlowStore } from './state/auth.store';
 
@@ -24,6 +25,28 @@ export const consentsRequired: CanActivateFn = () => {
   return store.identifier() && store.requiredConsents()?.length
     ? true
     : inject(Router).parseUrl('/auth/invitation/phone');
+};
+
+/**
+ * Entry of the invitation flow for a signed-in account (A-23, 8 November 2026),
+ * opened by « Join with an invitation code » in its account sheet: the flow
+ * starts again in joining mode, the session stays open. A guest goes to the
+ * invitation code as usual.
+ */
+export const joinEntry: CanActivateFn = () => {
+  if (inject(SessionStore).hasReadySpace()) inject(AuthFlowStore).join();
+  return inject(Router).parseUrl('/auth/invitation');
+};
+
+/**
+ * The invitation screens: a guest, as `guestOnly` lets in — or a signed-in
+ * account that came in through `joinEntry` (A-23). Any other signed-in account
+ * goes back to where it stands.
+ */
+export const guestOrJoining: CanActivateFn = () => {
+  const session = inject(SessionStore);
+  if (!session.hasReadySpace() || inject(AuthFlowStore).joining()) return true;
+  return inject(Router).parseUrl(session.initialRoute());
 };
 
 export const AUTH_ROUTES: Routes = [
@@ -52,20 +75,26 @@ export const AUTH_ROUTES: Routes = [
           import('./pages/identifier-page/identifier-page').then((m) => m.IdentifierPageComponent),
       },
       {
+        // A-23: the account sheet's entry — a redirect that opens the flow to the account.
+        path: 'join',
+        canActivate: [joinEntry],
+        children: [],
+      },
+      {
         path: 'invitation',
-        canActivate: [guestOnly],
+        canActivate: [guestOrJoining],
         loadComponent: () =>
           import('./pages/invitation-page/invitation-page').then((m) => m.InvitationPageComponent),
       },
       {
         path: 'invitation/child',
-        canActivate: [guestOnly, invitationRecognised],
+        canActivate: [guestOrJoining, invitationRecognised],
         loadComponent: () =>
           import('./pages/child-page/child-page').then((m) => m.ChildPageComponent),
       },
       {
         path: 'invitation/phone',
-        canActivate: [guestOnly, invitationRecognised],
+        canActivate: [guestOrJoining, invitationRecognised],
         data: { intent: 'invitation' },
         loadComponent: () =>
           import('./pages/identifier-page/identifier-page').then((m) => m.IdentifierPageComponent),
@@ -73,13 +102,14 @@ export const AUTH_ROUTES: Routes = [
       {
         // After the number (its country counts, RI-20), before the code and the acceptance.
         path: 'invitation/consents',
-        canActivate: [guestOnly, invitationRecognised, consentsRequired],
+        canActivate: [guestOrJoining, invitationRecognised, consentsRequired],
         loadComponent: () =>
           import('./pages/consents-page/consents-page').then((m) => m.ConsentsPageComponent),
       },
       {
+        // Joining (A-23) ends with the code: the acceptance is made for the account.
         path: 'code',
-        canActivate: [guestOnly, codeRequested],
+        canActivate: [guestOrJoining, codeRequested],
         loadComponent: () => import('./pages/code-page/code-page').then((m) => m.CodePageComponent),
       },
       {

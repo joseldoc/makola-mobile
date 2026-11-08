@@ -10,6 +10,12 @@ export type Role = 'teacher' | 'parent';
 export const ROLES: Role[] = ['teacher', 'parent'];
 
 /**
+ * The space a sign-in opens when nothing else decides (A-22, 8 November 2026):
+ * no space remembered on this device, no step 2 left to do.
+ */
+export const DEFAULT_SPACE: Role = 'teacher';
+
+/**
  * Where a role of the account stands. `setup`: its step 2 is still to do — the
  * teacher profile (US-P01), the parent's alert settings (RM-16, US-PA01).
  * `ready`: its space opens. Each role has its own, done independently.

@@ -3,6 +3,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import { Country, CountryCode } from '@core/models/country';
 import { RadioButtonComponent } from '@shared/forms/radio-button/radio-button';
+import { BottomSheetComponent } from '@shared/navigation/bottom-sheet/bottom-sheet';
 
 import { CountrySheetActions } from '../../enums/country-sheet-actions.enum';
 
@@ -12,28 +13,20 @@ export type CountrySheetEvent =
   | { action: CountrySheetActions.Close };
 
 /**
- * Calling-code bottom sheet — ink scrim at 42 %, 16 top corners, tappable handle
- * (same build as the new-assignment sheet). A choice closes the sheet: there is
- * nothing to confirm.
+ * Calling-code bottom sheet, on `app-bottom-sheet` (scrim, handle, Escape — the
+ * form this sheet had on its own until 8 November 2026). A choice closes the
+ * sheet: there is nothing to confirm.
  */
 @Component({
   selector: 'app-country-sheet',
-  imports: [RadioButtonComponent, TranslocoPipe],
-  host: { '(document:keydown.escape)': 'sheetAction.emit({ action: CountrySheetActions.Close })' },
+  imports: [BottomSheetComponent, RadioButtonComponent, TranslocoPipe],
   template: `
-    <div class="scrim" (click)="sheetAction.emit({ action: CountrySheetActions.Close })"></div>
-    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="country-title">
-      <button
-        type="button"
-        class="handle"
-        [attr.aria-label]="'common.close' | transloco"
-        (click)="sheetAction.emit({ action: CountrySheetActions.Close })"
-      >
-        <span></span>
-      </button>
-      <h2 class="title" id="country-title">{{ 'auth.country.title' | transloco }}</h2>
-      <p class="text">{{ 'auth.country.text' | transloco }}</p>
-      <div class="list" role="radiogroup" aria-labelledby="country-title">
+    <app-bottom-sheet
+      [title]="'auth.country.title' | transloco"
+      [text]="'auth.country.text' | transloco"
+      (closed)="sheetAction.emit({ action: CountrySheetActions.Close })"
+    >
+      <div role="radiogroup" [attr.aria-label]="'auth.country.title' | transloco">
         @for (c of countries(); track c.code) {
           <app-radio-button
             [label]="'countries.' + c.code | transloco"
@@ -45,9 +38,8 @@ export type CountrySheetEvent =
           />
         }
       </div>
-    </section>
+    </app-bottom-sheet>
   `,
-  styleUrl: './country-sheet.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountrySheetComponent {

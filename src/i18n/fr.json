@@ -18,6 +18,16 @@
     "teacher": "Espace professeur",
     "parent": "Espace parent"
   },
+  "account": {
+    "open": "Votre compte",
+    "spaceDetail": {
+      "teacher": "Vos classes et la saisie des notes.",
+      "parent": "Les notes des enfants que vous suivez."
+    },
+    "join": "Rejoindre avec un code d'invitation",
+    "joinDetail": "Le code envoyé par un professeur, pour suivre un enfant dans sa matière.",
+    "signOutAll": "Ferme les deux espaces sur ce téléphone."
+  },
   "network": {
     "offline": "Hors ligne · la saisie fonctionne ; les notes partiront au retour du réseau.",
     "offlinePending": "Hors ligne · saisies en attente d'envoi : {{count}}. Vous pouvez continuer la saisie.",
@@ -92,6 +102,7 @@
       "invitation-declined": "Aucun rattachement n'a été fait. Demandez au professeur de vérifier l'élève concerné, puis saisissez le nouveau code.",
       "parental-consent-required": "Il manque un consentement demandé pour cette invitation. Revenez en arrière, continuez de nouveau et cochez chaque case affichée.",
       "consents-declined": "Aucun rattachement n'a été fait : sans les consentements demandés, votre enfant ne peut pas être suivi dans @makola. Si vous changez d'avis, saisissez de nouveau le code avant son échéance.",
+      "other-account": "Ce téléphone est connecté avec {{account}} : l'invitation s'accepte pour ce contact. Si elle a été envoyée à {{identifier}}, déconnectez-vous, puis saisissez de nouveau le code depuis l'écran d'accueil.",
       "unexpected": "Le serveur n'a pas répondu. Réessayez dans un instant."
     },
     "phone": {
@@ -274,6 +285,7 @@
           "intro": "Votre ville suffit : votre adresse exacte ne vous sera jamais demandée."
         }
       },
+      "keepsParentSpace": "Votre compte a déjà un espace parent : il reste tel quel. Une fois votre profil rempli, vous passerez d'un espace à l'autre depuis votre compte, en haut de l'écran.",
       "lastName": "Nom de famille",
       "firstName": "Prénom",
       "previewLabel": "Sur les listes de classe",

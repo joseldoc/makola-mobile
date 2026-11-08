@@ -1,0 +1,33 @@
+:host {
+  display: contents;
+}
+
+// The 48 dp target of every app-bar action (`app-bar-target`).
+.target {
+  width: var(--mk-cible-barre);
+  height: var(--mk-cible-barre);
+  flex: none;
+  border: 0;
+  border-radius: var(--mk-rayon-rond);
+  color: var(--mk-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--mk-presse);
+}
+
+// A ring, not a disc: the child's avatar of the parent feed is a 40 dp disc.
+.ring {
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--mk-rayon-rond);
+  border: 1px solid var(--mk-contour-fort);
+  background: var(--mk-surface);
+  color: var(--mk-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 500 13px/1 var(--mk-font);
+}

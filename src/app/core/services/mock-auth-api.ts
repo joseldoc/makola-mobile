@@ -14,7 +14,7 @@ import {
   TeacherProfile,
 } from '@core/models/auth.model';
 import { CountryCode, countryOfNumber } from '@core/models/country';
-import { parseSession, withRole } from '@core/models/session';
+import { parseSession, showing, withRole } from '@core/models/session';
 
 /** Code accepted by the mock server — any other entry is refused. */
 export const DEMO_CODE = '123456';
@@ -84,7 +84,11 @@ type GivenConsents = Record<string, Record<string, ParentalConsent[]>>;
  *   fictitious). Both parental consents are asked, whatever the parent's number.
  *
  * Accepted with the number of an existing teacher account, an invitation gives
- * that account the parent role as well (ID-02). Parental consents follow RI-20:
+ * that account the parent role as well (RM-19, ID-02). Accepting while signed in
+ * (A-23) is the same call: the account is the contact's. A sign-up with the
+ * number of an account that is not a teacher's gives it the teacher role, profile
+ * to fill (A-21, 8 November 2026); a teacher account is refused, sign-in instead.
+ * Parental consents follow RI-20:
  * asked when the parent's country or the teacher's asks for them (union), not
  * asked again once given by the account for the student, and the acceptance is
  * refused without them, nothing written. Document versions are not simulated.
@@ -94,10 +98,12 @@ export class MockAuthApi extends AuthApi {
   async requestCode(identifier: Identifier, intent: Intent): Promise<CodeRequest> {
     await this.network();
     const account = this.accounts()[this.key(identifier)];
-    // As Identity (`POST /v1/accounts`, ACCOUNT_ALREADY_EXISTS), parent account
-    // included: the contract documents no sign-up that adds the teacher role to
-    // an existing account — a question left open, not a path to invent here.
-    if (intent === 'sign-up' && account) throw new AuthError('existing-account');
+    // A-21 (8 November 2026): only a teacher account is refused a sign-up — a
+    // parent account receives the teacher role. Identity cannot do it yet (`POST
+    // /v1/accounts`, ACCOUNT_ALREADY_EXISTS): the route is asked of its team, and
+    // this mock behaves as the target already.
+    if (intent === 'sign-up' && account?.roles.teacher !== undefined)
+      throw new AuthError('existing-account');
     if (intent === 'sign-in' && !account) throw new AuthError('unknown-account');
     console.info(`[MockAuthApi] Code sent to ${identifier.value}: ${DEMO_CODE}`);
     return { resendIn: RESEND_S };
@@ -113,17 +119,21 @@ export class MockAuthApi extends AuthApi {
     if (code !== DEMO_CODE) throw new AuthError('wrong-code');
 
     const existing = this.accounts()[this.key(identifier)];
+    if (intent === 'sign-in' && existing) return existing;
     if (intent !== 'invitation') {
-      // Sign-in: the account as it stands. Sign-up: a teacher account, profile to fill (ID-01).
-      return (
-        existing ??
-        this.update({
-          id: crypto.randomUUID(),
-          identifier,
-          activeRole: 'teacher',
-          roles: { teacher: 'setup' },
-        })
-      );
+      // Sign-up: a teacher account, profile to fill (ID-01). An existing account
+      // that is not a teacher's keeps its id, its roles and its name, and receives
+      // the teacher role, shown — the profile comes next (A-21). A teacher account
+      // is refused, as at the code request: nothing is written.
+      if (existing?.roles.teacher !== undefined) throw new AuthError('existing-account');
+      const account: Session = existing ?? {
+        id: crypto.randomUUID(),
+        identifier,
+        activeRole: 'teacher',
+        roles: { teacher: 'setup' },
+      };
+      const teacher = withRole(account, 'teacher', 'setup');
+      return this.update(showing(teacher, 'teacher') ?? teacher);
     }
 
     // RI-20: every consent asked must be given — otherwise refused before anything is written.

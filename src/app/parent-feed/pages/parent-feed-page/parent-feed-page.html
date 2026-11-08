@@ -8,7 +8,15 @@
     [hasLeading]="true"
     (actionSelected)="onAction($event)"
   >
+    <!-- The child: a disc at the start, never a target. The account: a ring at the end. -->
     <div leading class="avatar">{{ store.initials() }}</div>
+    <app-account-button
+      trailing
+      [name]="session.session()?.name"
+      role="parent"
+      [label]="'account.open' | transloco"
+      (pressed)="accountOpen.set(true)"
+    />
   </app-bar>
 
   <div class="cards">
@@ -68,4 +76,14 @@
       [full]="true"
     />
   </div>
+
+  @if (accountOpen() && session.session(); as account) {
+    <app-account-sheet
+      [name]="account.name"
+      [identifier]="account.identifier"
+      [otherSpaces]="session.otherRoles()"
+      [language]="language.language()"
+      (sheetAction)="onAccountSheet($event)"
+    />
+  }
 </div>

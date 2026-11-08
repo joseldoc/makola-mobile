@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Session } from '@core/models/auth.model';
+import { RoleStatus, Session } from '@core/models/auth.model';
 
 import { SessionStore } from './session.store';
 
@@ -173,6 +173,105 @@ describe('SessionStore', () => {
       expect(store.session()).toBeNull();
       expect(stored()).toBeNull();
     });
+  });
+
+  describe('signIn — the space a sign-in opens (A-22, 8 November 2026)', () => {
+    const both = (activeRole: 'teacher' | 'parent', teacher: RoleStatus, parent: RoleStatus) =>
+      ({ id: 'a1', identifier, activeRole, roles: { teacher, parent } }) as Session;
+
+    it('1. the last space this account used on this device, even with a step 2 left elsewhere', () => {
+      const store = launch();
+      store.open(both('parent', 'setup', 'ready'));
+      store.close();
+
+      // The server knows no active space: whatever it says is not followed.
+      store.signIn(both('teacher', 'setup', 'ready'));
+
+      expect(store.activeRole()).toBe('parent');
+      expect(store.initialRoute()).toBe('/parent-feed');
+    });
+
+    it('2. else a space whose step 2 is still to do', () => {
+      const store = launch();
+
+      store.signIn(both('teacher', 'ready', 'setup'));
+
+      expect(store.activeRole()).toBe('parent');
+      expect(store.initialRoute()).toBe('/auth/alerts');
+    });
+
+    it('3. else the teacher space', () => {
+      const store = launch();
+
+      store.signIn(both('parent', 'ready', 'ready'));
+
+      expect(store.activeRole()).toBe('teacher');
+      expect(store.initialRoute()).toBe('/classroom');
+    });
+
+    it('a single role: that space, whatever the rule says', () => {
+      const store = launch();
+
+      store.signIn(session('parent', { parent: 'ready' }));
+
+      expect(store.activeRole()).toBe('parent');
+    });
+
+    it('a space remembered but no longer held is passed over', () => {
+      const store = launch();
+      store.open(both('parent', 'ready', 'ready'));
+      store.close();
+
+      store.signIn(session('teacher', { teacher: 'ready' }));
+
+      expect(store.activeRole()).toBe('teacher');
+    });
+
+    it('the space switched to is the one remembered — signing out does not forget it', () => {
+      const store = launch(both('teacher', 'ready', 'ready'));
+      store.switchSpace('parent');
+      store.close();
+
+      expect(launch().signedIn()).toBe(false);
+      const again = launch();
+      again.signIn(both('teacher', 'ready', 'ready'));
+
+      expect(again.activeRole()).toBe('parent');
+    });
+
+    it('one account’s memory never decides for another account on the same phone', () => {
+      const store = launch();
+      store.open(both('parent', 'ready', 'ready'));
+      store.close();
+
+      const other = { ...both('parent', 'ready', 'ready'), id: 'a2' } as Session;
+      store.signIn(other);
+
+      expect(store.activeRole()).toBe('teacher');
+      // And a1 still finds its own.
+      store.close();
+      store.signIn(both('teacher', 'ready', 'ready'));
+      expect(store.activeRole()).toBe('parent');
+    });
+
+    it('stores a role per account id, nothing else', () => {
+      const store = launch();
+      store.open(both('parent', 'ready', 'ready'));
+      store.open({ ...session('teacher', { teacher: 'ready' }), id: 'a2' });
+
+      expect(JSON.parse(localStorage.getItem('mk.last-space')!)).toEqual({
+        a1: 'parent',
+        a2: 'teacher',
+      });
+    });
+  });
+
+  it('otherRoles: the spaces of the account other than the one shown', () => {
+    expect(launch(session('teacher', { teacher: 'ready', parent: 'setup' })).otherRoles()).toEqual([
+      'parent',
+    ]);
+    expect(launch(session('parent', { parent: 'ready' })).otherRoles()).toEqual([]);
+    expect(launch().otherRoles()).toEqual([]);
   });
 
   it('reads the roles of the account', () => {

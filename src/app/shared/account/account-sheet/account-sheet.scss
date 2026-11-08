@@ -1,0 +1,42 @@
+// Rows of the account sheet: the measures of `app-list-row` (56 dp, line
+// separator), as buttons — the whole row is the target (§7.6).
+.rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--mk-separateur);
+}
+
+.row {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--mk-h-ligne);
+  padding: var(--mk-esp-3) 0;
+  border: 0;
+  border-bottom: 1px solid var(--mk-separateur);
+  background: transparent;
+  color: var(--mk-text);
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+
+  // A setting: its label, and its control at the end of the line.
+  &.setting {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--mk-esp-3);
+    cursor: default;
+  }
+}
+
+.label {
+  font: var(--mk-ligne-liste);
+}
+
+.detail {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -9,6 +9,12 @@ import { AVERAGE_SCALE, isBelowPassMark } from '@core/models/grading';
 import { periodKey } from '@core/models/period';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
+import { AccountButtonComponent } from '@shared/account/account-button/account-button';
+import {
+  AccountSheetComponent,
+  AccountSheetEvent,
+} from '@shared/account/account-sheet/account-sheet';
+import { AccountSheetActions } from '@shared/account/enums/account-sheet-actions.enum';
 import { AppBarAction, AppBarComponent } from '@shared/navigation/app-bar/app-bar';
 import { TabItem, TabsComponent } from '@shared/navigation/tabs/tabs';
 import { ListRowComponent, ListRowValueTone } from '@shared/data/list-row/list-row';
@@ -41,6 +47,8 @@ interface ClassroomBarAction extends AppBarAction {
   selector: 'app-classroom-page',
   imports: [
     AppBarComponent,
+    AccountButtonComponent,
+    AccountSheetComponent,
     TabsComponent,
     ListRowComponent,
     NetworkBannerComponent,
@@ -54,8 +62,8 @@ interface ClassroomBarAction extends AppBarAction {
 })
 export class ClassroomPageComponent {
   protected readonly store = inject(ClassroomStore);
-  private readonly language = inject(LanguageStore);
-  private readonly session = inject(SessionStore);
+  protected readonly language = inject(LanguageStore);
+  protected readonly session = inject(SessionStore);
   private readonly router = inject(Router);
   private readonly assignments = inject(AssignmentStore);
   private readonly gradeEntry = inject(GradeEntryStore);
@@ -92,7 +100,10 @@ export class ClassroomPageComponent {
     { id: 2, label: this.t('classroom.tabs.reportCard') },
   ]);
 
-  /** The parent space appears only when the account also holds that role (ID-02). */
+  /**
+   * The actions of the feature only: the account's (other space, invitation,
+   * language, sign out) are in the account sheet, opened by the account button.
+   */
   protected readonly barActions = computed<ClassroomBarAction[]>(() => [
     ...(this.store.hasOtherClassrooms()
       ? [
@@ -104,17 +115,10 @@ export class ClassroomPageComponent {
         ]
       : []),
     { action: ClassroomBarActions.Search, icon: ICONS.search, label: this.t('common.search') },
-    ...(this.session.hasRole('parent')
-      ? [
-          {
-            action: ClassroomBarActions.ParentSpace,
-            icon: ICONS.student,
-            label: this.t('spaces.parent'),
-          },
-        ]
-      : []),
-    { action: ClassroomBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') },
   ]);
+
+  /** The account sheet is open. */
+  protected readonly accountOpen = signal(false);
 
   protected assignmentMeta(a: Assignment): string {
     const language = this.language.language();
@@ -143,7 +147,7 @@ export class ClassroomPageComponent {
     this.store.setScrolled(target.scrollTop > 0);
   }
 
-  /** The index is read in the list shown, which changes with the account's roles. */
+  /** The index is read in the list shown, which changes with the number of classes. */
   protected onAction(index: number): void {
     const selected = this.barActions()[index];
     if (!selected) return;
@@ -154,11 +158,29 @@ export class ClassroomPageComponent {
       case ClassroomBarActions.Search:
         this.store.setView(VIEW_STUDENTS);
         return;
-      case ClassroomBarActions.ParentSpace:
-        this.switchSpace('parent');
+    }
+  }
+
+  /** The account sheet's single event: this page decides what each action does. */
+  protected onAccountSheet(event: AccountSheetEvent): void {
+    switch (event.action) {
+      case AccountSheetActions.SwitchSpace:
+        this.accountOpen.set(false);
+        this.switchSpace(event.role);
         return;
-      case ClassroomBarActions.SignOut:
+      case AccountSheetActions.JoinInvitation:
+        this.accountOpen.set(false);
+        // A-23: the invitation flow, open to this account — the session stays.
+        void this.router.navigateByUrl('/auth/join');
+        return;
+      case AccountSheetActions.ChangeLanguage:
+        void this.language.setLanguage(event.language);
+        return;
+      case AccountSheetActions.SignOut:
         this.signOut();
+        return;
+      case AccountSheetActions.Close:
+        this.accountOpen.set(false);
         return;
     }
   }
