@@ -34,6 +34,8 @@ interface ClassroomState {
   subject: string;
   school: string;
   term: number;
+  /** Closing date of the term in this subject (RM-14, A-20), ISO 8601. */
+  termCloses: string;
   assignments: Assignment[];
   students: Student[];
   view: number;
@@ -47,6 +49,7 @@ const initialState: ClassroomState = {
   subject: 'Maths',
   school: 'Lycée Chaminade',
   term: 2,
+  termCloses: '2026-03-27',
   assignments: ASSIGNMENTS,
   students: STUDENTS,
   view: 0,

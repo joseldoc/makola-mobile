@@ -142,7 +142,8 @@ describe('ConsentsPageComponent — Kenyan parental consents (RI-20)', () => {
     await TestBed.inject(LanguageStore).setLanguage('fr');
     await fixture.whenStable();
 
-    expect(footerButton().textContent!.trim()).toBe('Cases restantes à cocher : 2');
+    // Non-breaking space before the colon (French typography, i18n-source.py).
+    expect(footerButton().textContent!.trim()).toBe('Cases restantes à cocher\u00a0: 2');
     expect(boxes()[0].textContent).toContain('Données scolaires de Wanjiru');
     expect(boxes()[1].textContent).toContain('hébergés en Europe, hors du Kenya');
     expect(declineButton().textContent!.trim()).toBe('Je ne consens pas');

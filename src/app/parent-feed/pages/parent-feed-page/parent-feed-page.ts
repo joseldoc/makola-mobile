@@ -88,6 +88,16 @@ export class ParentFeedPageComponent {
     return value === undefined ? null : formatDecimal(value, this.language.language());
   });
 
+  /**
+   * The term card states when the term closes — no trend, no arrow, no colour:
+   * a colour never rewards a student (design system).
+   */
+  protected readonly termCloses = computed(() =>
+    this.t('parentFeed.termCloses', {
+      date: formatDate(this.store.termCloses(), this.language.language()),
+    }),
+  );
+
   /** Feed items as sentences, numbers and dates in the interface language. */
   protected readonly rows = computed<FeedRow[]>(() => {
     const language = this.language.language();

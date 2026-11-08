@@ -16,8 +16,8 @@
     "parent": "Parent space"
   },
   "network": {
-    "offline": "Offline · entry works, sending will go out when the network is back.",
-    "offlinePending": "Offline · entries waiting to be sent: {{count}}. You can keep going.",
+    "offline": "Offline · you can keep entering grades; they will be sent when the network is back.",
+    "offlinePending": "Offline · entries waiting to be sent: {{count}}. You can keep entering grades.",
     "synced": "Everything is synced."
   },
   "keypad": {
@@ -35,7 +35,7 @@
   "subjects": {
     "maths": "Mathematics",
     "physics": "Physics and chemistry",
-    "biology": "Life and earth sciences",
+    "biology": "Life and Earth sciences",
     "french": "French",
     "english": "English",
     "history": "History and geography",
@@ -44,8 +44,8 @@
   },
   "levels": {
     "primary": "Primary",
-    "middle": "Middle school",
-    "high": "High school",
+    "middle": "Lower secondary",
+    "high": "Upper secondary",
     "university": "University",
     "terms": "Terms",
     "semesters": "Semesters"
@@ -60,35 +60,35 @@
       "classrooms": {
         "kicker": "The teacher's gradebook",
         "title": "Your classes, sorted by school",
-        "text": "Each class belongs to its school. The school name stays on screen during all grade entry: two contexts never mix."
+        "text": "Each class belongs to a school, named at the top of the class screen: two schools never get mixed up."
       },
       "offline": {
         "kicker": "Offline",
-        "title": "Grade entry carries on without network",
+        "title": "Grade entry carries on without a network",
         "text": "Grades are saved on the phone and sent when the network is back. A banner always tells you how many entries are waiting."
       },
       "parents": {
         "kicker": "Parents",
         "title": "Each parent follows their child",
-        "text": "You invite a parent with a 6-digit code sent by SMS. They see their child's grades, never those of other students."
+        "text": "You invite a parent with a 6-digit code, sent by SMS or email. They see their child's grades in your subject, never those of other students."
       },
       "reportCards": {
         "kicker": "Report cards",
-        "title": "Averages, never a ranking",
-        "text": "Report cards show the student's averages and, for each subject, the class average — never their position. Sending them to the school stays your decision."
+        "title": "Averages, never a rank",
+        "text": "Report cards show the student's averages and, for each subject, the class average — never a rank. Submitting them to the school management stays your decision."
       }
     }
   },
   "auth": {
     "errors": {
-      "unknown-account": "No account uses {{identifier}}. Check it, or create an account.",
+      "unknown-account": "No account uses {{identifier}}. Check it or create an account.",
       "existing-account": "An account already uses {{identifier}}. Sign in with it instead.",
-      "wrong-code": "This code does not match the one sent. Check the message, or ask for a new code.",
-      "unknown-invitation": "This code matches no current invitation. Check the SMS you received, or ask the teacher for a new code.",
+      "wrong-code": "This code does not match the one sent. Check the message or ask for a new code.",
+      "unknown-invitation": "This code matches no current invitation. Check the message you received or ask the teacher for a new code.",
       "offline": "Offline · sending and checking the code need the network. Try again when it is back.",
       "invitation-declined": "No link was made. Ask the teacher to check the student concerned, then enter the new code.",
-      "parental-consent-required": "A consent asked for this invitation is missing. Go back, continue again, and tick each box shown.",
-      "consents-declined": "No link was made: without the consents asked, your child cannot be followed in @makola. If you change your mind, enter the code again before it expires.",
+      "parental-consent-required": "A consent required for this invitation is missing. Go back, continue again and tick each box shown.",
+      "consents-declined": "No link was made: without the consents requested, your child cannot be followed in @makola. If you change your mind, enter the code again before it expires.",
       "unexpected": "The server did not answer. Try again in a moment."
     },
     "phone": {
@@ -97,11 +97,11 @@
     },
     "country": {
       "title": "Calling code",
-      "text": "It sets your country: you won't be asked again.",
-      "digits": "+{{code}} · {{length}} digits after the code"
+      "text": "It sets your country: you will not be asked for it again.",
+      "digits": "+{{code}} · {{length}} digits after the calling code"
     },
     "welcome": {
-      "promise": "Your students' grades, entered and kept on your phone — with or without network.",
+      "promise": "Your students' grades, entered and kept on your phone — with or without a network.",
       "signUp": "Create a teacher account",
       "signIn": "I already have an account",
       "parent": "Parent? Enter the code you received"
@@ -111,24 +111,24 @@
         "phone": {
           "step": "Account creation",
           "title": "Create your account",
-          "text": "Your number is enough. A six-digit code will be sent to you: no password to remember."
+          "text": "Your number is enough. A 6-digit code will be sent to you: no password to remember."
         },
         "email": {
           "step": "Account creation",
           "title": "Create your account",
-          "text": "Your address is enough. A six-digit code will be sent to you: no password to remember."
+          "text": "Your address is enough. A 6-digit code will be sent to you: no password to remember."
         }
       },
       "sign-in": {
         "phone": {
           "step": "",
           "title": "Your number",
-          "text": "A six-digit code will be sent to you. No password to remember."
+          "text": "A 6-digit code will be sent to you: no password to remember."
         },
         "email": {
           "step": "",
           "title": "Your email address",
-          "text": "A six-digit code will be sent to you. No password to remember."
+          "text": "A 6-digit code will be sent to you: no password to remember."
         }
       },
       "invitation": {
@@ -143,10 +143,10 @@
           "text": "It is used to sign in. A confirmation code will be sent to you."
         }
       },
-      "phoneRequired": "Type your number on the keypad.",
-      "phoneFormat": "A mobile number (+{{code}}) starts with {{prefixes}}. Erase and correct it, or change the calling code.",
+      "phoneRequired": "Enter your number on the keypad.",
+      "phoneFormat": "A mobile number (+{{code}}) starts with {{prefixes}}. Erase and correct it or change the calling code.",
       "phoneComplete": "Number complete. The code will be sent by SMS.",
-      "phoneProgress": "{{total}} digits after the calling code · {{count}} of {{total}}.",
+      "phoneProgress": "{{total}} digits after the calling code · {{count}} of {{total}}.",
       "emailRequired": "Enter your address to receive the code.",
       "emailFormat": "Part of the address is missing: it looks like firstname.lastname@example.com.",
       "emailLabel": "Email address",
@@ -154,14 +154,14 @@
       "emailPlaceholder": "firstname.lastname@example.com",
       "sending": "Sending the code…",
       "checkingInvitation": "Checking the invitation…",
-      "missingPhone": "Type your number",
+      "missingPhone": "Enter your number",
       "digitsLeft": "Digits left: {{count}}",
-      "fixPhone": "Correct the number",
+      "fixPhone": "Correct your number",
       "missingEmail": "Enter your address",
       "fixEmail": "Correct your address",
       "getCode": "Get the code",
       "useEmail": "Use an email address",
-      "usePhone": "Use my phone number"
+      "usePhone": "Use a phone number"
     },
     "code": {
       "step": {
@@ -169,43 +169,43 @@
         "sign-in": "",
         "invitation": "Step 3 of 3 · Parent account"
       },
-      "sentTo": "Sent to {{identifier}}. It expires in 10 minutes.",
+      "sentTo": "Sent to {{identifier}}. It expires in 10 minutes.",
       "titleSms": "Code received by SMS",
       "titleEmail": "Code received by email",
       "checking": "Checking the code…",
       "missing": "Enter the code you received",
-      "progress": "{{count}} of {{total}} digits entered.",
-      "resendIn": "Nothing received? New code possible in {{seconds}} s.",
+      "progress": "Digits entered: {{count}} of {{total}}.",
+      "resendIn": "Nothing received? You can ask for a new code in {{seconds}} s.",
       "nothingReceived": "Nothing received?",
       "resend": "Resend the code",
-      "enter": "Enter @makola",
+      "enter": "Open @makola",
       "changePhone": "Change number",
       "changeEmail": "Change address"
     },
     "invitation": {
       "step": "Step 1 of 3 · Parent account",
       "title": "Invitation code",
-      "text": "The 6 digits received by SMS from your child's teacher.",
+      "text": "The 6-digit code sent by your child's teacher, by SMS or email.",
       "searching": "Looking for the invitation…",
-      "validity": "The code is valid for 7 days and works only once.",
+      "validity": "The code is valid for 7 days and works only once.",
       "seeStudent": "See the student"
     },
     "child": {
       "title": "Your child",
       "subtitle": "Step 1 of 3 · Check",
-      "intro": "Check before continuing: this code links your account to one single student.",
+      "intro": "Check before continuing: this code links your account to a single student.",
       "linkedStudent": "Linked student",
       "invitedBy": "Invited by {{teacher}} · {{subject}}",
-      "youWillSee": "You will see {{name}}'s grades, announced tests and report cards.",
+      "youWillSee": "You will see {{name}}'s grades, announced tests and report cards in {{subject}}.",
       "neverOthers": "Never the grades of other students.",
-      "confirm": "Yes, it's {{name}}",
+      "confirm": "Yes, this is {{name}}",
       "decline": "This is not my child"
     },
     "consents": {
       "title": "Your consent",
       "subtitle": "Step 2 of 3 · Consent",
       "intro": "Before the code is sent, @makola asks for your consent on each point below. Every box must be ticked to follow {{name}}.",
-      "group": "Consents asked",
+      "group": "Consents requested",
       "documents": {
         "CHILD_DATA": {
           "title": "{{name}}'s school data",
@@ -216,7 +216,7 @@
           "text": "You agree that your link with {{name}}, and {{name}}'s school data, are stored in Europe, outside Kenya."
         }
       },
-      "withdrawal": "You can withdraw each consent later: the link with {{name}} then ends, and you no longer see their grades.",
+      "withdrawal": "You can withdraw each consent later: the link with {{name}} then ends, and you will no longer see their grades.",
       "left": "Boxes left to tick: {{count}}",
       "decline": "I do not consent"
     },
@@ -268,7 +268,7 @@
         "city": {
           "title": "Where do you teach?",
           "subtitle": "Step 3 of 3 · City",
-          "intro": "Your city is enough: your exact address will never be asked."
+          "intro": "Your city is enough: you will never be asked for your exact address."
         }
       },
       "lastName": "Last name",
@@ -307,8 +307,8 @@
     "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
     "classAverage": "Class average",
     "termAverage": "Term average",
-    "noMatch": "No student is named « {{query}} ». Try a family name alone, or clear the search.",
-    "reportCardNotice": "The term 2 report card will be available after closing, on 27 March. It will show the class average for each subject beside the student's, and no ranking.",
+    "noMatch": "No student is named “{{query}}”. Try a last name alone or clear the search.",
+    "reportCardNotice": "The term {{term}} report card will be available once the term closes, on {{date}}. It will show, for each subject, the class average beside the student's, and no rank.",
     "searchPlaceholder": "Student name",
     "newAssignment": "+ Assignment"
   },
@@ -318,9 +318,9 @@
     "titlePlaceholder": "Test 3",
     "titleErrors": {
       "empty": "Give it a title: it is what students and parents will see.",
-      "tooShort": "Too short to be recognised in the list of assignments.",
-      "duplicate": "« {{title}} » already exists in this class this term. Change the number or the date.",
-      "tooLong": "{{max}} characters maximum: beyond that, the title is cut on the report card.",
+      "tooShort": "Too short to be recognised in the list of assignments: 3 characters minimum.",
+      "duplicate": "“{{title}}” already exists in this class this term. Change the number or the date.",
+      "tooLong": "{{max}} characters maximum: beyond that, the title is cut off on the report card.",
       "long": "Long for a report card: readable, but tight."
     },
     "scale": "Scale",
@@ -329,7 +329,7 @@
       "increase": "Increase the coefficient",
       "max": "Maximum coefficient. Beyond it, a single assignment would decide the average.",
       "base": "Counts like a standard assignment.",
-      "weight": "Weighs {{count}} times more than a coefficient-1 assignment."
+      "weight": "Weighs {{count}} times as much as a coefficient 1 assignment."
     },
     "dateLabel": "Assignment date",
     "changeDate": "Change",
@@ -337,24 +337,25 @@
     "fixField": "Correct the flagged field",
     "date": {
       "today": "Today · {{date}}",
-      "inTerm": "In term {{term}}, running until {{end}}.",
+      "inTerm": "In term {{term}}, which runs until {{end}}.",
       "afterClose": "After term {{term}} closes: this assignment will count for term {{next}}.",
       "closed": "Term {{term}} is closed. Choose a date after {{after}}."
     }
   },
   "gradeEntry": {
-    "progress": "{{count}} / {{total}} entered",
+    "progress": "{{count}} / {{total}} entered",
+    "subtitle": "{{classroom}} · /{{scale}} · coef {{coefficient}} · {{progress}}",
     "inProgress": "Being entered",
     "nextStudent": "Next student"
   },
   "parentFeed": {
     "switchChild": "Switch child",
     "subjectAverage": "Average · {{subject}}",
-    "improving": "improving",
+    "termCloses": "Closes on {{date}}",
     "weeklySummary": "Weekly summary",
     "weeklySummaryOn": "One SMS every Sunday at 19:00.",
     "weeklySummaryOff": "Off — the feed stays available.",
-    "allGrades": "All grades",
+    "allGrades": "Grades",
     "reportCards": "Report cards",
     "reportCardMeta": "Term {{term}} · {{subject}}",
     "classAverage": "Class average {{value}}",
@@ -366,7 +367,7 @@
       "reportCard": "Report card available"
     },
     "when": {
-      "minutesAgo": "{{count}} min ago",
+      "minutesAgo": "{{count}} min ago",
       "yesterdayAt": "yesterday, {{time}}"
     }
   }

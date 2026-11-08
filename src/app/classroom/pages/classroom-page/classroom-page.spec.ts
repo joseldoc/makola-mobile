@@ -3,7 +3,10 @@ import { Router, provideRouter } from '@angular/router';
 
 import { provideI18n } from '@core/i18n';
 import { Session } from '@core/models/auth.model';
+import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
+
+import { ClassroomStore } from '../../state/classroom.store';
 
 import { ClassroomPageComponent } from './classroom-page';
 
@@ -34,6 +37,43 @@ describe('ClassroomPageComponent — assignment rows', () => {
     for (const word of ['rank', 'position', 'quartile', 'above', 'below the class']) {
       expect(text).not.toContain(word);
     }
+  });
+});
+
+describe('ClassroomPageComponent — report card notice (US-P09)', () => {
+  let fixture: ComponentFixture<ClassroomPageComponent>;
+
+  const notice = () =>
+    (fixture.nativeElement as HTMLElement)
+      .querySelector('.report-card')!
+      .textContent!.replace(/\u00a0/g, ' ')
+      .trim();
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ClassroomPageComponent);
+    TestBed.inject(ClassroomStore).setView(2);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('takes the term and its closing date from the class, in the interface language', async () => {
+    expect(notice()).toContain(
+      'The term 2 report card will be available once the term closes, on 27 March 2026.',
+    );
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(notice()).toContain(
+      'Le bulletin du trimestre 2 sera disponible après sa clôture, le 27 mars 2026.',
+    );
+  });
+
+  it('states the limit: the class average per subject, and no rank (RM-11 as amended)', () => {
+    expect(notice()).toContain('the class average beside the student');
+    expect(notice()).toMatch(/no rank\.$/);
   });
 });
 
