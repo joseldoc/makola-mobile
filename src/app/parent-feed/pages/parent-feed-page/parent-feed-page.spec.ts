@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
 
 import { provideI18n } from '@core/i18n';
 import { Session } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
 
+import { ParentFeedStore } from '../../state/parent-feed.store';
 import { ParentFeedPageComponent } from './parent-feed-page';
 
 describe('ParentFeedPageComponent — class average next to the child’s grade', () => {
@@ -61,6 +64,65 @@ describe('ParentFeedPageComponent — class average next to the child’s grade'
     expect(newGrade.querySelector<HTMLElement>('.value')!.style.color).toBe('var(--mk-text)');
     // 9 is under the pass mark of 10: danger, because of the pass mark.
     expect(belowPass.querySelector<HTMLElement>('.value')!.style.color).toBe('var(--mk-refus)');
+  });
+});
+
+describe('ParentFeedPageComponent — class average in the subject card (RM-11, 7 November)', () => {
+  let fixture: ComponentFixture<ParentFeedPageComponent>;
+
+  const card = () => (fixture.nativeElement as HTMLElement).querySelector('.card.highlight')!;
+  const text = (part: string) =>
+    (card().querySelector(`.${part}`)?.textContent ?? '').replace(/ /g, ' ').trim();
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ParentFeedPageComponent);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('shows the class average beside the child’s, which stays the card’s value (en)', () => {
+    expect(text('card-label')).toBe('Average · Maths');
+    expect(text('card-value')).toBe('16.75');
+    expect(text('card-secondary')).toBe('Class average 12.68');
+    expect(card().querySelectorAll('.card-value')).toHaveLength(1);
+  });
+
+  it('formats it in the interface language (fr)', async () => {
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+
+    expect(text('card-label')).toBe('Moyenne · Maths');
+    expect(text('card-value')).toBe('16,75');
+    expect(text('card-secondary')).toBe('Moyenne de la classe 12,68');
+  });
+
+  it('shows nothing more without a class average — neither zero nor dash', async () => {
+    patchState(unprotected(TestBed.inject(ParentFeedStore)), { classSubjectAverage: undefined });
+    await fixture.whenStable();
+
+    expect(card().querySelector('.card-secondary')).toBeNull();
+    expect(text('card-value')).toBe('16.75');
+    expect(card().textContent!.replace(/ /g, ' ').replace(/\s+/g, ' ').trim()).toBe(
+      'Average · Maths 16.75',
+    );
+  });
+
+  it('does not compare: no tone, icon or arrow tied to the class average', async () => {
+    const before = card().querySelector<HTMLElement>('.card-secondary')!;
+    expect(before.getAttribute('style')).toBeNull();
+    expect(before.querySelector('ion-icon')).toBeNull();
+    expect(before.textContent).not.toMatch(/[↑↓▲▼]|above|below/i);
+
+    // A class average higher than the child's changes nothing but the number.
+    patchState(unprotected(TestBed.inject(ParentFeedStore)), { classSubjectAverage: 17.5 });
+    await fixture.whenStable();
+    const after = card().querySelector<HTMLElement>('.card-secondary')!;
+    expect(after.className).toBe(before.className);
+    expect(after.getAttribute('style')).toBeNull();
+    expect(text('card-secondary')).toBe('Class average 17.5');
   });
 });
 

@@ -17,6 +17,12 @@
         {{ 'parentFeed.subjectAverage' | transloco: { subject: store.subject() } }}
       </div>
       <div class="card-value">{{ average() }}</div>
+      @let classValue = classAverage();
+      @if (classValue !== null) {
+        <div class="card-secondary">
+          {{ 'parentFeed.classSubjectAverage' | transloco: { value: classValue } }}
+        </div>
+      }
     </div>
     <div class="card">
       <div class="card-label">{{ 'common.term' | transloco: { n: store.term() } }}</div>

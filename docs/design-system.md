@@ -36,11 +36,16 @@ Contraintes réelles qui façonnent tout le système : **terminaux d'entrée de 
 Elles viennent du cahier des charges, pas du goût. Un composant peut changer ;
 celles-ci, non.
 
-1. **Ni moyenne de classe, ni rang** — pour aucun acteur (RM-11). Le rang est le
-   principal vecteur de pression sur l'élève et de conflit avec le parent.
-   *Amendée le 6 novembre 2026 (décision de l'utilisateur) : le rang reste interdit
-   pour tous, mais la moyenne de la classe d'un devoir s'affiche au professeur et au
-   parent, à côté de la note, sans aucune comparaison ; le bulletin n'en porte pas.*
+1. **Aucun rang ; la moyenne de la classe, sans comparaison** — pour aucun acteur
+   (RM-11). Le rang est le principal vecteur de pression sur l'élève et de conflit
+   avec le parent.
+   *Amendée les 6 et 7 novembre 2026 (décisions de l'utilisateur, cahier v1.3) : le
+   rang reste interdit pour tous ; la moyenne de la classe s'affiche — celle d'un
+   devoir au professeur et au parent, à côté de la note ; celle de la matière au
+   parent, à côté de la moyenne de son enfant, et sur le bulletin, par matière, à
+   côté de la moyenne de l'élève (US-P09) — toujours sans comparaison : ni couleur,
+   ni icône, ni flèche, ni phrase qui les rapproche. La règle d'origine, « ni moyenne
+   de classe, ni rang », ne vaut plus que pour le rang.*
 2. **« Absent » et « non noté » ne sont pas des zéros** (RM-15) — ils n'entrent
    pas dans la moyenne et se distinguent sur le bulletin.
 3. **Le hors-ligne informe, ne bloque jamais** — la saisie fonctionne sans réseau,
