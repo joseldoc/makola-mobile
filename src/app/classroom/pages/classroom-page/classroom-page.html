@@ -6,7 +6,15 @@
     [scrolled]="store.scrolled()"
     [actions]="barActions()"
     (actionSelected)="onAction($event)"
-  />
+  >
+    <app-account-button
+      trailing
+      [name]="session.session()?.name"
+      role="teacher"
+      [label]="'account.open' | transloco"
+      (pressed)="accountOpen.set(true)"
+    />
+  </app-bar>
 
   @if (store.offline()) {
     <app-network-banner state="offline" [pending]="0" />
@@ -66,4 +74,14 @@
       (pressed)="newAssignment()"
     />
   </div>
+
+  @if (accountOpen() && session.session(); as account) {
+    <app-account-sheet
+      [name]="account.name"
+      [identifier]="account.identifier"
+      [otherSpaces]="session.otherRoles()"
+      [language]="language.language()"
+      (sheetAction)="onAccountSheet($event)"
+    />
+  }
 </div>

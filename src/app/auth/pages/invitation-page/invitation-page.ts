@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { injectTranslate } from '@core/i18n/translate';
+import { SessionStore } from '@core/store/session/session.store';
 import { KeypadComponent } from '@shared/forms/keypad/keypad';
 import { FooterActionComponent } from '@shared/actions/footer-action/footer-action';
 
@@ -15,6 +16,9 @@ const LENGTH = 6;
  * Parent entry container: the 6-digit invitation code received from the teacher
  * (RM-12 — single use, 7 days). The parent does not create an account alone:
  * the code links them to one specific student.
+ *
+ * Also the first screen of a signed-in account joining an invitation from its
+ * account sheet (A-23): going back leaves the flow for the space it came from.
  */
 @Component({
   selector: 'app-invitation-page',
@@ -32,6 +36,7 @@ const LENGTH = 6;
 })
 export class InvitationPageComponent {
   protected readonly store = inject(AuthFlowStore);
+  private readonly session = inject(SessionStore);
   private readonly router = inject(Router);
   private readonly t = injectTranslate();
 
@@ -72,8 +77,14 @@ export class InvitationPageComponent {
     else if (event.key === 'Backspace') this.erase();
   }
 
+  /** A guest goes back to the welcome screen; a signed-in account, to its space (A-23). */
   protected goBack(): void {
-    void this.router.navigateByUrl('/auth');
+    if (!this.store.joining()) {
+      void this.router.navigateByUrl('/auth');
+      return;
+    }
+    this.store.leaveJoin();
+    void this.router.navigateByUrl(this.session.initialRoute(), { replaceUrl: true });
   }
 
   private async check(): Promise<void> {

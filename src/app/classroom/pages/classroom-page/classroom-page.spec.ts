@@ -1,10 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
 
 import { provideI18n } from '@core/i18n';
 import { Session } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
+import {
+  AccountSheetComponent,
+  AccountSheetEvent,
+} from '@shared/account/account-sheet/account-sheet';
+import { AccountSheetActions } from '@shared/account/enums/account-sheet-actions.enum';
 
 import { AssignmentStore } from '../../../assignment/state/assignment.store';
 import { GradeEntryStore } from '../../../grade-entry/state/grade-entry.store';
@@ -79,12 +85,13 @@ describe('ClassroomPageComponent — report card notice (US-P09)', () => {
   });
 });
 
-describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02)', () => {
+describe('ClassroomPageComponent — the bar keeps the feature, the account sheet the account (8 November 2026)', () => {
   const identifier = { channel: 'phone', value: '+242066123456' } as const;
   let fixture: ComponentFixture<ClassroomPageComponent>;
   let navigateByUrl: ReturnType<typeof vi.fn>;
 
   async function open(stored: Session): Promise<void> {
+    TestBed.resetTestingModule();
     localStorage.clear();
     localStorage.setItem('mk.session', JSON.stringify(stored));
     TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
@@ -94,101 +101,154 @@ describe('ClassroomPageComponent — app-bar actions and the parent space (ID-02
     await fixture.whenStable();
   }
 
-  const targets = () =>
-    Array.from(
-      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(
-        'app-bar-target button',
-      ),
+  const root = () => fixture.nativeElement as HTMLElement;
+  const barLabels = () =>
+    Array.from(root().querySelectorAll<HTMLButtonElement>('app-bar-target button')).map((b) =>
+      b.getAttribute('aria-label'),
     );
-  const labels = () => targets().map((b) => b.getAttribute('aria-label'));
-  const press = (label: string) =>
-    targets()
-      .find((b) => b.getAttribute('aria-label') === label)!
-      .click();
+  const accountButton = () =>
+    root().querySelector<HTMLButtonElement>('app-bar app-account-button button')!;
+  const sheet = () => fixture.debugElement.query(By.directive(AccountSheetComponent));
+  const rowLabels = () =>
+    Array.from(root().querySelectorAll('app-account-sheet .row .label')).map((l) =>
+      l.textContent!.trim(),
+    );
+  const emit = (event: AccountSheetEvent) =>
+    (sheet().componentInstance as AccountSheetComponent).sheetAction.emit(event);
   const session = () => TestBed.inject(SessionStore);
+
+  async function openSheet(): Promise<void> {
+    accountButton().click();
+    await fixture.whenStable();
+    expect(sheet()).toBeTruthy();
+  }
+
+  const teacherOnly: Session = {
+    id: 'a1',
+    identifier,
+    name: 'NKOUKA Joseph',
+    activeRole: 'teacher',
+    roles: { teacher: 'ready' },
+  };
+  const twoRoles: Session = { ...teacherOnly, roles: { teacher: 'ready', parent: 'ready' } };
 
   afterEach(() => localStorage.clear());
 
-  it('teacher only: no parent space action', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready' } });
+  it('the bar carries the class actions only, with one role or two — never space nor sign out', async () => {
+    await open(teacherOnly);
+    expect(barLabels()).toEqual(['Change class', 'Search']);
 
-    expect(labels()).toEqual(['Change class', 'Search', 'Sign out']);
+    await open(twoRoles);
+    expect(barLabels()).toEqual(['Change class', 'Search']);
   });
 
-  it('teacher only: sign out still signs out, the index no longer points elsewhere', async () => {
-    await open({ id: 'a1', identifier, activeRole: 'teacher', roles: { teacher: 'ready' } });
+  it('the account button shows the account’s initials, at the end of the bar', async () => {
+    await open(twoRoles);
 
-    press('Sign out');
-
-    expect(session().signedIn()).toBe(false);
-    expect(navigateByUrl).toHaveBeenCalledWith('/auth', { replaceUrl: true });
+    expect(accountButton().getAttribute('aria-label')).toBe('Your account');
+    expect(accountButton().textContent!.trim()).toBe('NJ');
+    const bar = root().querySelector('app-bar .app-bar')!;
+    expect(bar.lastElementChild!.tagName.toLowerCase()).toBe('app-account-button');
+    expect(sheet()).toBeNull();
   });
 
-  it('teacher and parent: the parent space action sits between search and sign out', async () => {
-    await open({
-      id: 'a1',
-      identifier,
-      activeRole: 'teacher',
-      roles: { teacher: 'ready', parent: 'ready' },
-    });
+  it('teacher only: the sheet offers no other space', async () => {
+    await open(teacherOnly);
+    await openSheet();
 
-    expect(labels()).toEqual(['Change class', 'Search', 'Parent space', 'Sign out']);
+    expect(rowLabels()).toEqual(['Join with an invitation code', 'Language', 'Sign out']);
   });
 
-  it('a press shows the parent space, kept for the next launch', async () => {
-    await open({
-      id: 'a1',
-      identifier,
-      activeRole: 'teacher',
-      roles: { teacher: 'ready', parent: 'ready' },
-    });
+  it('two roles: the sheet offers the parent space, first', async () => {
+    await open(twoRoles);
+    await openSheet();
 
-    press('Parent space');
+    expect(rowLabels()).toEqual([
+      'Parent space',
+      'Join with an invitation code',
+      'Language',
+      'Sign out',
+    ]);
+  });
+
+  it('SwitchSpace: shows the parent space, kept for the next launch; the sheet closes', async () => {
+    await open(twoRoles);
+    await openSheet();
+
+    emit({ action: AccountSheetActions.SwitchSpace, role: 'parent' });
+    await fixture.whenStable();
 
     expect(session().activeRole()).toBe('parent');
     expect(JSON.parse(localStorage.getItem('mk.session')!).activeRole).toBe('parent');
     expect(navigateByUrl).toHaveBeenCalledWith('/parent-feed', { replaceUrl: true });
+    expect(sheet()).toBeNull();
   });
 
-  it('a press opens the parent alerts first when they are still to set', async () => {
-    await open({
-      id: 'a1',
-      identifier,
-      activeRole: 'teacher',
-      roles: { teacher: 'ready', parent: 'setup' },
-    });
+  it('SwitchSpace: the parent alerts first when they are still to set', async () => {
+    await open({ ...teacherOnly, roles: { teacher: 'ready', parent: 'setup' } });
+    await openSheet();
 
-    press('Parent space');
+    emit({ action: AccountSheetActions.SwitchSpace, role: 'parent' });
 
     expect(navigateByUrl).toHaveBeenCalledWith('/auth/alerts', { replaceUrl: true });
   });
 
-  it('with two roles, sign out still signs out — every role at once', async () => {
-    await open({
-      id: 'a1',
-      identifier,
-      activeRole: 'teacher',
-      roles: { teacher: 'ready', parent: 'ready' },
-    });
+  it('JoinInvitation: the invitation flow opens to the account, the session stays (A-23)', async () => {
+    await open(teacherOnly);
+    await openSheet();
 
-    press('Sign out');
+    emit({ action: AccountSheetActions.JoinInvitation });
+    await fixture.whenStable();
+
+    expect(navigateByUrl).toHaveBeenCalledWith('/auth/join');
+    expect(session().signedIn()).toBe(true);
+    expect(sheet()).toBeNull();
+  });
+
+  it('ChangeLanguage: the interface changes at once, the sheet stays open', async () => {
+    await open(teacherOnly);
+    await openSheet();
+
+    emit({ action: AccountSheetActions.ChangeLanguage, language: 'fr' });
+    await fixture.whenStable();
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+
+    expect(TestBed.inject(LanguageStore).language()).toBe('fr');
+    expect(sheet()).toBeTruthy();
+    expect(barLabels()).toEqual(['Changer de classe', 'Rechercher']);
+    expect(rowLabels()).toContain('Se déconnecter');
+  });
+
+  it('SignOut: every role at once, back to the welcome screen', async () => {
+    await open(twoRoles);
+    await openSheet();
+
+    emit({ action: AccountSheetActions.SignOut });
 
     expect(session().signedIn()).toBe(false);
     expect(navigateByUrl).toHaveBeenCalledWith('/auth', { replaceUrl: true });
   });
 
-  it('search still opens the students view', async () => {
-    await open({
-      id: 'a1',
-      identifier,
-      activeRole: 'teacher',
-      roles: { teacher: 'ready', parent: 'ready' },
-    });
+  it('Close: the sheet closes, nothing else changes', async () => {
+    await open(twoRoles);
+    await openSheet();
 
-    press('Search');
+    emit({ action: AccountSheetActions.Close });
     await fixture.whenStable();
 
-    expect((fixture.nativeElement as HTMLElement).querySelector('app-search-field')).toBeTruthy();
+    expect(sheet()).toBeNull();
+    expect(session().activeRole()).toBe('teacher');
+    expect(navigateByUrl).not.toHaveBeenCalled();
+  });
+
+  it('search still opens the students view', async () => {
+    await open(twoRoles);
+
+    root().querySelector<HTMLButtonElement>('app-bar-target button[aria-label="Search"]')!.click();
+    await fixture.whenStable();
+
+    expect(root().querySelector('app-search-field')).toBeTruthy();
     expect(navigateByUrl).not.toHaveBeenCalled();
   });
 });

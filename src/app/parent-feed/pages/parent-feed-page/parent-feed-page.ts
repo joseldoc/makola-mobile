@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -10,6 +10,12 @@ import { isBelowPassMark, passMark } from '@core/models/grading';
 import { periodKey } from '@core/models/period';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
+import { AccountButtonComponent } from '@shared/account/account-button/account-button';
+import {
+  AccountSheetComponent,
+  AccountSheetEvent,
+} from '@shared/account/account-sheet/account-sheet';
+import { AccountSheetActions } from '@shared/account/enums/account-sheet-actions.enum';
 import { AppBarAction, AppBarComponent } from '@shared/navigation/app-bar/app-bar';
 import { ListRowComponent } from '@shared/data/list-row/list-row';
 import { SwitchComponent } from '@shared/forms/switch/switch';
@@ -42,6 +48,8 @@ interface FeedRow {
   selector: 'app-parent-feed-page',
   imports: [
     AppBarComponent,
+    AccountButtonComponent,
+    AccountSheetComponent,
     ListRowComponent,
     SwitchComponent,
     OutlinedButtonComponent,
@@ -53,29 +61,25 @@ interface FeedRow {
 })
 export class ParentFeedPageComponent {
   protected readonly store = inject(ParentFeedStore);
-  private readonly language = inject(LanguageStore);
-  private readonly session = inject(SessionStore);
+  protected readonly language = inject(LanguageStore);
+  protected readonly session = inject(SessionStore);
   private readonly router = inject(Router);
   private readonly t = injectTranslate();
 
-  /** The teacher space appears only when the account also holds that role (ID-02). */
+  /**
+   * The actions of the feature only: the account's (other space, invitation,
+   * language, sign out) are in the account sheet, opened by the account button.
+   */
   protected readonly barActions = computed<ParentFeedBarAction[]>(() => [
     {
       action: ParentFeedBarActions.SwitchChild,
       icon: ICONS.expand,
       label: this.t('parentFeed.switchChild'),
     },
-    ...(this.session.hasRole('teacher')
-      ? [
-          {
-            action: ParentFeedBarActions.TeacherSpace,
-            icon: ICONS.classroom,
-            label: this.t('spaces.teacher'),
-          },
-        ]
-      : []),
-    { action: ParentFeedBarActions.SignOut, icon: ICONS.logout, label: this.t('common.signOut') },
   ]);
+
+  /** The account sheet is open. */
+  protected readonly accountOpen = signal(false);
 
   protected readonly average = computed(() =>
     formatDecimal(this.store.subjectAverage(), this.language.language()),
@@ -127,7 +131,6 @@ export class ParentFeedPageComponent {
     this.store.setScrolled(target.scrollTop > 0);
   }
 
-  /** The index is read in the list shown, which changes with the account's roles. */
   protected onAction(index: number): void {
     const selected = this.barActions()[index];
     if (!selected) return;
@@ -135,11 +138,29 @@ export class ParentFeedPageComponent {
       case ParentFeedBarActions.SwitchChild:
         this.switchChild();
         return;
-      case ParentFeedBarActions.TeacherSpace:
-        this.switchSpace('teacher');
+    }
+  }
+
+  /** The account sheet's single event: this page decides what each action does. */
+  protected onAccountSheet(event: AccountSheetEvent): void {
+    switch (event.action) {
+      case AccountSheetActions.SwitchSpace:
+        this.accountOpen.set(false);
+        this.switchSpace(event.role);
         return;
-      case ParentFeedBarActions.SignOut:
+      case AccountSheetActions.JoinInvitation:
+        this.accountOpen.set(false);
+        // A-23: another child or another teacher's subject, without signing out.
+        void this.router.navigateByUrl('/auth/join');
+        return;
+      case AccountSheetActions.ChangeLanguage:
+        void this.language.setLanguage(event.language);
+        return;
+      case AccountSheetActions.SignOut:
         this.signOut();
+        return;
+      case AccountSheetActions.Close:
+        this.accountOpen.set(false);
         return;
     }
   }

@@ -30,7 +30,7 @@ for intent in ('sign-up', 'sign-in', 'invitation'):
         dynamic |= {f'auth.identifier.{intent}.{ch}.{p}' for p in ('step', 'title', 'text')}
     dynamic.add(f'auth.code.step.{intent}')
 for c in ('unknown-account', 'existing-account', 'wrong-code', 'unknown-invitation', 'parental-consent-required',
-          'offline', 'invitation-declined', 'consents-declined', 'unexpected'):
+          'offline', 'invitation-declined', 'consents-declined', 'other-account', 'unexpected'):
     dynamic.add(f'auth.errors.{c}')
 for d in ('CHILD_DATA', 'CROSS_BORDER_TRANSFER'):
     dynamic |= {f'auth.consents.documents.{d}.title', f'auth.consents.documents.{d}.text'}
@@ -49,6 +49,9 @@ for t in ('newGrade', 'gradeBelowPass', 'testAnnounced', 'reportCard'):
 for s in ('maths', 'physics', 'biology', 'french', 'english', 'history', 'philosophy', 'sport'):
     dynamic.add(f'subjects.{s}')
 dynamic |= {'keypad.absent', 'keypad.ungraded'}
+# The account sheet names each other space of the account (RM-19).
+for r in ('teacher', 'parent'):
+    dynamic |= {f'spaces.{r}', f'account.spaceDetail.{r}'}
 # Texts that name the period of a class: one sentence per kind (RM-02, `periodKey`).
 for base in ('period', 'classroom.periodAverage', 'classroom.reportCardNotice',
              'assignment.titleErrors.duplicate', 'assignment.date.inPeriod', 'assignment.date.afterClose',

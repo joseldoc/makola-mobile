@@ -133,3 +133,71 @@ describe('IdentifierPageComponent — invitation number, then consents or code (
     expect(store.requiredConsents()).toEqual(['CHILD_DATA', 'CROSS_BORDER_TRANSFER']);
   });
 });
+
+describe('IdentifierPageComponent — joining while signed in: the account’s contact entered (A-23)', () => {
+  async function open(identifier: { channel: 'phone' | 'email'; value: string }) {
+    localStorage.clear();
+    localStorage.setItem(
+      'mk.session',
+      JSON.stringify({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } }),
+    );
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        provideI18n(),
+        AuthFlowStore,
+        { provide: AuthApi, useClass: MockAuthApi },
+      ],
+    });
+    TestBed.inject(AuthFlowStore).join();
+    const fixture = TestBed.createComponent(IdentifierPageComponent);
+    fixture.componentRef.setInput('intent', 'invitation');
+    await fixture.whenStable();
+    return fixture.nativeElement as HTMLElement;
+  }
+
+  afterEach(() => localStorage.clear());
+
+  it('a Kenyan number: its calling code and its digits', async () => {
+    const element = await open({ channel: 'phone', value: '+254712345678' });
+
+    const field = element.querySelector('app-phone-field')!.textContent!.replace(/\s/g, '');
+    expect(field).toContain('+254');
+    expect(field).toContain('712345678');
+  });
+
+  it('another number sent right after its last digit: the refusal stays on screen', async () => {
+    const element = await open({ channel: 'phone', value: '+242066123456' });
+    vi.useFakeTimers();
+    try {
+      const send = vi.spyOn(TestBed.inject(AuthApi), 'requestCode');
+
+      // Erase, type and send in one go: the last keystroke's effect runs after the refusal.
+      for (let i = 0; i < 9; i++)
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }));
+      for (const key of '055123456Enter'.match(/\d|Enter/g)!)
+        document.dispatchEvent(new KeyboardEvent('keydown', { key }));
+      await vi.runAllTimersAsync();
+
+      const hint = element.querySelector('.hint')!.textContent!.replace(/\u00a0/g, ' ');
+      expect(hint).toContain('This phone is signed in with +242 06 612 34 56');
+      expect(send).not.toHaveBeenCalled();
+
+      // A new input clears it.
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }));
+      await vi.runAllTimersAsync();
+      expect(element.querySelector('.hint')!.textContent).not.toContain('signed in with');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('an email account: the email field, filled', async () => {
+    const element = await open({ channel: 'email', value: 'aline.mbemba@example.cg' });
+
+    expect(element.querySelector('app-phone-field')).toBeNull();
+    expect(element.querySelector<HTMLInputElement>('app-text-field input')!.value).toBe(
+      'aline.mbemba@example.cg',
+    );
+  });
+});

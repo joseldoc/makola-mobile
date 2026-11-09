@@ -1,8 +1,9 @@
-import { computed } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
 import { Role, Session } from '@core/models/auth.model';
-import { heldRoles, parseSession, showing } from '@core/models/session';
+import { heldRoles, parseSession, showing, spaceAtSignIn } from '@core/models/session';
+import { SpaceMemory } from '@core/services/space-memory';
 
 const SESSION_KEY = 'mk.session';
 const ONBOARDING_KEY = 'mk.onboarding-seen';
@@ -24,9 +25,10 @@ interface SessionState {
  * API: no native feature is needed here). Read synchronously at creation so
  * route guards can decide on the very first navigation.
  *
- * An account holds one or two roles (ID-02); the session shows one space at a
- * time, the active role. It is persisted with the session, so the app reopens
- * the last space shown.
+ * An account holds one or two roles (RM-19, ID-02); the session shows one space
+ * at a time, the active role. It is persisted with the session, so the app
+ * reopens the last space shown. Every space shown is also remembered per account
+ * on the device (`SpaceMemory`), beyond the session: a sign-in reopens it (A-22).
  */
 export const SessionStore = signalStore(
   { providedIn: 'root' },
@@ -49,6 +51,11 @@ export const SessionStore = signalStore(
       }),
       /** The space shown. */
       activeRole: computed<Role | null>(() => session()?.activeRole ?? null),
+      /** The account's spaces other than the one shown — offered by the account sheet. */
+      otherRoles: computed<Role[]>(() => {
+        const s = session();
+        return s ? heldRoles(s).filter((role) => role !== s.activeRole) : [];
+      }),
       ready,
       /** At least one space of the account is ready: its holder is no longer a guest. */
       hasReadySpace: computed(() => {
@@ -64,41 +71,59 @@ export const SessionStore = signalStore(
       }),
     };
   }),
-  withMethods((store) => ({
-    /** The account holds `role`. Reactive when read in a `computed`. */
-    hasRole(role: Role): boolean {
-      return store.session()?.roles[role] !== undefined;
-    },
-    /** The account holds `role` and its step 2 is done. Reactive when read in a `computed`. */
-    isReady(role: Role): boolean {
-      return store.session()?.roles[role] === 'ready';
-    },
-    completeOnboarding(): void {
-      patchState(store, { onboardingSeen: true });
-      write(ONBOARDING_KEY, true);
-    },
-    open(session: Session): void {
+  withMethods((store, spaces = inject(SpaceMemory)) => {
+    /** The session as given — its active role is the space shown, and remembered. */
+    function open(session: Session): void {
       patchState(store, { session });
       write(SESSION_KEY, session);
-    },
-    /** Signs out of the account — every role at once. */
-    close(): void {
-      patchState(store, { session: null });
-      write(SESSION_KEY, null);
-    },
-    /**
-     * Shows `role`'s space and keeps that choice for the next launch. Without
-     * effect when the account does not hold `role`.
-     */
-    switchSpace(role: Role): void {
-      const current = store.session();
-      if (!current || current.activeRole === role) return;
-      const switched = showing(current, role);
-      if (!switched) return;
-      patchState(store, { session: switched });
-      write(SESSION_KEY, switched);
-    },
-  })),
+      spaces.remember(session.id, session.activeRole);
+    }
+
+    return {
+      /** The account holds `role`. Reactive when read in a `computed`. */
+      hasRole(role: Role): boolean {
+        return store.session()?.roles[role] !== undefined;
+      },
+      /** The account holds `role` and its step 2 is done. Reactive when read in a `computed`. */
+      isReady(role: Role): boolean {
+        return store.session()?.roles[role] === 'ready';
+      },
+      completeOnboarding(): void {
+        patchState(store, { onboardingSeen: true });
+        write(ONBOARDING_KEY, true);
+      },
+      /**
+       * A flow opens the session on the space it leads to: a sign-up on the
+       * teacher profile, an accepted invitation on the parent alerts, a step 2 on
+       * its space.
+       */
+      open,
+      /**
+       * A sign-in: the server knows no active space, the app chooses it (A-22) —
+       * the last one this account used on this device, else a step 2 left to do,
+       * else the teacher space (`spaceAtSignIn`).
+       */
+      signIn(session: Session): void {
+        const space = spaceAtSignIn(session, spaces.recall(session.id));
+        open(showing(session, space) ?? session);
+      },
+      /** Signs out of the account — every role at once. The space used stays remembered. */
+      close(): void {
+        patchState(store, { session: null });
+        write(SESSION_KEY, null);
+      },
+      /**
+       * Shows `role`'s space and keeps that choice for the next launch and the
+       * next sign-in. Without effect when the account does not hold `role`.
+       */
+      switchSpace(role: Role): void {
+        const current = store.session();
+        if (!current || current.activeRole === role) return;
+        const switched = showing(current, role);
+        if (switched) open(switched);
+      },
+    };
+  }),
 );
 
 /**
