@@ -1,4 +1,5 @@
 import { Message } from '@core/i18n/translate';
+import { Scale } from '@core/models/grading';
 
 export type FeedItemType = 'newGrade' | 'gradeBelowPass' | 'testAnnounced' | 'reportCard';
 
@@ -8,10 +9,13 @@ export type FeedItemType = 'newGrade' | 'gradeBelowPass' | 'testAnnounced' | 're
  * 6 November 2026). The two are shown side by side, never compared: no rank, no
  * position, no colour tied to the class average. Absent until the server has it —
  * then nothing is shown, neither zero nor dash.
+ * The scale of the assignment sets the pass mark the grade is read against
+ * (half of it: `isBelowPassMark`) — the only reason a grade is shown in `danger`.
  */
 export interface FeedGrade {
   kind: 'grade';
   value: number;
+  scale: Scale;
   classAverage?: number;
 }
 

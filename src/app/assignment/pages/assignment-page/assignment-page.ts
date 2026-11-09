@@ -4,16 +4,14 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import { formatDate } from '@core/i18n/format';
 import { injectTranslate } from '@core/i18n/translate';
+import { SCALES } from '@core/models/grading';
 import { LanguageStore } from '@core/store/language/language.store';
 import { TextFieldComponent } from '@shared/forms/text-field/text-field';
 import { MiniFabComponent } from '@shared/actions/mini-fab/mini-fab';
 import { OutlinedButtonComponent } from '@shared/actions/outlined-button/outlined-button';
 import { FooterActionComponent } from '@shared/actions/footer-action/footer-action';
 
-import { Scale } from '../../models/assignment.model';
 import { AssignmentStore } from '../../state/assignment.store';
-
-const SCALES: Scale[] = [20, 10, 5];
 
 /**
  * New-assignment bottom sheet — per-field validation (RM-13, RM-14), a button

@@ -1,4 +1,5 @@
 import { Level, ParentAlerts } from '@core/models/auth.model';
+import { PeriodKind, periodSplit } from '@core/models/period';
 
 export interface Option<T extends string = string> {
   value: T;
@@ -19,13 +20,25 @@ export const SUBJECTS: Option[] = [
   'sport',
 ].map((value) => ({ value, labelKey: `subjects.${value}` }));
 
-/** The period split follows the level (RM-02). */
-export const LEVELS: Option<Level>[] = [
-  { value: 'primary', labelKey: 'levels.primary', detailKey: 'levels.terms' },
-  { value: 'middle', labelKey: 'levels.middle', detailKey: 'levels.terms' },
-  { value: 'high', labelKey: 'levels.high', detailKey: 'levels.terms' },
-  { value: 'university', labelKey: 'levels.university', detailKey: 'levels.semesters' },
-];
+/** « Terms » / « Semesters », beside each level. */
+const PERIODS_KEYS: Record<PeriodKind, string> = {
+  term: 'levels.terms',
+  semester: 'levels.semesters',
+};
+
+/** The period split follows the level (RM-02): read in `periodSplit`, not written again here. */
+export const LEVELS: Option<Level>[] = (
+  [
+    ['primary', 'levels.primary'],
+    ['middle', 'levels.middle'],
+    ['high', 'levels.high'],
+    ['university', 'levels.university'],
+  ] as const
+).map(([value, labelKey]) => ({
+  value,
+  labelKey,
+  detailKey: PERIODS_KEYS[periodSplit(value).kind],
+}));
 
 export interface AlertOption {
   key: keyof ParentAlerts;

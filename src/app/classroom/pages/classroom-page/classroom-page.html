@@ -27,14 +27,14 @@
 
   <div class="list" [class.no-border]="store.view() === 1" (scroll)="onScroll($event)">
     @if (store.view() === 0) {
-      @for (assignment of store.assignments(); track assignment.name; let i = $index) {
+      @for (assignment of store.current().assignments; track assignment.name; let i = $index) {
         <app-list-row
           [index]="i"
           [primary]="assignment.name"
           [secondary]="assignmentMeta(assignment)"
           [value]="decimal(assignment.classAverage)"
           [tertiary]="'classroom.classAverage' | transloco"
-          (rowClick)="enterGrades()"
+          (rowClick)="enterGrades(assignment)"
         />
       }
     }
@@ -45,9 +45,9 @@
           <app-list-row
             [index]="i"
             [primary]="student.name"
-            [secondary]="'classroom.termAverage' | transloco"
+            [secondary]="periodAverage()"
             [value]="decimal(student.average)"
-            [valueTone]="student.belowPass ? 'danger' : 'neutral'"
+            [valueTone]="studentTone(student)"
           />
         }
       } @else {

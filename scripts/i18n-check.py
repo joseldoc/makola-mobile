@@ -49,6 +49,11 @@ for t in ('newGrade', 'gradeBelowPass', 'testAnnounced', 'reportCard'):
 for s in ('maths', 'physics', 'biology', 'french', 'english', 'history', 'philosophy', 'sport'):
     dynamic.add(f'subjects.{s}')
 dynamic |= {'keypad.absent', 'keypad.ungraded'}
+# Texts that name the period of a class: one sentence per kind (RM-02, `periodKey`).
+for base in ('period', 'classroom.periodAverage', 'classroom.reportCardNotice',
+             'assignment.titleErrors.duplicate', 'assignment.date.inPeriod', 'assignment.date.afterClose',
+             'assignment.date.afterLastClose', 'assignment.date.closed', 'parentFeed.reportCardMeta'):
+    dynamic |= {f'{base}.{kind}' for kind in ('term', 'semester')}
 
 problems = 0
 for lang, keys in langs.items():

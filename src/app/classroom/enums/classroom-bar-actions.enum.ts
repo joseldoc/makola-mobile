@@ -1,5 +1,7 @@
 /** What the classroom app bar asks its page to do. */
 export enum ClassroomBarActions {
+  /** Shows the teacher's next class — only when there is more than one. */
+  SwitchClassroom = 'SWITCH_CLASSROOM',
   /** Opens the students view, where the search field is. */
   Search = 'SEARCH',
   /** Shows the parent space — only when the account also holds the parent role (ID-02). */

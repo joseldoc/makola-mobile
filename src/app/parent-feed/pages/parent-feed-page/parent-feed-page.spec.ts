@@ -217,3 +217,122 @@ describe('ParentFeedPageComponent — app-bar actions and the teacher space (ID-
     expect(navigateByUrl).toHaveBeenCalledWith('/classroom', { replaceUrl: true });
   });
 });
+
+describe('ParentFeedPageComponent — the pass mark follows the scale of each grade', () => {
+  let fixture: ComponentFixture<ParentFeedPageComponent>;
+
+  const rows = () =>
+    Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('app-list-row'));
+  const text = (row: Element, part: string) =>
+    (row.querySelector(`.${part}`)?.textContent ?? '').replace(/ /g, ' ').trim();
+  const tone = (row: Element) => row.querySelector<HTMLElement>('.value')!.style.color;
+  const feed = () => unprotected(TestBed.inject(ParentFeedStore));
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ParentFeedPageComponent);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('on /20: « Grade below 10 », the grade in danger', () => {
+    const belowPass = rows()[1];
+    expect(text(belowPass, 'primary')).toBe('Grade below 10');
+    expect(tone(belowPass)).toBe('var(--mk-refus)');
+  });
+
+  it('on /10: « Grade below 5 »; a 6 out of 10 passes and stays neutral', async () => {
+    patchState(feed(), {
+      feed: [
+        {
+          type: 'gradeBelowPass',
+          meta: 'Interrogation ch. 6 · Maths',
+          value: { kind: 'grade', value: 4, scale: 10 },
+          when: { kind: 'date', date: '2026-03-18' },
+        },
+        {
+          type: 'newGrade',
+          meta: 'Interrogation ch. 7 · Maths',
+          value: { kind: 'grade', value: 6, scale: 10 },
+          when: { kind: 'date', date: '2026-03-19' },
+        },
+      ],
+    });
+    await fixture.whenStable();
+
+    const [below, passing] = rows();
+    expect(text(below, 'primary')).toBe('Grade below 5');
+    expect(tone(below)).toBe('var(--mk-refus)');
+    // Under the old rule (« below 10 » on every scale), 6 was in danger.
+    expect(tone(passing)).toBe('var(--mk-text)');
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(text(rows()[0], 'primary')).toBe('Note en dessous de 5');
+  });
+
+  it('on /5: half the scale as well, in the interface language', async () => {
+    patchState(feed(), {
+      feed: [
+        {
+          type: 'gradeBelowPass',
+          meta: 'Lecture · Français',
+          value: { kind: 'grade', value: 2, scale: 5 },
+          when: { kind: 'date', date: '2026-03-18' },
+        },
+      ],
+    });
+    await fixture.whenStable();
+    expect(text(rows()[0], 'primary')).toBe('Grade below 2.5');
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(text(rows()[0], 'primary')).toBe('Note en dessous de 2,5');
+  });
+});
+
+describe('ParentFeedPageComponent — a child at university: semesters (RM-02)', () => {
+  let fixture: ComponentFixture<ParentFeedPageComponent>;
+
+  const card = () => (fixture.nativeElement as HTMLElement).querySelectorAll('.card')[1];
+  const label = () => card().querySelector('.card-label')!.textContent!.replace(/ /g, ' ').trim();
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ParentFeedPageComponent);
+    patchState(unprotected(TestBed.inject(ParentFeedStore)), {
+      period: { kind: 'semester', n: 2 },
+      feed: [
+        {
+          type: 'reportCard',
+          meta: {
+            key: 'parentFeed.reportCardMeta.semester',
+            params: { n: 1, subject: 'Analyse' },
+          },
+          value: { kind: 'text', text: 'PDF' },
+          when: { kind: 'date', date: '2026-02-13' },
+        },
+      ],
+    });
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('names the semester on the period card and on the report card, in both languages', async () => {
+    const meta = () =>
+      (fixture.nativeElement as HTMLElement)
+        .querySelector('app-list-row .secondary')!
+        .textContent!.trim();
+    expect(label()).toBe('Semester 2');
+    expect(meta()).toBe('Semester 1 · Analyse');
+
+    await TestBed.inject(LanguageStore).setLanguage('fr');
+    await fixture.whenStable();
+    expect(label()).toBe('Semestre 2');
+    expect(meta()).toBe('Semestre 1 · Analyse');
+  });
+});
