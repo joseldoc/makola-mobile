@@ -368,3 +368,38 @@ describe('ClassroomPageComponent — a university class has semesters (RM-02, A-
     expect(entry.entered()).toBe(0);
   });
 });
+
+describe('ClassroomPageComponent — a student row opens the student’s page (US-P08)', () => {
+  let fixture: ComponentFixture<ClassroomPageComponent>;
+  const root = () => fixture.nativeElement as HTMLElement;
+  const store = () => TestBed.inject(ClassroomStore);
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ClassroomPageComponent);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('in 4ème B: the class and the student are in the address', async () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    store().setView(1);
+    await fixture.whenStable();
+
+    root().querySelectorAll<HTMLElement>('app-list-row .list-row')[0].click();
+    expect(navigate).toHaveBeenCalledWith(['/student', '4b-maths', 'ilunga-marie']);
+  });
+
+  it('in L1, after a search: the row tapped, not its index in the class', async () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    store().nextClassroom();
+    store().setView(1);
+    store().setSearch('makaya');
+    await fixture.whenStable();
+
+    root().querySelector<HTMLElement>('app-list-row .list-row')!.click();
+    expect(navigate).toHaveBeenCalledWith(['/student', 'l1-maths', 'makaya-prince']);
+  });
+});

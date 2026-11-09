@@ -26,6 +26,11 @@ const CLASSROOMS: Classroom[] = [
     period: periodOf('high', 2),
     periodCloses: '2026-03-27',
     previousPeriodCloses: '2026-01-06',
+    // Term 2 only — the assignments of the period shown. Their class averages are
+    // the means of the students present (RM-15), and each student's average the
+    // coefficient-weighted mean of their own grades: the sample record of
+    // `MockStudentRecordApi` holds those grades, `student-record.coherence.spec.ts`
+    // checks the two agree. ILUNGA Marie: (19 × 2 + 17.5 + 9 + 18 × 2) / 6 = 16.75.
     assignments: [
       { name: 'Contrôle n°2', coefficient: 2, scale: 20, date: '2026-03-12', classAverage: 12.4 },
       {
@@ -42,14 +47,21 @@ const CLASSROOMS: Classroom[] = [
         date: '2026-02-28',
         classAverage: 14.1,
       },
+      {
+        name: 'Interrogation ch. 4',
+        coefficient: 2,
+        scale: 10,
+        date: '2026-01-23',
+        classAverage: 6.35,
+      },
     ],
     students: [
-      { name: 'ILUNGA Marie', average: 16.75 },
-      { name: 'MOUKALA Chris', average: 9.2 },
-      { name: 'NGOMA Divine', average: 13.5 },
-      { name: 'OBAMBI Junior', average: 11.05 },
-      { name: 'SAMBA Rose', average: 15.4 },
-      { name: 'TATI Gloire', average: 8.75 },
+      { id: 'ilunga-marie', name: 'ILUNGA Marie', average: 16.75 },
+      { id: 'moukala-chris', name: 'MOUKALA Chris', average: 9.25 },
+      { id: 'ngoma-divine', name: 'NGOMA Divine', average: 13.5 },
+      { id: 'obambi-junior', name: 'OBAMBI Junior', average: 11 },
+      { id: 'samba-rose', name: 'SAMBA Rose', average: 15.38 },
+      { id: 'tati-gloire', name: 'TATI Gloire', average: 8.7 },
     ],
   },
   {
@@ -61,16 +73,18 @@ const CLASSROOMS: Classroom[] = [
     period: periodOf('university', 2),
     periodCloses: '2026-06-12',
     previousPeriodCloses: '2026-02-06',
+    // Semester 2 only, like 4ème B: same coherence with the sample record.
     assignments: [
       { name: 'Partiel n°1', coefficient: 3, scale: 20, date: '2026-03-10', classAverage: 10.9 },
       { name: 'TD n°4', coefficient: 1, scale: 10, date: '2026-03-04', classAverage: 6.2 },
+      { name: 'TD n°3', coefficient: 1, scale: 10, date: '2026-02-20', classAverage: 5.75 },
     ],
     students: [
-      { name: 'BANZOUZI Grâce', average: 13.2 },
-      { name: 'ELENGA Fortuné', average: 9.6 },
-      { name: 'KIMBEMBE Sarah', average: 11.4 },
-      { name: 'MAKAYA Prince', average: 7.85 },
-      { name: 'NKOUKA Ornella', average: 14.9 },
+      { id: 'banzouzi-grace', name: 'BANZOUZI Grâce', average: 13.19 },
+      { id: 'elenga-fortune', name: 'ELENGA Fortuné', average: 9.6 },
+      { id: 'kimbembe-sarah', name: 'KIMBEMBE Sarah', average: 11.4 },
+      { id: 'makaya-prince', name: 'MAKAYA Prince', average: 7.85 },
+      { id: 'nkouka-ornella', name: 'NKOUKA Ornella', average: 14.9 },
     ],
   },
 ];

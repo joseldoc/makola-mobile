@@ -531,6 +531,60 @@ T = {
       "yesterdayAt": ("yesterday, {{time}}", "hier, {{time}}"),
     },
   },
+  # A student's page (US-P08, A-11 decided on 8 November 2026), in the teacher's space and in
+  # the parent's (their child, in the subject of the teacher who invited them, A-19). The class
+  # average stands beside the student's, on the curve as a reference line, never compared
+  # (RM-11 as amended): no sentence here relates one to the other, and none names a rank.
+  "student": {
+    "loading": ("Loading the grades…", "Chargement des notes…"),
+    "errors": {
+      "unknown-record": ("These grades cannot be shown. Go back and open them again from the previous screen.",
+                         "Ces notes ne peuvent pas être affichées. Revenez à l'écran précédent et ouvrez-les de nouveau."),
+      # Nothing reloads by itself yet: the message says what to do, not what will happen.
+      "offline": ("These grades could not be loaded without network. Open this page again once the network is back.",
+                  "Ces notes n'ont pas pu être chargées sans réseau. Rouvrez cette page au retour du réseau."),
+    },
+    "empty": ("No assignment yet in this subject. Grades will show here once they are entered.",
+              "Aucun devoir dans cette matière pour l'instant. Les notes s'afficheront ici dès leur saisie."),
+    # Same words as the classroom screen and the parent's subject card.
+    "average": {
+      "term": ("Term average", "Moyenne du trimestre"),
+      "semester": ("Semester average", "Moyenne du semestre"),
+    },
+    # The average is not a zero (RM-15): without a grade, it is not shown.
+    "noGrade": {
+      "term": ("No grade yet this term.", "Pas encore de note ce trimestre."),
+      "semester": ("No grade yet this semester.", "Pas encore de note ce semestre."),
+    },
+    "classSubjectAverage": ("Class average {{value}}", "Moyenne de la classe {{value}}"),
+    "assignmentMeta": ("coef {{coefficient}} · /{{scale}} · {{date}}", "coef {{coefficient}} · /{{scale}} · {{date}}"),
+    # Non-breaking spaces, as in the parent feed: the label and its value wrap as one block.
+    "classAverage": ("Class\u00a0average\u00a0{{value}}", "Moyenne\u00a0de\u00a0la\u00a0classe\u00a0{{value}}"),
+    "curve": {
+      "title": ("Grades over the year", "Évolution des notes"),
+      # Short names of the periods, over the bounds of the curve.
+      "period": {
+        "term": ("T{{n}}", "T{{n}}"),
+        "semester": ("S{{n}}", "S{{n}}"),
+      },
+      "reference": ("Class average", "Moyenne de la classe"),
+      # Non-breaking spaces: the example never wraps inside « 7 sur 10 ».
+      "scaleNote": ("Grades shown out of 20, whatever the scale: 7\u00a0out\u00a0of\u00a010 reads 14.",
+                    "Notes ramenées sur 20, quel que soit le barème : 7\u00a0sur\u00a010 se lit 14."),
+      # Read by screen readers instead of the drawing (role="img"); the list gives each grade.
+      "summary": ("Grade curve out of 20, with the class average of each assignment. Assignments: {{count}}, from {{first}} to {{last}}.",
+                  "Courbe des notes sur 20, avec la moyenne de la classe à chaque devoir. Devoirs : {{count}}, du {{first}} au {{last}}."),
+      "grades": ("First grade {{first}}, last grade {{last}}.", "Première note {{first}}, dernière note {{last}}."),
+      "noGrade": ("No grade on the curve yet.", "Aucune note sur la courbe pour l'instant."),
+      "codes": ("Without a grade: {{count}}, absent or not graded.", "Sans note : {{count}}, absent ou non noté."),
+      "average": {
+        "term": ("Term average {{value}}.", "Moyenne du trimestre {{value}}."),
+        "semester": ("Semester average {{value}}.", "Moyenne du semestre {{value}}."),
+      },
+      "classAverage": ("Class average {{value}}.", "Moyenne de la classe {{value}}."),
+      "detail": ("Each grade is in the list below.", "Chaque note figure dans la liste ci-dessous."),
+    },
+  },
 }
 
 def fr_typography(text):

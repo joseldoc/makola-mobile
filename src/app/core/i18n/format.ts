@@ -31,3 +31,17 @@ export function formatDate(
       : { day: 'numeric', month: 'long', year: 'numeric' };
   return new Intl.DateTimeFormat(LOCALES[language], options).format(date).replace(/ /g, '\u00a0');
 }
+
+/**
+ * The short date in two parts, for a chart axis where it is set on two lines:
+ * \u00ab 12 \u00bb and \u00ab Mar \u00bb in English, \u00ab 12 \u00bb and \u00ab mars \u00bb in French.
+ */
+export function formatDateParts(iso: string, language: Language): { day: string; month: string } {
+  const parts = new Intl.DateTimeFormat(LOCALES[language], {
+    day: 'numeric',
+    month: 'short',
+  }).formatToParts(new Date(`${iso}T12:00:00`));
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value ?? '';
+  return { day: part('day'), month: part('month') };
+}

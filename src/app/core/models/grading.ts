@@ -23,3 +23,30 @@ export function passMark(scale: Scale): number {
 export function isBelowPassMark(value: number, scale: Scale): boolean {
   return value < passMark(scale);
 }
+
+/** A grade read out of `AVERAGE_SCALE`: 7 out of 10 reads 14 out of 20. */
+export function toAverageScale(value: number, scale: Scale): number {
+  return (value * AVERAGE_SCALE) / scale;
+}
+
+/** One grade of an average: its value on its own scale, and its assignment's coefficient. */
+export interface WeightedGrade {
+  value: number;
+  scale: Scale;
+  coefficient: number;
+}
+
+/**
+ * The coefficient-weighted average of grades, out of `AVERAGE_SCALE` — `null`
+ * without any. « Absent » and « not graded » are never given to it: they are not
+ * zeros and do not count (RM-15); the caller leaves them out.
+ */
+export function weightedAverage(grades: readonly WeightedGrade[]): number | null {
+  let sum = 0;
+  let weight = 0;
+  for (const { value, scale, coefficient } of grades) {
+    sum += toAverageScale(value, scale) * coefficient;
+    weight += coefficient;
+  }
+  return weight > 0 ? sum / weight : null;
+}

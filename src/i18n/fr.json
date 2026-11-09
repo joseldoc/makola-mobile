@@ -411,5 +411,43 @@
       "minutesAgo": "il y a {{count}} min",
       "yesterdayAt": "hier, {{time}}"
     }
+  },
+  "student": {
+    "loading": "Chargement des notes…",
+    "errors": {
+      "unknown-record": "Ces notes ne peuvent pas être affichées. Revenez à l'écran précédent et ouvrez-les de nouveau.",
+      "offline": "Ces notes n'ont pas pu être chargées sans réseau. Rouvrez cette page au retour du réseau."
+    },
+    "empty": "Aucun devoir dans cette matière pour l'instant. Les notes s'afficheront ici dès leur saisie.",
+    "average": {
+      "term": "Moyenne du trimestre",
+      "semester": "Moyenne du semestre"
+    },
+    "noGrade": {
+      "term": "Pas encore de note ce trimestre.",
+      "semester": "Pas encore de note ce semestre."
+    },
+    "classSubjectAverage": "Moyenne de la classe {{value}}",
+    "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
+    "classAverage": "Moyenne de la classe {{value}}",
+    "curve": {
+      "title": "Évolution des notes",
+      "period": {
+        "term": "T{{n}}",
+        "semester": "S{{n}}"
+      },
+      "reference": "Moyenne de la classe",
+      "scaleNote": "Notes ramenées sur 20, quel que soit le barème : 7 sur 10 se lit 14.",
+      "summary": "Courbe des notes sur 20, avec la moyenne de la classe à chaque devoir. Devoirs : {{count}}, du {{first}} au {{last}}.",
+      "grades": "Première note {{first}}, dernière note {{last}}.",
+      "noGrade": "Aucune note sur la courbe pour l'instant.",
+      "codes": "Sans note : {{count}}, absent ou non noté.",
+      "average": {
+        "term": "Moyenne du trimestre {{value}}.",
+        "semester": "Moyenne du semestre {{value}}."
+      },
+      "classAverage": "Moyenne de la classe {{value}}.",
+      "detail": "Chaque note figure dans la liste ci-dessous."
+    }
   }
 }

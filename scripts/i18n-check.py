@@ -49,13 +49,17 @@ for t in ('newGrade', 'gradeBelowPass', 'testAnnounced', 'reportCard'):
 for s in ('maths', 'physics', 'biology', 'french', 'english', 'history', 'philosophy', 'sport'):
     dynamic.add(f'subjects.{s}')
 dynamic |= {'keypad.absent', 'keypad.ungraded'}
+# Refusals of the grades server, shown on a student's page.
+for c in ('unknown-record', 'offline'):
+    dynamic.add(f'student.errors.{c}')
 # The account sheet names each other space of the account (RM-19).
 for r in ('teacher', 'parent'):
     dynamic |= {f'spaces.{r}', f'account.spaceDetail.{r}'}
 # Texts that name the period of a class: one sentence per kind (RM-02, `periodKey`).
 for base in ('period', 'classroom.periodAverage', 'classroom.reportCardNotice',
              'assignment.titleErrors.duplicate', 'assignment.date.inPeriod', 'assignment.date.afterClose',
-             'assignment.date.afterLastClose', 'assignment.date.closed', 'parentFeed.reportCardMeta'):
+             'assignment.date.afterLastClose', 'assignment.date.closed', 'parentFeed.reportCardMeta',
+             'student.average', 'student.noGrade', 'student.curve.period', 'student.curve.average'):
     dynamic |= {f'{base}.{kind}' for kind in ('term', 'semester')}
 
 problems = 0

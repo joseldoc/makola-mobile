@@ -411,5 +411,43 @@
       "minutesAgo": "{{count}} min ago",
       "yesterdayAt": "yesterday, {{time}}"
     }
+  },
+  "student": {
+    "loading": "Loading the grades…",
+    "errors": {
+      "unknown-record": "These grades cannot be shown. Go back and open them again from the previous screen.",
+      "offline": "These grades could not be loaded without network. Open this page again once the network is back."
+    },
+    "empty": "No assignment yet in this subject. Grades will show here once they are entered.",
+    "average": {
+      "term": "Term average",
+      "semester": "Semester average"
+    },
+    "noGrade": {
+      "term": "No grade yet this term.",
+      "semester": "No grade yet this semester."
+    },
+    "classSubjectAverage": "Class average {{value}}",
+    "assignmentMeta": "coef {{coefficient}} · /{{scale}} · {{date}}",
+    "classAverage": "Class average {{value}}",
+    "curve": {
+      "title": "Grades over the year",
+      "period": {
+        "term": "T{{n}}",
+        "semester": "S{{n}}"
+      },
+      "reference": "Class average",
+      "scaleNote": "Grades shown out of 20, whatever the scale: 7 out of 10 reads 14.",
+      "summary": "Grade curve out of 20, with the class average of each assignment. Assignments: {{count}}, from {{first}} to {{last}}.",
+      "grades": "First grade {{first}}, last grade {{last}}.",
+      "noGrade": "No grade on the curve yet.",
+      "codes": "Without a grade: {{count}}, absent or not graded.",
+      "average": {
+        "term": "Term average {{value}}.",
+        "semester": "Semester average {{value}}."
+      },
+      "classAverage": "Class average {{value}}.",
+      "detail": "Each grade is in the list below."
+    }
   }
 }

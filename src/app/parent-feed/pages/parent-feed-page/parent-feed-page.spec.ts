@@ -397,3 +397,34 @@ describe('ParentFeedPageComponent — a child at university: semesters (RM-02)',
     expect(meta()).toBe('Semestre 1 · Analyse');
   });
 });
+
+describe('ParentFeedPageComponent — « Grades » opens the child’s page (US-P08, A-19)', () => {
+  let fixture: ComponentFixture<ParentFeedPageComponent>;
+  const root = () => fixture.nativeElement as HTMLElement;
+
+  beforeEach(async () => {
+    localStorage.clear();
+    TestBed.configureTestingModule({ providers: [provideRouter([]), provideI18n()] });
+    fixture = TestBed.createComponent(ParentFeedPageComponent);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => localStorage.clear());
+
+  it('goes to the page of the linked child — never an address the parent could change', () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    const grades = Array.from(
+      root().querySelectorAll<HTMLButtonElement>('app-outlined-button button'),
+    ).find((b) => b.textContent!.trim() === 'Grades')!;
+
+    grades.click();
+    expect(navigate).toHaveBeenCalledWith('/student/child');
+  });
+
+  it('the link is the child of the feed, in its one subject', () => {
+    expect(TestBed.inject(ParentFeedStore).link()).toEqual({
+      classroomId: '4b-maths',
+      studentId: 'ilunga-marie',
+    });
+  });
+});

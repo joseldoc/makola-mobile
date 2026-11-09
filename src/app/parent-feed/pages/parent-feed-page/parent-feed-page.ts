@@ -165,6 +165,11 @@ export class ParentFeedPageComponent {
     }
   }
 
+  /** The child's page, in the one subject of the teacher who invited this parent (A-19). */
+  protected openGrades(): void {
+    void this.router.navigateByUrl('/student/child');
+  }
+
   protected switchChild(): void {
     // Will navigate to the child picker once that entry point is built.
   }

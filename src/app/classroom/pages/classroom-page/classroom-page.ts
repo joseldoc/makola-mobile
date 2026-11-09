@@ -198,6 +198,11 @@ export class ClassroomPageComponent {
     void this.router.navigate(['/grade-entry']);
   }
 
+  /** The student's page, in this class and subject: its address names both (US-P08). */
+  protected openStudent(student: Student): void {
+    void this.router.navigate(['/student', this.store.current().id, student.id]);
+  }
+
   /** A new assignment in this class: the sheet checks its date against the class calendar (RM-14). */
   protected newAssignment(): void {
     const c = this.store.current();
