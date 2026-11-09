@@ -34,16 +34,24 @@
   overflow-y: auto;
 }
 
-// Language on the left, "Skip" on the right — above the tonal header.
+// Language and appearance on the left, "Skip" on the right — above the tonal header.
 .top {
   position: absolute;
   top: calc(var(--mk-esp-2) + var(--mk-safe-top));
   left: calc(var(--mk-esp-4) + var(--mk-safe-left));
   right: calc(var(--mk-esp-4) + var(--mk-safe-right));
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--mk-esp-2);
+}
+
+// The two pills one under the other: 30 dp each, 48 dp targets, 18 dp apart.
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
 }
 
 .controls {

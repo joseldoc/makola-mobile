@@ -152,6 +152,33 @@ devient la surface (jamais de noir pur), les trois teintes de rôle
 disparaissent au profit d'une élévation `#1B2740`, et le rouge est désaturé
 (`#FF9E8E`).
 
+*Dans ce dépôt (9 novembre 2026)* — le mode sombre est **activable** : il suit
+le réglage du téléphone (`prefers-color-scheme`) par défaut, ou le choix
+Système / Clair / Sombre fait dans l'application (`app-appearance-switch`, à
+côté du choix de langue : feuille Compte, accueil, onboarding). `ThemeStore`
+(`src/app/core/store/theme/`) pose l'attribut sur `<html>` ;
+`public/theme-boot.js` le pose avant la première peinture. Les composants
+n'emploient que des jetons. Ce qui manquait à la dérivation de la source est
+dans `src/theme/tokens/dark-additions.scss`, **à reporter** au projet
+claude.ai/design :
+
+| Jeton | Clair | Sombre | Pourquoi |
+|---|---|---|---|
+| `--mk-contour-m2` | encre 50 % (source) | `#737C90` (= `--mk-contour`) | contour des boutons M2 : 1,0:1 → 4,2:1 sur le fond, 3,6:1 sur une feuille |
+| `--mk-actif-fond` | `#F5F8FF` (source) | primaire 14 % sur le fond (`#222F4B`) | ligne active, barème choisi : texte 1,0:1 → 12,2:1 |
+| `--mk-primaire-halo` | bleu 24 % (source) | primaire 24 % | halo de l'action de pied |
+| `--mk-marge` | `#EEF1F5` (source) | `#26314B` (= `--mk-touche`) | recherche, mini-FAB, interrupteur éteint : texte 1,0:1 → 11,8:1 |
+| `--mk-surface-pavé` | `#EEF1F5` (source) | `#1B2740` (= `--mk-surface-haute`) | fond du pavé, comme le dit `dark.css` |
+| `--mk-role-*-forme` | dilutions (source) | `#26314B` | formes des bandeaux : texte posé dessus 1,5:1 → 11,8:1 |
+| `--mk-surface-haute` | blanc (ajout) | `#1B2740` (source) | feuille du bas, élevée en sombre |
+| `--mk-touche` | blanc (ajout) | `#26314B` (source) | touche du pavé |
+| `--mk-marque-signet` | `#F7E7CE` (ajout) | idem | le signet du logo ne dérive pas (2,2:1 → 5,5:1 sur la tuile bleue) |
+
+Règles qui en découlent : un contour « encre » s'écrit `--mk-text` (l'encre
+vaut le fond en sombre) ; une encre à opacité fixe s'écrit
+`color-mix(in srgb, var(--mk-text) N%, transparent)` ; une feuille du bas se
+détache par `--mk-surface-haute`, jamais par une ombre.
+
 ## Iconographie
 
 Ionicons, **style outline exclusivement** — aucune variante pleine, aucune
@@ -185,6 +212,7 @@ type là où une marque irait ; ne pas dessiner de logo.
 | `src/theme/tokens/radius.scss` | Les cinq rayons et leur intention |
 | `src/theme/tokens/motion.scss` | Quatre durées, trois échelles de pression |
 | `src/theme/tokens/dark.scss` | La dérivation sombre (`[data-mk-theme="sombre"]`) |
+| `src/theme/tokens/dark-additions.scss` | Ce que la dérivation sombre de la source ne dit pas (9 novembre 2026) — à reporter au projet claude.ai/design |
 | `src/theme/tokens/fonts.scss` | Roboto embarquée (variable 100–900, latin et latin-ext, paquet `@fontsource-variable/roboto`, OFL-1.1) ; remplace l'import Google Fonts de la source le 6 novembre 2026 (hors ligne, construction sans réseau) |
 | `src/app/shared/icons.ts` | Inventaire des 15 icônes Ionicons + `registerIcons()` |
 
@@ -200,7 +228,7 @@ d'une implémentation. Ils ont été portés en composants Angular standalone
 | Groupe | Composants Angular (sélecteur) | Fichier |
 |---|---|---|
 | `foundation/` | `app-icon` | `foundation/icon/icon.ts` |
-| `actions/` | `app-footer-action` · `app-outlined-button` · `app-mini-fab` | `actions/*/*.ts` |
+| `actions/` | `app-footer-action` · `app-outlined-button` · `app-mini-fab` · `app-language-switch` · `app-appearance-switch` (sans source React ; styles communs `actions/_segmented.scss`, cibles de 48 dp) | `actions/*/*.ts` |
 | `forms/` | `app-text-field` · `app-search-field` · `app-checkbox` · `app-radio-button` · `app-switch` · `app-keypad` (+ `app-keypad-key`) | `forms/*/*.ts` |
 | `navigation/` | `app-bar` (+ `app-bar-target`) · `app-tabs` · `app-progress-dots` | `navigation/*/*.ts` |
 | `data/` | `app-list-row` · `app-tonal-header` · `app-network-banner` | `data/*/*.ts` |

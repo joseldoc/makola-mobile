@@ -9,9 +9,12 @@
 }
 
 .visual {
-  // Tall enough to leave room for the top controls above the disc, short enough
-  // for an entry-level phone (360 × 640 dp) to show the whole text.
-  min-height: clamp(112px, 24vh, 280px);
+  // Room for the top controls above the disc — language and appearance, one under
+  // the other since 9 November 2026 (8 + 36 + 18 + 36 dp, under the header's own
+  // 18) — then short enough for an entry-level phone (360 × 640 dp) to show the
+  // whole text.
+  padding-top: 80px;
+  min-height: clamp(112px, 18vh, 220px);
   display: flex;
   align-items: center;
   justify-content: center;

@@ -6,6 +6,13 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Dark mode before the first paint: no light flash on a phone set to dark.
+         Blocking on purpose, and tiny; a file rather than inline code, so that a
+         future Content-Security-Policy needs no hash or 'unsafe-inline'.
+         The stylesheet is render-blocking too (angular.json, production:
+         `inlineCritical: false`): the inlined critical CSS left out the
+         `[data-mk-theme]` rules, and the page was white until the rest loaded. -->
+    <script src="theme-boot.js"></script>
   </head>
   <body>
     <app-root></app-root>

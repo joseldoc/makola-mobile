@@ -29,6 +29,8 @@
 #   alert / alerte · link / rattachement · invitation code / code d'invitation
 #   consent / consentement · space / espace · calling code / indicatif
 #   school management / direction · offline / hors ligne · network / réseau
+#   appearance / apparence · system / système · light / clair · dark / sombre
+#   (the dark mode, 9 November 2026: the phone's setting by default, or a choice)
 import json, os, re
 
 T = {
@@ -49,6 +51,15 @@ T = {
     "semester": ("Semester\u00a0{{n}}", "Semestre\u00a0{{n}}"),
   },
   "language": {"label": ("Language", "Langue")},
+  # Dark mode (9 November 2026): beside the language — account sheet, welcome,
+  # onboarding. Short labels: three segments must fit beside the language at 360 dp.
+  # "System" follows the phone's setting, and is the default.
+  "appearance": {
+    "label": ("Appearance", "Apparence"),
+    "system": ("System", "Système"),
+    "light": ("Light", "Clair"),
+    "dark": ("Dark", "Sombre"),
+  },
   # Row of the account sheet towards the account's other space (RM-19, ID-02), shown
   # only when it holds both roles — an app-bar action until 8 November 2026.
   "spaces": {

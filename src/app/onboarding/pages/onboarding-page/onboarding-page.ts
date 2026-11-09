@@ -4,8 +4,10 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import { Language } from '@core/i18n/language';
 import { LanguageStore } from '@core/store/language/language.store';
+import { ThemeStore } from '@core/store/theme/theme.store';
 import { SessionStore } from '@core/store/session/session.store';
 import { FooterActionComponent } from '@shared/actions/footer-action/footer-action';
+import { AppearanceSwitchComponent } from '@shared/actions/appearance-switch/appearance-switch';
 import { LanguageSwitchComponent } from '@shared/actions/language-switch/language-switch';
 import { OutlinedButtonComponent } from '@shared/actions/outlined-button/outlined-button';
 import { ProgressDotsComponent } from '@shared/navigation/progress-dots/progress-dots';
@@ -16,7 +18,8 @@ import { OnboardingStore } from '../../state/onboarding.store';
 /**
  * Onboarding container — 4 screens, native swipe (CSS scroll-snap, no gesture
  * library), dots tappable both ways. Seen once per device; "Skip" and "Start"
- * lead to the welcome screen. The language is chosen here, before anything else.
+ * lead to the welcome screen. The language — and the appearance, beside it — are
+ * chosen here, before anything else.
  */
 @Component({
   selector: 'app-onboarding-page',
@@ -26,6 +29,7 @@ import { OnboardingStore } from '../../state/onboarding.store';
     OutlinedButtonComponent,
     ProgressDotsComponent,
     LanguageSwitchComponent,
+    AppearanceSwitchComponent,
     TranslocoPipe,
   ],
   providers: [OnboardingStore],
@@ -37,6 +41,7 @@ import { OnboardingStore } from '../../state/onboarding.store';
 export class OnboardingPageComponent {
   protected readonly store = inject(OnboardingStore);
   protected readonly language = inject(LanguageStore);
+  protected readonly theme = inject(ThemeStore);
   private readonly session = inject(SessionStore);
   private readonly router = inject(Router);
 

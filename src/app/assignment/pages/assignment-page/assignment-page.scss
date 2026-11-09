@@ -13,11 +13,13 @@
 
 .sheet {
   width: 100%;
-  background: var(--mk-surface);
+  // Same form as `app-bottom-sheet`: elevated in dark mode (`--mk-surface-haute`),
+  // ink top line as `--mk-text` (`--mk-encre` is the surface in dark).
+  background: var(--mk-surface-haute);
   color: var(--mk-text);
   border-top-left-radius: var(--mk-rayon-touche);
   border-top-right-radius: var(--mk-rayon-touche);
-  border-top: 1px solid var(--mk-encre);
+  border-top: 1px solid var(--mk-text);
   // Landscape notch: offsets the whole content of the sheet.
   padding: 0 var(--mk-safe-right) 0 var(--mk-safe-left);
 }
@@ -49,7 +51,7 @@
   width: 36px;
   height: 4px;
   border-radius: 4px;
-  background: rgba(16, 26, 46, 0.24);
+  background: var(--mk-contour);
 }
 
 .header {

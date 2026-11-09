@@ -1,0 +1,51 @@
+// Ajouts non présents dans la source du système de conception, à reporter
+// (projet claude.ai/design « @makola Design System », tokens/dark.css).
+//
+// `dark.scss` reste la copie telle quelle de la source. Ce fichier comble ce
+// qu'elle ne dit pas, relevé en activant le mode sombre (9 novembre 2026) :
+// des alias clairs sans valeur sombre, qui restaient clairs sur l'encre.
+// Les valeurs sont prises dans la palette sombre de la source (fond, surface
+// haute, touche, contour), jamais inventées ; ratios mesurés en commentaire.
+
+// Deux jetons que la source ne définit qu'en sombre. `:where()` leur donne une
+// spécificité nulle : la valeur sombre de `dark.scss` l'emporte toujours, quel
+// que soit l'ordre des fichiers. En clair, rien ne change : ils valent le blanc.
+:where(:root) {
+  --mk-surface-haute: var(--mk-surface); // feuille du bas, élevée en sombre seulement
+  --mk-touche: var(--mk-surface); // touche du pavé : blanche en clair
+}
+
+// La marque ne dérive pas : le signet du logo garde sa dilution d'ambre dans les
+// deux thèmes (en sombre, `--mk-role-parent` devient l'élévation #1B2740, et le
+// signet disparaissait dans la tuile bleue : 2,2:1 → 5,5:1).
+:root {
+  --mk-marque-signet: #f7e7ce;
+}
+
+[data-mk-theme='sombre'] {
+  // Contour des boutons M2 (bouton en contour, choix de langue et d'apparence).
+  // Encre à 50 % en clair, soit 1,0:1 sur le fond sombre ; le contour de la source
+  // en sombre : 4,2:1 sur le fond, 3,6:1 sur une feuille.
+  --mk-contour-m2: var(--mk-contour);
+
+  // Ligne active, fond pressé d'une action texte, barème choisi : la dilution du
+  // primaire sur le fond, comme #F5F8FF l'est du bleu sur le blanc.
+  // #222F4B — texte 12,2:1, primaire 6,2:1 (avant : #F5F8FF, texte 1,0:1).
+  --mk-actif-fond: color-mix(in srgb, var(--mk-primaire) 14%, var(--mk-surface));
+  --mk-primaire-halo: color-mix(in srgb, var(--mk-primaire) 24%, transparent);
+
+  // La marge (#EEF1F5 : champ de recherche, mini-FAB, interrupteur éteint) prend
+  // le niveau de la touche, comme l'inactif et le séparateur de la source.
+  // Texte 11,8:1, indication 4,2:1 (avant : texte 1,0:1).
+  --mk-marge: var(--mk-touche);
+  // Fond du pavé : la surface haute (« barre d'app, fond de pavé », dark.scss).
+  --mk-surface-pavé: var(--mk-surface-haute);
+
+  // Formes des bandeaux tonals : les teintes de rôle disparaissent en sombre au
+  // profit de l'élévation ; leurs formes prennent le niveau suivant.
+  // Texte posé dessus 11,8:1 (avant : #AFD6C0, texte 1,5:1).
+  --mk-role-prof-forme: var(--mk-touche);
+  --mk-role-parent-forme: var(--mk-touche);
+  --mk-role-etab-forme: var(--mk-touche);
+  --mk-role-neutre-forme: var(--mk-touche);
+}

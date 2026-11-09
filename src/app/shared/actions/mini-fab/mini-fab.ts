@@ -23,7 +23,9 @@ export type MiniFabIcon = 'remove-outline' | 'add-outline';
       (pointerleave)="held.set(false)"
       (pointercancel)="held.set(false)"
       [style.background]="held() ? 'var(--mk-touche-presse)' : 'var(--mk-marge)'"
-      [style.color]="atBound() ? 'rgba(16,26,46,.32)' : 'var(--mk-primaire)'"
+      [style.color]="
+        atBound() ? 'color-mix(in srgb, var(--mk-text) 32%, transparent)' : 'var(--mk-primaire)'
+      "
       [style.transform]="held() ? 'scale(var(--mk-echelle-fab))' : 'none'"
     >
       <app-icon [name]="icon()" [size]="18" />

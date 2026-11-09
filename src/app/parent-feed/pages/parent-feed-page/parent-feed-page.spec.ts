@@ -7,6 +7,7 @@ import { unprotected } from '@ngrx/signals/testing';
 import { provideI18n } from '@core/i18n';
 import { Session } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
+import { ThemeStore } from '@core/store/theme/theme.store';
 import { SessionStore } from '@core/store/session/session.store';
 import {
   AccountSheetComponent,
@@ -206,14 +207,22 @@ describe('ParentFeedPageComponent — the bar keeps the feature, the account she
     await fixture.whenStable();
   }
 
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    document.documentElement.removeAttribute('data-mk-theme');
+  });
 
   it('parent only: the bar carries the child switch only; the sheet offers no other space', async () => {
     await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } });
 
     expect(barLabels()).toEqual(['Switch child']);
     await openSheet();
-    expect(rowLabels()).toEqual(['Join with an invitation code', 'Language', 'Sign out']);
+    expect(rowLabels()).toEqual([
+      'Join with an invitation code',
+      'Language',
+      'Appearance',
+      'Sign out',
+    ]);
   });
 
   it('the child keeps the start of the bar, the account its end — two forms, never confused', async () => {
@@ -245,6 +254,7 @@ describe('ParentFeedPageComponent — the bar keeps the feature, the account she
       'Teacher space',
       'Join with an invitation code',
       'Language',
+      'Appearance',
       'Sign out',
     ]);
 
@@ -261,6 +271,23 @@ describe('ParentFeedPageComponent — the bar keeps the feature, the account she
 
     expect(navigateByUrl).toHaveBeenCalledWith('/auth/join');
     expect(TestBed.inject(SessionStore).signedIn()).toBe(true);
+  });
+
+  it('ChangeAppearance: the theme changes at once, the sheet stays open', async () => {
+    await open({ id: 'a1', identifier, activeRole: 'parent', roles: { parent: 'ready' } });
+    await openSheet();
+
+    emit({ action: AccountSheetActions.ChangeAppearance, appearance: 'dark' });
+    await fixture.whenStable();
+
+    expect(TestBed.inject(ThemeStore).appearance()).toBe('dark');
+    expect(document.documentElement.getAttribute('data-mk-theme')).toBe('sombre');
+    expect(sheet()).not.toBeNull();
+    expect(
+      root()
+        .querySelector('app-appearance-switch button[aria-checked="true"]')!
+        .textContent!.trim(),
+    ).toBe('Dark');
   });
 
   it('SignOut signs out; Close only closes', async () => {

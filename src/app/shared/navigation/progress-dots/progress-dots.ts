@@ -54,6 +54,7 @@ export class ProgressDotsComponent {
     const current = this.index();
     if (i === current) return this.color();
     if (i < current) return `color-mix(in srgb, ${this.color()} 34%, transparent)`;
-    return 'rgba(16,26,46,.18)';
+    // Ink at 18 % in light, the text at 18 % in dark — the ink would vanish there.
+    return 'color-mix(in srgb, var(--mk-text) 18%, transparent)';
   }
 }

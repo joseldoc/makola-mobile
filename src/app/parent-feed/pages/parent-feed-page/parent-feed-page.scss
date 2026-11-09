@@ -37,8 +37,9 @@
   border-radius: var(--mk-rayon-encadre);
   padding: 10px 12px;
 
+  // Ink outline: `--mk-text`, since `--mk-encre` is the surface in dark mode.
   &.highlight {
-    border-color: var(--mk-encre);
+    border-color: var(--mk-text);
   }
 }
 
