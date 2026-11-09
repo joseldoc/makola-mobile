@@ -1,0 +1,63 @@
+<div class="student-page">
+  <app-bar
+    [title]="title()"
+    [subtitle]="subtitle()"
+    [role]="space()"
+    [showBack]="true"
+    [scrolled]="scrolled()"
+    (back)="goBack()"
+  />
+
+  <div class="content" (scroll)="onScroll($event)">
+    @if (store.loading()) {
+      <p class="state" role="status">{{ 'student.loading' | transloco }}</p>
+    } @else if (store.error(); as error) {
+      <p class="state" role="alert">{{ 'student.errors.' + error | transloco }}</p>
+    } @else if (store.record()) {
+      <div class="summary">
+        <div class="card">
+          <div class="card-label">{{ averageLabel() }}</div>
+          @let value = average();
+          @if (value !== null) {
+            <div class="card-value" [class.danger]="averageBelowPass()">{{ value }}</div>
+          } @else {
+            <div class="card-detail">{{ noGrade() }}</div>
+          }
+          @let classValue = classAverage();
+          @if (classValue !== null) {
+            <div class="card-secondary">{{ classValue }}</div>
+          }
+        </div>
+      </div>
+
+      @if (points().length) {
+        <section class="curve-section">
+          <h2 class="section-label">{{ 'student.curve.title' | transloco }}</h2>
+          <app-grade-curve
+            [points]="points()"
+            [labels]="curveLabels()"
+            [ariaLabel]="curveSummary()"
+          />
+          <p class="note">{{ 'student.curve.scaleNote' | transloco }}</p>
+        </section>
+
+        <section class="list">
+          @for (group of groups(); track group.key) {
+            <h2 class="period-header">{{ group.label }}</h2>
+            @for (row of group.rows; track row.key; let i = $index) {
+              <app-list-row
+                [index]="i"
+                [primary]="row.name"
+                [secondary]="row.meta"
+                [value]="row.value"
+                [valueTone]="row.tone"
+              />
+            }
+          }
+        </section>
+      } @else {
+        <p class="state">{{ 'student.empty' | transloco }}</p>
+      }
+    }
+  </div>
+</div>

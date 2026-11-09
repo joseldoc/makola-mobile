@@ -43,6 +43,11 @@ const FEED: FeedItem[] = [
 ];
 
 interface ParentFeedState {
+  /**
+   * The link shown (A-19): this child, in the class and subject of the teacher
+   * who invited the parent — the only record the « Grades » page reads.
+   */
+  link: { classroomId: string; studentId: string };
   student: string;
   initials: string;
   classroom: string;
@@ -69,14 +74,17 @@ interface ParentFeedState {
 }
 
 const initialState: ParentFeedState = {
+  link: { classroomId: '4b-maths', studentId: 'ilunga-marie' },
   student: 'ILUNGA Marie',
   initials: 'IM',
   classroom: '4ème B · Lycée Chaminade',
   subject: 'Maths',
+  // Her coefficient-weighted average of term 2, as on the classroom screen and on
+  // her page: (19 × 2 + 17.5 + 9 + 18 × 2) / 6, Interrogation ch. 4 (9.5/10) read out of 20.
   subjectAverage: 16.75,
   // Same class, subject and term as the teacher's classroom screen: the
-  // coefficient-weighted mean of its three assignments' class averages —
-  // (12.4 × 2 + 11.8 × 1 + 14.1 × 1) / 4 = 12.675, shown to two decimals.
+  // coefficient-weighted mean of its four assignments' class averages, out of 20 —
+  // (6.35 × 2 × 2 + 14.1 + 11.8 + 12.4 × 2) / 6 = 12.683, shown to two decimals.
   classSubjectAverage: 12.68,
   period: { kind: 'term', n: 2 },
   // Same class and term as the teacher's screens (classroom, new assignment).

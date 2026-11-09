@@ -1,0 +1,85 @@
+<svg
+  class="curve"
+  role="img"
+  [attr.aria-label]="ariaLabel()"
+  [attr.width]="width()"
+  [attr.height]="height"
+  [attr.viewBox]="'0 0 ' + width() + ' ' + height"
+>
+  @for (tick of ticks(); track tick.value) {
+    <line class="grid" [attr.x1]="left" [attr.x2]="right()" [attr.y1]="tick.y" [attr.y2]="tick.y" />
+    <text class="axis" text-anchor="end" [attr.x]="left - 6" [attr.y]="tick.y + 4">
+      {{ tick.value }}
+    </text>
+  }
+  @for (bound of bounds(); track bound) {
+    <line class="bound" [attr.x1]="bound" [attr.x2]="bound" [attr.y1]="4" [attr.y2]="bottom" />
+  }
+  @for (group of periods(); track group.x) {
+    <text class="period" text-anchor="middle" [attr.x]="group.x" [attr.y]="14">
+      {{ group.label }}
+    </text>
+  }
+  @if (referencePath()) {
+    <path class="reference" [attr.d]="referencePath()" />
+  }
+  @if (studentPath()) {
+    <path class="student" [attr.d]="studentPath()" />
+  }
+  @for (dot of dots(); track dot.x) {
+    <circle class="point" [attr.cx]="dot.x" [attr.cy]="dot.y" r="3.5" />
+  }
+  @for (mark of codes(); track mark.x) {
+    @if (mark.code === 'absent') {
+      <circle class="code absent" [attr.cx]="mark.x" [attr.cy]="codeY" r="4" />
+    } @else {
+      <rect
+        class="code ungraded"
+        [attr.x]="mark.x - 3.5"
+        [attr.y]="codeY - 3.5"
+        width="7"
+        height="7"
+      />
+    }
+  }
+  @for (date of dates(); track date.x) {
+    <text class="axis" text-anchor="middle" [attr.x]="date.x" [attr.y]="dayY">
+      {{ date.day }}
+    </text>
+    <text class="axis" text-anchor="middle" [attr.x]="date.x" [attr.y]="monthY">
+      {{ date.month }}
+    </text>
+  }
+</svg>
+
+<ul class="legend">
+  <li>
+    <svg class="swatch" width="24" height="12" aria-hidden="true">
+      <line class="student" x1="2" x2="22" y1="6" y2="6" />
+      <circle class="point" cx="12" cy="6" r="3.5" />
+    </svg>
+    <span>{{ labels().student }}</span>
+  </li>
+  <li>
+    <svg class="swatch" width="24" height="12" aria-hidden="true">
+      <line class="reference" x1="1" x2="23" y1="6" y2="6" />
+    </svg>
+    <span>{{ labels().reference }}</span>
+  </li>
+  @if (hasCode('absent')) {
+    <li>
+      <svg class="swatch" width="24" height="12" aria-hidden="true">
+        <circle class="code absent" cx="12" cy="6" r="4" />
+      </svg>
+      <span>{{ labels().absent }}</span>
+    </li>
+  }
+  @if (hasCode('ungraded')) {
+    <li>
+      <svg class="swatch" width="24" height="12" aria-hidden="true">
+        <rect class="code ungraded" x="8.5" y="2.5" width="7" height="7" />
+      </svg>
+      <span>{{ labels().ungraded }}</span>
+    </li>
+  }
+</ul>

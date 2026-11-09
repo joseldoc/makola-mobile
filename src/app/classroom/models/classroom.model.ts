@@ -18,6 +18,8 @@ export interface Assignment {
 }
 
 export interface Student {
+  /** Technical id, in the address of the student's page (`/student/:classroomId/:studentId`). */
+  id: string;
   name: string;
   /**
    * Average of the current period, out of `AVERAGE_SCALE` — in `danger` under

@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.student-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--mk-surface);
+  color: var(--mk-text);
+}
+
+// One scroll between the bar and the bottom: average, curve, list.
+.content {
+  flex: 1;
+  overflow-y: auto;
+  // No bounce dragging the page (iOS), no chained glow (Android).
+  overscroll-behavior-y: contain;
+  padding-bottom: var(--mk-safe-bottom);
+}
+
+.state {
+  padding: 24px calc(var(--mk-esp-4) + var(--mk-safe-right)) 24px
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  font: 400 15px/1.5 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.summary,
+.curve-section {
+  padding: var(--mk-esp-3) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-3)
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+}
+
+// The parent feed's subject card, full width: ink outline, no shadow. `--mk-text`
+// rather than `--mk-encre`: in dark mode the ink is the surface, its outline would vanish.
+.card {
+  border: 1px solid var(--mk-text);
+  border-radius: var(--mk-rayon-encadre);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-1);
+}
+
+.card-label,
+.section-label {
+  font: 500 13px/1.2 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.card-value {
+  font: var(--mk-note);
+  font-variant-numeric: var(--mk-num);
+
+  // The pass mark of 20 only — never the class average (RM-11).
+  &.danger {
+    color: var(--mk-refus);
+  }
+}
+
+.card-detail {
+  font: 500 15px/1.35 var(--mk-font);
+}
+
+// Class average in the subject: secondary ink (4.5:1), tabular, the same in every case.
+.card-secondary {
+  font: var(--mk-secondaire);
+  font-variant-numeric: var(--mk-num);
+  color: var(--mk-text-secondaire);
+}
+
+.curve-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mk-esp-2);
+  border-top: 1px solid var(--mk-separateur);
+}
+
+.note {
+  font: var(--mk-secondaire);
+  color: var(--mk-text-secondaire);
+  margin: 0;
+}
+
+.list {
+  border-top: 1px solid var(--mk-separateur);
+}
+
+// The name of a period above its assignments — the list's grouping, like the curve's bounds.
+.period-header {
+  margin: 0;
+  padding: var(--mk-esp-4) calc(var(--mk-esp-4) + var(--mk-safe-right)) var(--mk-esp-2)
+    calc(var(--mk-esp-4) + var(--mk-safe-left));
+  font: 500 13px/1.2 var(--mk-font);
+  color: var(--mk-text-secondaire);
+  border-bottom: 1px solid var(--mk-separateur);
+}

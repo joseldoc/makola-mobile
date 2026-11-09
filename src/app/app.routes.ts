@@ -11,6 +11,7 @@ import { CLASSROOM_ROUTES } from './classroom/classroom.routes';
 import { GRADE_ENTRY_ROUTES } from './grade-entry/grade-entry.routes';
 import { ONBOARDING_ROUTES } from './onboarding/onboarding.routes';
 import { PARENT_FEED_ROUTES } from './parent-feed/parent-feed.routes';
+import { STUDENT_ROUTES } from './student/student.routes';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,11 @@ export const routes: Routes = [
     path: 'parent-feed',
     canActivate: [activeAccount('parent')],
     children: PARENT_FEED_ROUTES,
+  },
+  // A student's page, in both spaces (US-P08): each entry carries its space's guard.
+  {
+    path: 'student',
+    children: STUDENT_ROUTES,
   },
   // Everyone lands where their account stands: onboarding, sign-in, profile or home.
   { path: '', pathMatch: 'full', redirectTo: initialRedirect },

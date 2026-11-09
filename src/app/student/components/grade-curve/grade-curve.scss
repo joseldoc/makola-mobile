@@ -1,0 +1,81 @@
+:host {
+  display: block;
+}
+
+// Tokens only: the light and dark values come from src/theme/tokens.
+.curve {
+  display: block;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--mk-separateur);
+  stroke-width: 1;
+}
+
+// Axis figures, dates and period names: 12 px, the floor; secondary ink holds 4.5:1.
+.axis,
+.period {
+  font: var(--mk-indicatif);
+  font-variant-numeric: var(--mk-num);
+  fill: var(--mk-text-secondaire);
+}
+
+.period {
+  font-weight: 500;
+}
+
+.bound {
+  stroke: var(--mk-contour-fort);
+  stroke-width: 1;
+}
+
+// One style each, whatever the positions of the two lines: never a comparison (RM-11).
+.student {
+  fill: none;
+  stroke: var(--mk-text);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.point {
+  fill: var(--mk-text);
+}
+
+// The class average: a reference, not a second series — neutral outline, dashed, finer.
+.reference {
+  fill: none;
+  stroke: var(--mk-contour-fort);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+// Absent and not graded: hollow markers in their own strip, never a point at zero (RM-15).
+.code {
+  fill: var(--mk-surface);
+  stroke: var(--mk-text-secondaire);
+  stroke-width: 1.5;
+}
+
+.legend {
+  list-style: none;
+  margin: var(--mk-esp-2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mk-esp-1) var(--mk-esp-4);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--mk-esp-2);
+    font: var(--mk-secondaire);
+    color: var(--mk-text-secondaire);
+  }
+}
+
+.swatch {
+  flex: none;
+  overflow: visible;
+}

@@ -69,7 +69,12 @@
   </div>
 
   <div class="footer">
-    <app-outlined-button [label]="'parentFeed.allGrades' | transloco" tone="parent" [full]="true" />
+    <app-outlined-button
+      [label]="'parentFeed.allGrades' | transloco"
+      tone="parent"
+      [full]="true"
+      (clicked)="openGrades()"
+    />
     <app-outlined-button
       [label]="'parentFeed.reportCards' | transloco"
       tone="parent"
