@@ -12,6 +12,8 @@ const NATIVE_NAMES: Record<Language, { short: string; name: string }> = {
 /**
  * Language pill — two segments on a white surface (text never sits on a role
  * tint). Presentation only: the container calls `LanguageStore.setLanguage`.
+ * Styles shared with `app-appearance-switch` (`../_segmented.scss`): 48 dp
+ * targets since 9 November 2026 (44 before, the design system's minimum).
  */
 @Component({
   selector: 'app-language-switch',

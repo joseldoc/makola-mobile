@@ -19,6 +19,8 @@
   }
 
   &.scrolled {
+    // The only shadow of the system. In dark mode the bar is already elevated
+    // (`--mk-role-*` = #1B2740): an ink shadow on ink is not seen, and does not need to be.
     box-shadow: 0 2px 8px rgba(16, 26, 46, 0.14);
   }
 }

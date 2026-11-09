@@ -6,6 +6,7 @@ import { provideI18n } from '@core/i18n';
 import { Session } from '@core/models/auth.model';
 import { LanguageStore } from '@core/store/language/language.store';
 import { SessionStore } from '@core/store/session/session.store';
+import { ThemeStore } from '@core/store/theme/theme.store';
 import {
   AccountSheetComponent,
   AccountSheetEvent,
@@ -132,7 +133,10 @@ describe('ClassroomPageComponent — the bar keeps the feature, the account shee
   };
   const twoRoles: Session = { ...teacherOnly, roles: { teacher: 'ready', parent: 'ready' } };
 
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    document.documentElement.removeAttribute('data-mk-theme');
+  });
 
   it('the bar carries the class actions only, with one role or two — never space nor sign out', async () => {
     await open(teacherOnly);
@@ -156,7 +160,12 @@ describe('ClassroomPageComponent — the bar keeps the feature, the account shee
     await open(teacherOnly);
     await openSheet();
 
-    expect(rowLabels()).toEqual(['Join with an invitation code', 'Language', 'Sign out']);
+    expect(rowLabels()).toEqual([
+      'Join with an invitation code',
+      'Language',
+      'Appearance',
+      'Sign out',
+    ]);
   });
 
   it('two roles: the sheet offers the parent space, first', async () => {
@@ -167,6 +176,7 @@ describe('ClassroomPageComponent — the bar keeps the feature, the account shee
       'Parent space',
       'Join with an invitation code',
       'Language',
+      'Appearance',
       'Sign out',
     ]);
   });
@@ -218,6 +228,23 @@ describe('ClassroomPageComponent — the bar keeps the feature, the account shee
     expect(sheet()).toBeTruthy();
     expect(barLabels()).toEqual(['Changer de classe', 'Rechercher']);
     expect(rowLabels()).toContain('Se déconnecter');
+  });
+
+  it('ChangeAppearance: the theme changes at once and is kept; the sheet stays open', async () => {
+    await open(teacherOnly);
+    await openSheet();
+
+    emit({ action: AccountSheetActions.ChangeAppearance, appearance: 'dark' });
+    await fixture.whenStable();
+
+    expect(TestBed.inject(ThemeStore).appearance()).toBe('dark');
+    expect(localStorage.getItem('mk.appearance')).toBe('dark');
+    expect(document.documentElement.getAttribute('data-mk-theme')).toBe('sombre');
+    expect(sheet()).toBeTruthy();
+
+    emit({ action: AccountSheetActions.ChangeAppearance, appearance: 'light' });
+    await fixture.whenStable();
+    expect(document.documentElement.hasAttribute('data-mk-theme')).toBe(false);
   });
 
   it('SignOut: every role at once, back to the welcome screen', async () => {

@@ -8,7 +8,8 @@
   height: var(--mk-h-mini-fab);
   flex: none;
   border-radius: var(--mk-rayon-rond);
-  border: 1px solid rgba(16, 26, 46, 0.16);
+  // Ink at 16 % in light; the text at 16 % in dark (ink would vanish there).
+  border: 1px solid color-mix(in srgb, var(--mk-text) 16%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;

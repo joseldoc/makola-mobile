@@ -20,6 +20,7 @@ describe('AccountSheetComponent', () => {
     fixture.componentRef.setInput('identifier', inputs.identifier ?? phone);
     fixture.componentRef.setInput('otherSpaces', inputs.otherSpaces ?? []);
     fixture.componentRef.setInput('language', 'en');
+    fixture.componentRef.setInput('appearance', 'system');
     const events: AccountSheetEvent[] = [];
     fixture.componentInstance.sheetAction.subscribe((event) => events.push(event));
     await fixture.whenStable();
@@ -52,7 +53,12 @@ describe('AccountSheetComponent', () => {
   it('one role: no other space, sign out without a word about both spaces', async () => {
     const { text } = await setup({ otherSpaces: [] });
 
-    expect(text('.row .label')).toEqual(['Join with an invitation code', 'Language', 'Sign out']);
+    expect(text('.row .label')).toEqual([
+      'Join with an invitation code',
+      'Language',
+      'Appearance',
+      'Sign out',
+    ]);
     expect(text('.row .detail')).not.toContain('Closes both spaces on this phone.');
   });
 
@@ -63,6 +69,7 @@ describe('AccountSheetComponent', () => {
       'Parent space',
       'Join with an invitation code',
       'Language',
+      'Appearance',
       'Sign out',
     ]);
     expect(text('.row .detail')).toContain('Closes both spaces on this phone.');
@@ -90,6 +97,25 @@ describe('AccountSheetComponent', () => {
     element.querySelector<HTMLButtonElement>('app-language-switch button[lang="en"]')!.click();
 
     expect(events).toEqual([{ action: AccountSheetActions.ChangeLanguage, language: 'fr' }]);
+  });
+
+  it('emits ChangeAppearance from the appearance switch, beside the language', async () => {
+    const { element, events } = await setup({});
+
+    const option = (appearance: string) =>
+      element.querySelector<HTMLButtonElement>(
+        `app-appearance-switch button[data-appearance="${appearance}"]`,
+      )!;
+    option('dark').click();
+    // The appearance shown is not picked again.
+    option('system').click();
+
+    expect(events).toEqual([{ action: AccountSheetActions.ChangeAppearance, appearance: 'dark' }]);
+    const settings = Array.from(element.querySelectorAll('.row.setting'));
+    expect(settings.map((row) => row.querySelector('.label')!.textContent!.trim())).toEqual([
+      'Language',
+      'Appearance',
+    ]);
   });
 
   it('emits Close from the scrim, the handle and Escape — nothing else', async () => {
@@ -121,6 +147,7 @@ describe('AccountSheetComponent', () => {
       'Espace parent',
       "Rejoindre avec un code d'invitation",
       'Langue',
+      'Apparence',
       'Se déconnecter',
     ]);
   });

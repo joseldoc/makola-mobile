@@ -10,6 +10,8 @@ export enum AccountSheetActions {
   JoinInvitation = 'JOIN_INVITATION',
   /** A language was picked: the interface changes at once, the sheet stays open. */
   ChangeLanguage = 'CHANGE_LANGUAGE',
+  /** An appearance was picked (system, light, dark): the theme changes at once, the sheet stays open. */
+  ChangeAppearance = 'CHANGE_APPEARANCE',
   /** Closes the session, every role at once. */
   SignOut = 'SIGN_OUT',
   /** Scrim, handle or Escape: the sheet closes without a change. */

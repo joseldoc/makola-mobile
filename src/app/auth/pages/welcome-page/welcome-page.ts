@@ -5,8 +5,10 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { Intent } from '@core/models/auth.model';
 import { Language } from '@core/i18n/language';
 import { LanguageStore } from '@core/store/language/language.store';
+import { ThemeStore } from '@core/store/theme/theme.store';
 import { LogoComponent } from '@shared/brand/logo/logo';
 import { FooterActionComponent } from '@shared/actions/footer-action/footer-action';
+import { AppearanceSwitchComponent } from '@shared/actions/appearance-switch/appearance-switch';
 import { LanguageSwitchComponent } from '@shared/actions/language-switch/language-switch';
 import { OutlinedButtonComponent } from '@shared/actions/outlined-button/outlined-button';
 
@@ -30,6 +32,7 @@ const INTENT_ROUTES: Record<Intent, string> = {
     FooterActionComponent,
     OutlinedButtonComponent,
     LanguageSwitchComponent,
+    AppearanceSwitchComponent,
     TranslocoPipe,
   ],
   templateUrl: './welcome-page.html',
@@ -38,6 +41,7 @@ const INTENT_ROUTES: Record<Intent, string> = {
 })
 export class WelcomePageComponent {
   protected readonly language = inject(LanguageStore);
+  protected readonly theme = inject(ThemeStore);
   private readonly store = inject(AuthFlowStore);
   private readonly router = inject(Router);
 

@@ -3,7 +3,8 @@
 }
 
 .keypad {
-  background: var(--mk-marge);
+  // Light: the margin grey. Dark: the high surface, « fond de pavé » (dark.scss).
+  background: var(--mk-surface-pavé);
   padding: var(--mk-esp-2) calc(var(--mk-esp-2) + var(--mk-safe-right))
     calc(var(--mk-esp-2) + var(--mk-safe-bottom)) calc(var(--mk-esp-2) + var(--mk-safe-left));
   display: grid;

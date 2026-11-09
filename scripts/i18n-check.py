@@ -55,6 +55,9 @@ for c in ('unknown-record', 'offline'):
 # The account sheet names each other space of the account (RM-19).
 for r in ('teacher', 'parent'):
     dynamic |= {f'spaces.{r}', f'account.spaceDetail.{r}'}
+# The appearance switch names each appearance (dark mode, `APPEARANCES`).
+for a in ('system', 'light', 'dark'):
+    dynamic.add(f'appearance.{a}')
 # Texts that name the period of a class: one sentence per kind (RM-02, `periodKey`).
 for base in ('period', 'classroom.periodAverage', 'classroom.reportCardNotice',
              'assignment.titleErrors.duplicate', 'assignment.date.inPeriod', 'assignment.date.afterClose',

@@ -14,6 +14,12 @@
   "language": {
     "label": "Language"
   },
+  "appearance": {
+    "label": "Appearance",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "spaces": {
     "teacher": "Teacher space",
     "parent": "Parent space"

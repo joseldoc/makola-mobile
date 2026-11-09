@@ -5,6 +5,7 @@ import { provideIonicAngular } from '@ionic/angular/provide';
 import { provideI18n } from '@core/i18n';
 import { AuthApi } from '@core/services/auth-api';
 import { MockAuthApi } from '@core/services/mock-auth-api';
+import { provideTheme } from '@core/store/theme/theme.store';
 
 import { MockStudentRecordApi } from './student/services/mock-student-record-api';
 import { StudentRecordApi } from './student/services/student-record-api';
@@ -16,6 +17,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     provideI18n(),
+    // Light or dark, from the first screen: the phone's setting or the user's choice.
+    provideTheme(),
     // Mock authentication server until the backend exists —
     // swap for the HTTP implementation, no screen changes.
     { provide: AuthApi, useClass: MockAuthApi },

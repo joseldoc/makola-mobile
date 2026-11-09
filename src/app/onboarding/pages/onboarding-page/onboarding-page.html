@@ -13,7 +13,15 @@
   </div>
 
   <div class="top">
-    <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
+    <!-- Settings of the device: the language, the appearance under it — beside
+         "Skip", the three do not fit on one line at 360 dp. -->
+    <div class="settings">
+      <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
+      <app-appearance-switch
+        [value]="theme.appearance()"
+        (valueChange)="theme.setAppearance($event)"
+      />
+    </div>
     @if (!store.last()) {
       <app-outlined-button
         [label]="'onboarding.skip' | transloco"

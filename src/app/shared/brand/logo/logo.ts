@@ -7,7 +7,7 @@ export type LogoTone = 'color' | 'ink' | 'white' | 'mono';
 const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: string]> = {
   color: ['var(--mk-bleu)', 'var(--mk-ambre)', 'var(--mk-encre)'],
   ink: ['var(--mk-encre)', 'var(--mk-ambre)', 'var(--mk-encre)'],
-  white: ['#FFFFFF', 'var(--mk-role-parent)', '#FFFFFF'],
+  white: ['var(--mk-blanc)', 'var(--mk-marque-signet)', 'var(--mk-blanc)'],
   mono: ['currentColor', null, 'currentColor'],
 };
 
@@ -15,6 +15,9 @@ const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: st
  * @makola mark — the "m" book: two open pages draw the two arches of the m, the
  * bookmark falls from the spine. Single stroke at 7.5 % of the height, no gradient.
  * Splash screen, sign-in, document header — never in an app bar.
+ * The mark does not derive in dark mode: blue tile, white stroke, the amber
+ * dilution of the bookmark (`--mk-marque-signet`, not `--mk-role-parent`, which
+ * becomes the elevation in dark).
  * Source: @makola Design System, components/brand/Logo.jsx.
  */
 @Component({
@@ -55,8 +58,8 @@ const TONES: Record<LogoTone, [stroke: string, bookmark: string | null, text: st
               mark;
               context: {
                 size: size() * 0.7,
-                stroke: '#FFFFFF',
-                bookmark: tone() === 'mono' ? null : 'var(--mk-role-parent)',
+                stroke: 'var(--mk-blanc)',
+                bookmark: tone() === 'mono' ? null : 'var(--mk-marque-signet)',
               }
             "
           />

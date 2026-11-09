@@ -61,10 +61,13 @@
   background: var(--mk-role-etab-forme);
 }
 
-.language {
+.settings {
   position: relative;
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
+  // 30 dp pills, 48 dp targets: 18 dp between rows if they ever wrap.
+  gap: 18px var(--mk-esp-2);
   padding: calc(var(--mk-esp-3) + var(--mk-safe-top)) calc(var(--mk-esp-4) + var(--mk-safe-right)) 0;
 }
 

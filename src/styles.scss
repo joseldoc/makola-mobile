@@ -10,6 +10,30 @@
 @use './theme/tokens/radius';
 @use './theme/tokens/motion';
 @use './theme/tokens/dark';
+// What the dark derivation of the source leaves out — to be reported to it.
+@use './theme/tokens/dark-additions';
+
+// Dark mode (9 November 2026): `ThemeStore` sets `data-mk-theme="sombre"` on
+// <html> — and `public/theme-boot.js` before the first paint. The page itself
+// takes the theme: Ionic paints <body> with these two variables (no Ionic
+// palette is loaded: only ion-app and ion-icon are used, and the icon inherits
+// `currentColor`), and `color-scheme` darkens the scrollbars, the caret and the
+// canvas of the WebView.
+:root {
+  color-scheme: light;
+  --ion-background-color: var(--mk-surface);
+  --ion-text-color: var(--mk-text);
+}
+
+[data-mk-theme='sombre'] {
+  color-scheme: dark;
+}
+
+// A theme chosen while the app is open applies at once, for two frames
+// (ThemeStore): no colour crosses a transition — the list row's is 420 ms.
+[data-mk-theme-switching] * {
+  transition: none !important;
+}
 
 // Safe areas (notch, status bar, gesture bar). On Android 15+, Capacitor goes
 // edge-to-edge and injects `--safe-area-inset-*` on <html> (reliable even when a

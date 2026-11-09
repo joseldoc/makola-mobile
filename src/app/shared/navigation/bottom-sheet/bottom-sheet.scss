@@ -1,5 +1,7 @@
 // Moved from auth/components/country-sheet (8 November 2026): same values, but
 // for the handle's target, 48 dp (§7.6) instead of the design system's 44.
+// Dark mode (9 November 2026): the sheet takes `--mk-surface-haute`, the handle
+// `--mk-contour` (ink at 28 % in light instead of 24 %).
 :host {
   position: fixed;
   inset: 0;
@@ -21,7 +23,8 @@
   max-height: 80%;
   display: flex;
   flex-direction: column;
-  background: var(--mk-surface);
+  // White in light; in dark the sheet stands out by elevation, never a shadow.
+  background: var(--mk-surface-haute);
   color: var(--mk-text);
   border-top-left-radius: var(--mk-rayon-touche);
   border-top-right-radius: var(--mk-rayon-touche);
@@ -49,7 +52,8 @@
     width: 36px;
     height: 4px;
     border-radius: 4px;
-    background: rgba(16, 26, 46, 0.24);
+    // The outline token: 3.6:1 on the sheet in dark (ink at 24 % vanished there).
+    background: var(--mk-contour);
   }
 }
 

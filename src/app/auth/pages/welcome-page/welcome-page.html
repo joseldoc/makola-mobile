@@ -8,8 +8,13 @@
     <div class="shape shape-dot"></div>
   </div>
 
-  <div class="language">
+  <!-- Settings of the device, side by side: the language, then the appearance. -->
+  <div class="settings">
     <app-language-switch [value]="language.language()" (valueChange)="setLanguage($event)" />
+    <app-appearance-switch
+      [value]="theme.appearance()"
+      (valueChange)="theme.setAppearance($event)"
+    />
   </div>
 
   <main class="brand">

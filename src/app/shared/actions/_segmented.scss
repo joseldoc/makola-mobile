@@ -1,0 +1,45 @@
+// The segmented control shared by `app-language-switch` and `app-appearance-switch`
+// (settings of the device, side by side): a pill on the surface, the chosen
+// segment in primary. 30 dp visual, 48 dp target (§7.6 — 44 dp until 9 November 2026).
+@mixin segmented {
+  :host {
+    display: inline-flex;
+  }
+
+  .switch {
+    display: inline-flex;
+    padding: 2px;
+    gap: 2px;
+    border-radius: var(--mk-rayon-rond);
+    border: 1px solid var(--mk-contour-m2);
+    background: var(--mk-surface);
+  }
+
+  .option {
+    position: relative;
+    min-width: 40px;
+    height: 30px;
+    padding: 0 var(--mk-esp-2);
+    border: 0;
+    border-radius: var(--mk-rayon-rond);
+    background: transparent;
+    color: var(--mk-text);
+    font: var(--mk-bouton-m2);
+    letter-spacing: var(--mk-bouton-m2-suivi);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background var(--mk-transition);
+
+    // 30 dp visual, 48 dp target: 9 dp above and below, the gap on the sides.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -9px -1px;
+    }
+
+    &.active {
+      background: var(--mk-primaire);
+      color: var(--mk-text-sur-primaire);
+    }
+  }
+}

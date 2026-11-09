@@ -9,6 +9,7 @@ import { Role } from '@core/models/auth.model';
 import { isBelowPassMark, passMark } from '@core/models/grading';
 import { periodKey } from '@core/models/period';
 import { LanguageStore } from '@core/store/language/language.store';
+import { ThemeStore } from '@core/store/theme/theme.store';
 import { SessionStore } from '@core/store/session/session.store';
 import { AccountButtonComponent } from '@shared/account/account-button/account-button';
 import {
@@ -62,6 +63,7 @@ interface FeedRow {
 export class ParentFeedPageComponent {
   protected readonly store = inject(ParentFeedStore);
   protected readonly language = inject(LanguageStore);
+  protected readonly theme = inject(ThemeStore);
   protected readonly session = inject(SessionStore);
   private readonly router = inject(Router);
   private readonly t = injectTranslate();
@@ -155,6 +157,9 @@ export class ParentFeedPageComponent {
         return;
       case AccountSheetActions.ChangeLanguage:
         void this.language.setLanguage(event.language);
+        return;
+      case AccountSheetActions.ChangeAppearance:
+        this.theme.setAppearance(event.appearance);
         return;
       case AccountSheetActions.SignOut:
         this.signOut();

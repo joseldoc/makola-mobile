@@ -1,10 +1,11 @@
-// @makola highlighted box: 1 px ink outline, radius 8.
+// @makola highlighted box: 1 px ink outline, radius 8 — `--mk-text`, the ink in
+// light; `--mk-encre` would be the surface itself in dark.
 .student {
   display: flex;
   align-items: flex-start;
   gap: var(--mk-esp-3);
   padding: var(--mk-esp-4);
-  border: 1px solid var(--mk-encre);
+  border: 1px solid var(--mk-text);
   border-radius: var(--mk-rayon-encadre);
   color: var(--mk-text);
 }
